@@ -18,9 +18,9 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 - 프레임워크 : Lombok 라이브러리, JDBC, Maven 프로젝트
 - DB : MYSQL
 - IDE : VSCODE
-- API : 힝 흑흑 개슬퍼
+- API : 한국거래소(KRX) Open API or 금융감독원 Open API (DART)
 - 협업툴 : GITHUB
-- 아하!
+
 ## 기술스택 ( 엔젤 빈)
 - 오늘의 저녁밥은 아침에 뭘 먹었더라. 아 추어탕이 있지 정말 기대가 되는걸
 
