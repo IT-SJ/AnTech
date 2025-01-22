@@ -6,7 +6,7 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 
 ## 프로젝트 개발기간 (은진)
 2025/12/31 ~ 2025/2/13
-약 4주에요 !!! 진짜 진짜
+약 4주에요 !!! 진짜 진짜 진짜진짜
 
 ## 개발인원 (예빈)
 총 4인
@@ -18,12 +18,11 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 - 프레임워크 : Lombok 라이브러리, JDBC, Maven 프로젝트
 - DB : MYSQL
 - IDE : VSCODE
-- API : 힝
+- API : 김미정이?
 - 협업툴 : GITHUB
 - 아하!
 ## 기술스택 ( 엔젤 빈)
-- Front : HTML/CSS/JS
-- Back : JSP/Servlet
+- 3트째 ㅅㄹㅈㅇ
 
 ## 주요기능 (엔젤 빈)
 ![image](https://github.com/user-attachments/assets/f26bf504-f0a0-479a-b719-a1aa612fc5e0)
