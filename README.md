@@ -9,16 +9,16 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 약 4주
 
 ## 개발인원 (예빈)
-총 5인
-팀장1 팀원4
+총 4인
+팀장1 팀원3
 
 ## 개발환경 (예빈)
-- 언어 : Java, JSP/Servlet, HTML/CSS/JS
+- 언어 : Java, HTML/CSS/JS
 - 서버 : Tomcat Server
-- 프레임워크 : Lombok 라이브러리, Mybatis XML, JSTL, COS 라이브러리, JDBC, GSON, Maven 프로젝트
-- DB : ORACLE
-- IDE : ECLIPSE, VSCODE
-- API : 카카오 API, 주소검색 다음 API
+- 프레임워크 : Lombok 라이브러리, JDBC, Maven 프로젝트
+- DB : MYSQL
+- IDE : VSCODE
+- API : 미정
 - 협업툴 : GITHUB
 
 ## 기술스택 ( 엔젤 빈)
