@@ -18,7 +18,7 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 - 프레임워크 : Lombok 라이브러리, JDBC, Maven 프로젝트
 - DB : MYSQL
 - IDE : VSCODE
-- API : 힝
+- API : 에에엥엥
 - 협업툴 : GITHUB
 - 아하!
 ## 기술스택 ( 엔젤 빈)
