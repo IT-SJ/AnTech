@@ -20,7 +20,7 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 - IDE : VSCODE
 - API : 힝
 - 협업툴 : GITHUB
-
+- 아하!
 ## 기술스택 ( 엔젤 빈)
 - Front : HTML/CSS/JS
 - Back : JSP/Servlet
