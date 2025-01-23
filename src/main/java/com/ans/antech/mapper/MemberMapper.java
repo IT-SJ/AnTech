@@ -11,7 +11,7 @@ import com.ans.antech.model.Member;
 public interface MemberMapper {
 
     // 회원 추가
-    public int insertMember(Member member);
+    public void insertMember(Member member);
 
     // ID로 회원 조회
     public Member selectMemberById(@Param("id") String id);

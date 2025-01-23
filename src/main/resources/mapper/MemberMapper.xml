@@ -6,7 +6,7 @@
 <mapper namespace="com.ans.antech.mapper.MemberMapper">
 
     <!-- 회원 추가 -->
-    <insert id="insertMember">
+    <insert id="insertMember" parameterType="com.ans.antech.model.Member">
         INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG)
         VALUES (#{id}, #{pw}, #{email}, #{profileImg})
     </insert>

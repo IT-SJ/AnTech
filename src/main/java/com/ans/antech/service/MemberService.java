@@ -12,22 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class MemberService {
     @Autowired
-    private MemberMapper memberMapper;
+    private MemberMapper mapper;
 
     // 회원가입
-    public String registerMember(Member member) {
-        int result = memberMapper.insertMember(member);
-        return (result > 0) ? "회원가입 성공!" : "회원가입 실패!";
+    public void registerMember(Member member) {
+        System.out.println(member.toString());
+        mapper.insertMember(member);
     }
 
     // 특정 회원 조회
     public Member getMemberById(String id) {
-        return memberMapper.selectMemberById(id);
+        return mapper.selectMemberById(id);
     }
 
     // 모든 회원 조회
     public ArrayList<Member> getAllMembers() {
-        return memberMapper.selectAllMembers();
+        return mapper.selectAllMembers();
     }
 
 }
