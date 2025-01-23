@@ -1,4 +1,4 @@
-package com.ans.antech.Controller;
+package com.ans.antech.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,6 +61,10 @@ public class MainController {
         return "ui-typography";
     }
 
+    @GetMapping("/index2.do")
+    public String index2() {
+        return "index2";
+    }
 
 }
 
