@@ -24,33 +24,30 @@
                   <img src="../assets/images/logos/Logo.png" width="180" alt="">
                 </a>
                 <p class="text-center">Your Social Campaigns</p>
+                <br>
                 <form>
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">아이디</label>
-                    <input type="email" placeholder="아이디" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                  </div>
-                  <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">비밀번호</label>
-                    <input type="password" placeholder="비밀번호" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                      <label class="form-check-label text-dark" for="flexCheckChecked">
-                        아이디 저장
-                      </label>
+                    <h2><b>비밀번호 찾기 </b></h2>
+                    <p class="fs-4 mb-0 fw-bold">이메일을 입력하고 비밀번호를 재설정하세요.</p>
+                    <br>
+                    <div class="mb-3">
+                      <label for="exampleInputId1" class="form-label">아이디</label>
+                      <input type="text" placeholder="아이디" class="form-control" id="Inputid" aria-describedby="textHelp">
                     </div>
-                    <div class="link-container">
-                      <a href="./authentication-findid.html">아이디 / </a>
-                      <a href="./authentication-findpw.html">비밀번호 찾기</a>
-                    </div>
-                    
+                    <label for="exampleInputEmail1" class="form-label">이메일</label>
+                    <input type="email" placeholder="이메일" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+                    <button type="submit" class="btn btn-primary w-15 py-2 fs-3 mb-4 rounded-2">전송</button>                    
                   </div>
-                  <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">로그인</a>
+                  <div>
+                    <label for="exampleInputCode" class="form-label">인증번호</label>
+                    <input type="text" placeholder="인증번호 입력" class="form-control" id="InputCode" aria-describedby="codeHelp">
+                    <button type="submit" class="btn btn-primary w-15 py-2 fs-3 mb-4 rounded-2">입력</button>
+                  </div>
+                  <br>                                  
                   <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">ANSight 계정이 없다면?</p>
-                    <a class="text-primary fw-bold ms-2" href="./authentication-register.html">회원가입 하기</a>
+                    <a class="text-primary fw-bold ms-2" href="./authentication-login.html">로그인</a>
                   </div>
+                  <br>
                 </form>
               </div>
             </div>
