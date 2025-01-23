@@ -61,6 +61,10 @@ public class MainController {
         return "ui-typography";
     }
 
+    @GetMapping("/index2.do")
+    public String index2() {
+        return "index2";
+    }
 
 }
 
