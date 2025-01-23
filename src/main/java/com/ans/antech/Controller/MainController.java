@@ -8,6 +8,59 @@ public class MainController {
     // localhost:8080/
 	@GetMapping("/")
 	public String home() {
-		return "index";
+		return "home";
 	}
+
+	@GetMapping("/sample.do")
+    public String sample() {
+        return "sample-page";
+    }
+
+	@GetMapping("/index.do")
+    public String index() {
+        return "index";
+    }
+
+	@GetMapping("/login.do")
+    public String login() {
+        return "authentication-login";
+    }
+
+	@GetMapping("/register.do")
+    public String register() {
+        return "authentication-register";
+    }
+
+	@GetMapping("/tabler.do")
+    public String tabler() {
+        return "icon-tabler";
+    }
+
+	@GetMapping("/alerts.do")
+    public String alerts() {
+        return "ui-alerts";
+    }
+
+	@GetMapping("/buttons.do")
+    public String buttons() {
+        return "ui-buttons";
+    }
+
+	@GetMapping("/card.do")
+    public String card() {
+        return "ui-card";
+    }
+
+	@GetMapping("/forms.do")
+    public String forms() {
+        return "ui-forms";
+    }
+
+	@GetMapping("/typography.do")
+    public String typography() {
+        return "ui-typography";
+    }
+
+
 }
+
