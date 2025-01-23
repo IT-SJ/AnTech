@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ans.antech.mapper.MemberMapper">
+
+    <!-- 회원 추가 -->
+    <insert id="insertMember">
+        INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG)
+        VALUES (#{id}, #{pw}, #{email}, #{profileImg})
+    </insert>
+
+    <!-- ID로 회원 조회 -->
+    <select id="selectMemberById" resultType="com.ans.antech.model.Member">
+        SELECT ID, PW, EMAIL, PROFILE_IMG
+        FROM ANS_MEMBER
+        WHERE ID = #{id}
+    </select>
+
+    <!-- 모든 회원 조회 -->
+    <select id="selectAllMembers" resultType="com.ans.antech.model.Member">
+        SELECT ID, PW, EMAIL, PROFILE_IMG
+        FROM ANS_MEMBER
+    </select>
+
+</mapper>
