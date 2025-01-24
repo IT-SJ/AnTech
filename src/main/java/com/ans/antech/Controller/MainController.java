@@ -66,5 +66,15 @@ public class MainController {
         return "index2";
     }
 
+    @GetMapping("/findid.do")
+    public String findid() {
+        return "authentication-findid";
+    }
+
+    @GetMapping("/findpw.do")
+    public String findpw() {
+        return "authentication-findpw";
+    }
+
 }
 
