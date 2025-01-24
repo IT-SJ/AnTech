@@ -5,10 +5,10 @@
 
 <mapper namespace="com.ans.antech.mapper.MemberMapper">
 
-    <!-- 회원 추가 -->
+<!-- 회원 추가 -->
     <insert id="insertMember" parameterType="com.ans.antech.model.Member">
-        INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG)
-        VALUES (#{id}, #{pw}, #{email}, #{profileImg})
+        INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG, CREATE_DT)
+        VALUES (#{id}, #{pw}, #{email}, 'default.png', NOW())
     </insert>
 
     <!-- ID로 회원 조회 -->

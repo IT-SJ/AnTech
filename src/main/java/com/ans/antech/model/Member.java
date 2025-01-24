@@ -1,17 +1,15 @@
 package com.ans.antech.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Member {
-  private String id;
-  private String pw;
-  private String email;
-  private String profileImg;
+  private String id;          // 매핑: ID
+  private String pw;          // 매핑: PW
+  private String email;       // 매핑: EMAIL
+  private String profileImg;  // 매핑: PROFILE_IMG
 }

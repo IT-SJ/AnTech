@@ -16,7 +16,7 @@ public class MemberService {
 
     // 회원가입
     public void registerMember(Member member) {
-        System.out.println(member.toString());
+        System.out.println("여기 서비스임: "+member.toString());
         mapper.insertMember(member);
     }
 
