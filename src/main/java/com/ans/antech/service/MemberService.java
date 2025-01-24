@@ -17,6 +17,9 @@ public class MemberService {
     // 회원가입
     public void registerMember(Member member) {
         System.out.println(member.toString());
+        if (member.getProfileImg() == null) {
+            member.setProfileImg("default-profile-img.png");
+        }
         mapper.insertMember(member);
     }
 
