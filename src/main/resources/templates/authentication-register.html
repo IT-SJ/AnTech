@@ -29,7 +29,7 @@
                     <label for="exampleInputId1" class="form-label">아이디</label>
                     <div class="input-group">
                       <input type="text" name="id" placeholder="아이디" class="form-control rounded-2" id="Inputid" aria-describedby="textHelp">
-                      <button type="submit" class="btn btn-primary btn-sm ms-2 rounded-2 w-auto">중복확인</button>
+                      <button type="submit" class="btn btn-primary ms-1 rounded-2" id = Overlap>중복확인</button>
                     </div>
                   </div>
                   <div class="mb-3">
@@ -67,6 +67,30 @@
       </div>
     </div>
   </div>
+  <script> 
+    $('#Overlap').click(function(){
+      var id = $('input[name="id"]').val();
+      console.log(id);
+      $.ajax({
+        type: 'get',
+        url: 'overlay.do',
+        data: {'id':id}, 
+        dataType: 'json',
+        success: function(data){
+          console.log(data);
+          if(data.overlay>0){
+            $('#result').html(id + '는 이미 사용중입니다.');
+          }else{
+            $('#result').html(id + '는 사용가능합니다.');
+          }
+        },
+        error:function(e){
+          console.log(e);
+        }
+        
+      })
+    });
+  </script>
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
