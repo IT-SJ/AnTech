@@ -24,71 +24,120 @@
                   <img src="../assets/images/logos/Logo.png" width="180" alt="">
                 </a>
                 <!-- 회원가입 ------------------------------------------------->
-                <form action="register.do" method="post">
+                <form action="/register.join" method="post">
                   <div class="mb-3">
                     <label for="exampleInputId1" class="form-label">아이디</label>
                     <div class="input-group">
-                      <input type="text" name="id" placeholder="아이디" class="form-control rounded-2" id="Inputid" aria-describedby="textHelp">
-                      <button type="submit" class="btn btn-primary ms-1 rounded-2" id = Overlap>중복확인</button>
+                      <input type="text" name="id" placeholder="아이디" class="form-control rounded-2" id="InputId"
+                        aria-describedby="textHelp">
+                      <button type="button" class="btn btn-primary ms-1 rounded-2" id="CheckId">중복확인</button>
                     </div>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">비밀번호</label>
                     <input type="password" name="pw" placeholder="비밀번호" class="form-control" id="InputPassword1">
                   </div>
-                  
+
                   <div class="mb-3">
                     <label for="exampleInputPassword2" class="form-label">비밀번호 확인</label>
                     <input type="password" placeholder="비밀번호 확인" class="form-control" id="InputPassword2">
                   </div>
                   <div class="mb-4">
                     <label for="exampleInputEmail1" class="form-label">이메일</label>
-                    <input type="email" name="email" placeholder="이메일" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+                    <div class="input-group">
+                      <input type="email" name="email" placeholder="이메일" class="form-control" id="InputEmail"
+                        aria-describedby="emailHelp">
+                      <button type="button" class="btn btn-primary ms-2 rounded-2" id="RequestCode">인증번호 요청</button>
+                    </div>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputCode" class="form-label">인증번호</label>
                     <div class="input-group">
                       <input type="text" placeholder="인증번호 입력" class="form-control rounded-2" id="InputCode"
                         aria-describedby="codeHelp">
-                      <button type="submit" class="btn btn-primary ms-2 rounded-2">입력</button>
+                      <button type="button" class="btn btn-primary ms-2 rounded-2" id="VerifyCode">인증</button>
                     </div>
-                    <br>
                   </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">회원가입 완료</button>
-                          <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">계정이 이미 있으신가요?</p>
-                    <a class="text-primary fw-bold ms-2" href="./authentication-login.html">로그인</a>
-                  </div>
-                </form>
+                  <br>
               </div>
+              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">회원가입 완료</button>
+              <div class="d-flex align-items-center justify-content-center">
+                <p class="fs-4 mb-0 fw-bold">계정이 이미 있으신가요?</p>
+                <a class="text-primary fw-bold ms-2" href="./authentication-login.html">로그인</a>
+              </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script> 
-    $('#Overlap').click(function(){
-      var id = $('input[name="id"]').val();
-      console.log(id);
-      $.ajax({
-        type: 'get',
-        url: 'overlay.do',
-        data: {'id':id}, 
-        dataType: 'json',
-        success: function(data){
-          console.log(data);
-          if(data.overlay>0){
-            $('#result').html(id + '는 이미 사용중입니다.');
-          }else{
-            $('#result').html(id + '는 사용가능합니다.');
-          }
-        },
-        error:function(e){
-          console.log(e);
-        }
-        
+  </div>
+  <script>
+    // 아이디 중복 확인
+    document.getElementById('CheckId').addEventListener('click', function () {
+      const id = document.getElementById('InputId').value;
+      if (!id) {
+        alert('아이디를 입력해주세요.');
+        return;
+      }
+      fetch('/members/checkId?id=' + id, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
       })
+        .then(response => response.json())
+        .then(data => {
+          if (data.available) {
+            alert('사용 가능한 아이디입니다.');
+          } else {
+            alert('이미 사용 중인 아이디입니다.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // 인증번호 요청
+    document.getElementById('RequestCode').addEventListener('click', function () {
+      const email = document.getElementById('InputEmail').value;
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+        return;
+      }
+      fetch('/email/sendCode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${email}`
+      })
+        .then(response => response.text())
+        .then(data => alert(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    // 인증번호 확인
+    document.getElementById('VerifyCode').addEventListener('click', function () {
+      const email = document.getElementById('InputEmail').value;
+      const code = document.getElementById('InputCode').value;
+
+      if (!code) {
+        alert('인증번호를 입력해주세요.');
+        return;
+      }
+
+      fetch('/email/verifyCode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${email}&code=${code}`
+      })
+        .then(response => response.text())
+        .then(data => {
+          if (data === '인증 성공') {
+            alert('이메일 인증이 완료되었습니다.');
+            document.getElementById('RegisterButton').disabled = false; // 회원가입 버튼 활성화
+          } else {
+            alert('인증번호가 일치하지 않습니다.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
     });
   </script>
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>

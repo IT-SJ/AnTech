@@ -12,8 +12,8 @@
     </insert>
 
     <!-- ID로 회원 조회 -->
-    <select id="selectMemberById" resultType="com.ans.antech.model.Member">
-        SELECT ID, PW, EMAIL, PROFILE_IMG
+    <select id="selectMemberById" parameterType="string" resultType="com.ans.antech.model.Member">
+        SELECT *
         FROM ANS_MEMBER
         WHERE ID = #{id}
     </select>

@@ -20,7 +20,7 @@ public class MemberService {
         mapper.insertMember(member);
     }
 
-    // 특정 회원 조회
+    // ID로 회원 검색
     public Member getMemberById(String id) {
         return mapper.selectMemberById(id);
     }
@@ -29,5 +29,6 @@ public class MemberService {
     public ArrayList<Member> getAllMembers() {
         return mapper.selectAllMembers();
     }
+
 
 }
