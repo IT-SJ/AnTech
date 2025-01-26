@@ -5,7 +5,7 @@
 
 <mapper namespace="com.ans.antech.mapper.MemberMapper">
 
-<!-- 회원 추가 -->
+    <!-- 회원 추가 -->
     <insert id="insertMember" parameterType="com.ans.antech.model.Member">
         INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG, CREATE_DT)
         VALUES (#{id}, #{pw}, #{email}, 'default.png', NOW())
@@ -22,6 +22,13 @@
     <select id="selectAllMembers" resultType="com.ans.antech.model.Member">
         SELECT ID, PW, EMAIL, PROFILE_IMG
         FROM ANS_MEMBER
+    </select>
+
+    <!-- 로그인 id,pw 조회 -->
+    <select id="selectMemberByIdAndPw" parameterType="map" resultType="Member">
+    SELECT *
+    FROM ANS_MEMBER
+    WHERE ID = #{id} AND PW = #{pw}
     </select>
 
 </mapper>

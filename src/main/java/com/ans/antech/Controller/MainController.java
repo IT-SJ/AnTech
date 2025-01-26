@@ -6,20 +6,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
     // localhost:8080/
-	@GetMapping("/")
-	public String index() {
-		return "index";
-	}
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
 
     @Autowired
     private MemberService service;
@@ -43,47 +47,88 @@ public class MainController {
         return "authentication-login";
     }
 
-	@GetMapping("/sample.do")
+    // 로그인 처리
+    @PostMapping("/login.do")
+    public String login(@RequestParam String id,
+            @RequestParam String pw,
+            HttpSession session,
+            HttpServletResponse response,
+            @RequestParam(required = false) boolean rememberId) {
+        // ID와 PW로 사용자 조회
+        Member member = service.login(id, pw);
+
+        if (member == null) {
+            // 로그인 실패 시
+            return "authentication-login";
+        }
+
+        // 로그인 성공 시 세션에 사용자 정보 저장
+        session.setAttribute("loginMember", member);
+
+        // 아이디 저장 처리 (쿠키에 저장)
+        if (rememberId) {
+            Cookie idCookie = new Cookie("rememberId", id);
+            idCookie.setMaxAge(60 * 60 * 24 * 30); // 30일 동안 유지
+            response.addCookie(idCookie);
+        } else {
+            // 기존 쿠키 삭제
+            Cookie idCookie = new Cookie("rememberId", null);
+            idCookie.setMaxAge(0);
+            response.addCookie(idCookie);
+        }
+
+        // 메인 페이지로 이동
+        return "index";
+    }
+
+    // 로그아웃 처리
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 초기화
+        return "authentication-login";
+    }
+
+    @GetMapping("/sample")
     public String sample() {
         return "sample-page";
     }
 
-	@GetMapping("/login.do")
+    @GetMapping("/login.do")
     public String login() {
         return "authentication-login";
     }
 
-	@GetMapping("/register.do")
+    @GetMapping("/register")
     public String register() {
         return "authentication-register";
     }
 
-	@GetMapping("/tabler.do")
+    @GetMapping("/tabler.do")
     public String tabler() {
         return "icon-tabler";
     }
 
-	@GetMapping("/alerts.do")
+    @GetMapping("/alerts.do")
     public String alerts() {
         return "ui-alerts";
     }
 
-	@GetMapping("/buttons.do")
+    @GetMapping("/buttons.do")
     public String buttons() {
         return "ui-buttons";
     }
 
-	@GetMapping("/card.do")
+    @GetMapping("/card.do")
     public String card() {
         return "ui-card";
     }
 
-	@GetMapping("/forms.do")
+    @GetMapping("/forms.do")
     public String forms() {
         return "ui-forms";
     }
 
-	@GetMapping("/typography.do")
+    @GetMapping("/typography.do")
     public String typography() {
         return "ui-typography";
     }
@@ -93,12 +138,12 @@ public class MainController {
         return "index2";
     }
 
-    @GetMapping("/findid.do")
+    @GetMapping("/findid")
     public String findid() {
         return "authentication-findid";
     }
 
-    @GetMapping("/findpw.do")
+    @GetMapping("/findpw")
     public String findpw() {
         return "authentication-findpw";
     }
@@ -107,7 +152,5 @@ public class MainController {
     public String findidsuccess() {
         return "authentication-findidsuccess";
     }
-    
 
 }
-

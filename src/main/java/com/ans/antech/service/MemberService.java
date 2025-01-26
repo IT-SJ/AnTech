@@ -29,5 +29,9 @@ public class MemberService {
         return mapper.selectAllMembers();
     }
 
+    // ID와 PW로 사용자 조회
+    public Member login(String id, String pw) {
+        return mapper.selectMemberByIdAndPw(id, pw);
+    }
 
 }
