@@ -88,9 +88,9 @@ public class MainController {
         return "authentication-login";
     }
 
-    @GetMapping("/sample")
-    public String sample() {
-        return "sample-page";
+    @GetMapping("/index2")
+    public String indesx2() {
+        return "index2";
     }
 
     @GetMapping("/login.do")
