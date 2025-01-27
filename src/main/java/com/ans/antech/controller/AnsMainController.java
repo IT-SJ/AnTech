@@ -18,11 +18,11 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
+public class AnsMainController {
     // localhost:8080/
     @GetMapping("/")
-    public String index() {
-        return "index";
+    public String index2() {
+        return "index2";
     }
 
     @Autowired
@@ -88,11 +88,6 @@ public class MainController {
         return "authentication-login";
     }
 
-    @GetMapping("/index2")
-    public String indesx2() {
-        return "index2";
-    }
-
     @GetMapping("/login.do")
     public String login() {
         return "authentication-login";
@@ -133,11 +128,6 @@ public class MainController {
         return "ui-typography";
     }
 
-    @GetMapping("/index2.do")
-    public String index2() {
-        return "index2";
-    }
-
     @GetMapping("/findid")
     public String findid() {
         return "authentication-findid";
@@ -151,6 +141,16 @@ public class MainController {
     @GetMapping("/findidsuccess.do")
     public String findidsuccess() {
         return "authentication-findidsuccess";
+    }
+
+    @GetMapping("/main")
+    public String main() {
+        return "main-news";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
     }
 
 }
