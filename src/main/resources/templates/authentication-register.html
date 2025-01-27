@@ -21,7 +21,7 @@
             <div class="card mb-0">
               <div class="card-body">
                 <a href="소개페이지로 연결" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="../assets/images/logos/Logo.png" width="180" alt="">
+                  <img src="../assets/images/logos/Logo1.svg" width="180" alt="">
                 </a>
                 <!-- 회원가입 ------------------------------------------------->
                 <form action="/register.join" method="post">
@@ -59,11 +59,11 @@
                     </div>
                   </div>
                   <br>
-                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">회원가입 완료</button>
-                  <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">계정이 이미 있으신가요?</p>
-                    <a class="text-primary fw-bold ms-2" href="./authentication-login.html">로그인</a>
-                  </div>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">회원가입 완료</button>
+              <div class="d-flex align-items-center justify-content-center">
+                <p class="fs-4 mb-0 fw-bold">계정이 이미 있으신가요?</p>
+                <a class="text-primary fw-bold ms-2" href="/login.do">로그인</a>
               </div>
               </form>
             </div>
@@ -81,7 +81,7 @@
         alert('아이디를 입력해주세요.');
         return;
       }
-      fetch('/members/checkId?id=' + id, {
+      fetch('/ans/checkId?id=' + id, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       })
@@ -103,7 +103,7 @@
         alert('이메일을 입력해주세요.');
         return;
       }
-      fetch('/email/sendCode', {
+      fetch('/ans/sendCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `email=${email}`
@@ -123,7 +123,7 @@
         return;
       }
 
-      fetch('/email/verifyCode', {
+      fetch('/ans/verifyCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `email=${email}&code=${code}`
