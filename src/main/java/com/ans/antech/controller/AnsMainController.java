@@ -2,6 +2,7 @@ package com.ans.antech.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,12 +56,13 @@ public class AnsMainController {
             @RequestParam String pw,
             HttpSession session,
             HttpServletResponse response,
-            @RequestParam(required = false) boolean rememberId) {
+            @RequestParam(required = false) boolean rememberId, Model model) {
         // ID와 PW로 사용자 조회
         Member member = service.login(id, pw);
 
         if (member == null) {
-            // 로그인 실패 시
+            // 로그인 실패 시 실패 메시지를 모델에 추가
+            model.addAttribute("loginError", "입력한 정보가 틀렸습니다.");
             return "authentication-login";
         }
 
@@ -80,7 +82,7 @@ public class AnsMainController {
         }
 
         // 메인 페이지로 이동
-        return "index";
+        return "home";
     }
 
     // 로그아웃 처리
