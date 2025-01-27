@@ -169,4 +169,24 @@ public class AnsMainController {
         return "home";
     }
 
+    @GetMapping("/breaking")
+    public String breaking() {
+        return "breaking-news";
+    }
+
+    @GetMapping("/stockinfo")
+    public String stockinfo() {
+        return "stock-info";
+    }
+    
+    @GetMapping("/search")
+    public String search() {
+        return "search";
+    } 
+
+    @GetMapping("/analysis")
+    public String analysis() {
+        return "analysis";
+    }
+
 }

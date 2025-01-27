@@ -15,21 +15,21 @@
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- 사이드바 시작 -->
         <aside class="left-sidebar">
-            <!-- 사이드바 스크롤-->
+            <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="/" class="text-nowrap logo-img">
+                    <a href="./index.html" class="text-nowrap logo-img">
                         <img src="../assets/images/logos/Logo.png" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
                     </div>
                 </div>
-                <!-- 사이드바 네비게이션-->
+                <!-- Sidebar navigation-->
                 <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="home" aria-expanded="false">
+                            <a class="sidebar-link" href="./index.html" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
@@ -41,7 +41,7 @@
                             <span class="hide-menu">pages</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="breaking" aria-expanded="false">
+                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-article"></i>
                                 </span>
@@ -49,7 +49,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="main" aria-expanded="false">
+                            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-alert-circle"></i>
                                 </span>
@@ -57,7 +57,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="stockinfo" aria-expanded="false">
+                            <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-cards"></i>
                                 </span>
@@ -79,7 +79,7 @@
             </div>
             <!-- End Sidebar scroll-->
         </aside>
-        <!--  사이드바 끝-->
+        <!--  사이드바 끝  ------------------------------------------------------------------------------------>
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  헤더 시작 -->
@@ -136,80 +136,74 @@
                     </div>
                 </nav>
             </header>
-            <!--  Header End -->
+            <!--  헤더 끝 ------------------------------------------------------------------------------------------------------------------------------------>
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">홈</h5>
+                    <h5 class="card-title fw-bold mb-0">주요 뉴스</h5>
+                    <button class="btn btn-outline-primary">스크랩</button>
                   </div>
                   
-                
+                <!--  첫번째 줄 -->
                 <!-- 카드 -------------------------------------------------------------------------------------------------------------------------->
                 <div class="row">
-                    <!-- 워드클라우드 ------------------------------------------------------>
-                    <div class="card" style="height: 400px;">
-                      <div class="card-body">
-                        <h5 class="card-title fw-semibold mb-4">워드 클라우드</h5>
-                        
-                      </div>
+                    <!-- 왼쪽 큰 카드 -->
+                    <div class="col-md-6">
+                        <div class="card overflow-hidden rounded-2" style="height: 630px;">
+                            <div class="position-relative mb-4">
+                                <a href="javascript:void(0)">
+                                    <img src="../assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."
+                                         style="object-fit: cover; height: 300px; width: 100%;">
+                                </a>
+                            </div>
+                            <div class="card-body pt-3 p-4">
+                                <h5 class="fw-semibold ">뉴스기사 제목</h5>
+                                <div>
+                                    <h5 class="fw-normal mb-2 fs-4" style="color:rgb(95, 95, 95)">
+                                        연휴 앞, 한국유니온제약은 횡령·배임 혐의로 임원 6명을 고소하며 제3자배정 유상증자를 철회했다. 이로 인해 유상증자 자금 69억원과 전환사채 발행금 41억원이 납입되지 않았다. 또한, 코스닥 상장사 나노브릭도 유상증자 납입일을 연기했다. 이와 함께, 기업의 실적 악화 소식도 장 마감 후 전해졌다. 롯데하이마트와 호텔신라의 경우, 작년 영업이익이 급감하고 적자가 전환되었다. 이러한 악재 공시는 불법이 아니지만, 투자자의 각별한 주의가 필요하다.
+                                    </h5>
+                                </div>
+                                <!-- 해시태그 영역 -->
+                                <div class="d-flex flex-wrap gap-3 mb-2 ">
+                                    <h5 class="fw-bold" style="color: red; ">#빨강태그</h5>
+                                    <h5 class="fw-bold" style="color: blue; ">#파랑태그</h5>
+                                    <h5 class="fw-bold" style="color: black;">#검정태그</h5>
+                                </div>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <a href="#" class="btn btn-outline-primary w-100">뉴스 원문 링크</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body" style="min-height: 200px;">
-                          <h5 class="card-title fw-semibold mb-4">주요 뉴스</h5>
-                          
-                          <!-- 전체를 flex로 나누기 (부모 div) -->
-                          <div class="d-flex">
-                            <!-- 왼쪽 콘텐츠 (50% 크기) -->
-                            <div class="d-flex flex-column" style="flex: 1;">
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
+                
+                    <!-- 오른쪽 위아래 두 개 카드 -->
+                    <div class="col-md-6">
+                        <div class="row">
+                            <!-- 첫 번째 작은 카드 -->
+                            <div class="col-12">
+                                <div class="card overflow-hidden rounded-2" style="height: 300px;">
+                                    <div class="card-body">
+                                        <h6 class="fw-semibold fs-4">관련 주</h6>
+                                        
+                                    </div>
+                                </div>
                             </div>
-                      
-                            <!-- 오른쪽 콘텐츠 (50% 크기) -->
-                            <div class="d-flex flex-column" style="flex: 1;">
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
+                            <!-- 두 번째 작은 카드 -->
+                            <div class="col-12">
+                                <div class="card overflow-hidden rounded-2" style="height: 300px;">
+                                    <div class="card-body">
+                                        <h6 class="fw-semibold fs-4">감정 분석</h6>
+                                     
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                          
                         </div>
-                      </div>
-                      
-                      
-
-                      </div>
-                      
-                      
-                      
-                      
-                      <div class="card">
-                        <div class="card-body" style="height: 200px;">
-                          <h5 class="card-title fw-semibold mb-4">속보 뉴스</h5>
-                          <!-- 전체를 flex로 나누기 (부모 div) -->
-                          <div class="d-flex">
-                            <!-- 왼쪽 콘텐츠 (50% 크기) -->
-                            <div class="d-flex flex-column" style="flex: 1;">
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                            </div>
-                      
-                            <!-- 오른쪽 콘텐츠 (50% 크기) -->
-                            <div class="d-flex flex-column" style="flex: 1;">
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                              <p class="mb-0">This is a sample page</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-
+                    </div>
                 </div>
-
+                
+                
+                
+                <!-- Row 끝 --------------------------------------------------------------------->
             </div>
         </div>
     </div>
