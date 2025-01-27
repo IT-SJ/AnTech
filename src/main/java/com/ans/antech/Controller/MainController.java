@@ -153,4 +153,14 @@ public class MainController {
         return "authentication-findidsuccess";
     }
 
+    @GetMapping("/main")
+    public String main() {
+        return "main-news";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
 }
