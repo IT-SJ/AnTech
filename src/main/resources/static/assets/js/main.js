@@ -79,8 +79,8 @@
         nav: false,
         controls: true,
         controlsText: [
-          '<i class="lni lni-chevron-left prev"></i>',
-          '<i class="lni lni-chevron-right prev"></i>',
+          '⟨',
+          '⟩',
         ],
         responsive: {
           0: {
