@@ -153,4 +153,9 @@ public class AnsMainController {
         return "home";
     }
 
+    @GetMapping("/analysis")
+    public String analysis() {
+        return "analysis";
+    }
+
 }
