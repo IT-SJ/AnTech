@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  <!-- 숨겨진 알림 메시지 -->
+  <div th:if="${findIdError}" id="findIdErrorMessage" th:text="${findIdError}" style="display: none;"></div>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -20,27 +22,47 @@
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="../assets/images/logos/Logo1.svg" width="180" alt="">
                 </a>
                 <br>
                 <!-- 아이디 찾기 -->
-                <form>
+                <form action="findId" method="post">
                   <div class="mb-3">
                     <h2><b>아이디 찾기</b></h2>
                     <p class="fs-4 mb-0 fw-bold">이메일을 입력하고 아이디를 찾으세요.</p>
                     <br><br>
                     <label for="exampleInputEmail1" class="form-label">이메일</label>
-                    <input type="email" name="email" placeholder="이메일" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+                    <input type="email" name="email" placeholder="이메일" class="form-control" id="InputEmail"
+                      aria-describedby="emailHelp">
                   </div>
                   <br>
-                  <button href ="./authentication-findidsuccess.html"  class = "btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">이메일 입력</button>
+                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">이메일 입력</button>
                   <div class="d-flex align-items-center justify-content-center">
-                    <a class="text-primary fw-bold ms-2" href="./authentication-login.html">
-                      < 로그인</a>
+                    <a class="text-primary fw-bold ms-2" href="/login.do">
+                      로그인</a>
                   </div>
                   <br>
                 </form>
+                <script>
+                  document.querySelector("button[type='submit']").addEventListener("click", function (event) {
+                    const emailInput = document.querySelector("#InputEmail");
+                    if (!emailInput.value) {
+                      alert("이메일을 입력해주세요.");
+                      event.preventDefault();
+                    }
+                  });
+                </script>
+                <script>
+                  // DOMContentLoaded 이벤트가 발생했을 때 실행
+                  document.addEventListener("DOMContentLoaded", function () {
+                    // 메시지가 서버에서 렌더링된 경우만 표시
+                    const findIdError = document.getElementById("findIdErrorMessage");
+                    if (findIdError) {
+                      alert(findIdError.textContent); // 메시지 내용을 알림창으로 표시
+                    }
+                  });
+                </script>
               </div>
             </div>
           </div>

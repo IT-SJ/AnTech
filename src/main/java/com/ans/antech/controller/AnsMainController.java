@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
@@ -19,17 +20,18 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class AnsMainController {
-    // localhost:8080/
-    @GetMapping("/")
-    public String index2() {
-        return "index2";
-    }
 
     @Autowired
     private MemberService service;
 
     @Autowired
     private EmailService emailService;
+    // localhost:8080/
+
+    @GetMapping("/")
+    public String index2() {
+        return "index2";
+    }
 
     // 회원가입
     @PostMapping("/register.join")
@@ -88,6 +90,18 @@ public class AnsMainController {
         return "authentication-login";
     }
 
+    // 이메일로 아이디 찾기 기능
+    @PostMapping("/findId")
+    public String findId(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        Member member = service.findMemberByEmail(email);
+        if (member == null) {
+            redirectAttributes.addFlashAttribute("findIdError", "조회된 내용이 없습니다. 회원가입을 해주세요.");
+            return "redirect:/findid";
+        }
+        redirectAttributes.addFlashAttribute("foundId", member.getId());
+        return "redirect:/findidsuccess";
+    }
+
     @GetMapping("/login.do")
     public String login() {
         return "authentication-login";
@@ -138,7 +152,7 @@ public class AnsMainController {
         return "authentication-findpw";
     }
 
-    @GetMapping("/findidsuccess.do")
+    @GetMapping("/findidsuccess")
     public String findidsuccess() {
         return "authentication-findidsuccess";
     }

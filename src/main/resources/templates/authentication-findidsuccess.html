@@ -27,12 +27,12 @@
                 <!--"" 사이에 사용자가 까먹은 아이디가 뜨게-->
                 <form action="findidsuccess.do" method="get">
                   <div class="mb-3 text-center">
-                    <h3><b>귀하의 아이디는 "" 입니다.</b></h3>
+                    <h3><b>귀하의 아이디는 "<span th:text="${foundId}"></span>" 입니다.</b></h3>
                     <br><br>
                   </div>
                   <br>
                   <div class="d-flex align-items-center justify-content-center">
-                    <a href="./authentication-login.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">로그인</a>
+                    <a href="/login.do" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">로그인</a>
                   </div>
                   <br>
                 </form>

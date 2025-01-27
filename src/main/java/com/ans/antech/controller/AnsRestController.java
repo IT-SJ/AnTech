@@ -71,4 +71,29 @@ public class AnsRestController {
         boolean verified = emailService.verifyCode(email, code);
         return ResponseEntity.ok(verified ? "인증 성공" : "인증 실패");
     }
+
+    // 비밀번호 찾기
+    @PostMapping("/findPw")
+    public ResponseEntity<?> findPw(
+            @RequestParam String id,
+            @RequestParam String email,
+            @RequestParam String newPassword) {
+
+        // 이메일 인증 여부 확인
+        boolean verified = emailService.isEmailVerified(email);
+        if (!verified) {
+            return ResponseEntity.badRequest().body("이메일 인증을 완료해주세요.");
+        }
+
+        // 아이디와 이메일이 일치하는 사용자 조회
+        Member member = service.findMemberByIdAndEmail(id, email);
+        if (member == null) {
+            return ResponseEntity.badRequest().body("아이디와 이메일이 일치하는 사용자를 찾을 수 없습니다.");
+        }
+
+        // 비밀번호 업데이트
+        service.updatePassword(id, newPassword);
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
 }
