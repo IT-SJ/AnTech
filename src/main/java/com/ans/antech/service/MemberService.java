@@ -34,4 +34,18 @@ public class MemberService {
         return mapper.selectMemberByIdAndPw(id, pw);
     }
 
+    // 이메일로 회원 조회
+    public Member findMemberByEmail(String email) {
+        return mapper.selectMemberByEmail(email);
+    }
+
+    // id와 email로 사용자 조회
+    public Member findMemberByIdAndEmail(String id, String email) {
+        return mapper.findMemberByIdAndEmail(id, email);
+    }
+
+    // 비밀번호 찾기 -> 비밀번호 업데이트
+    public void updatePassword(String id, String newPassword) {
+        mapper.updatePassword(id, newPassword);
+    }
 }

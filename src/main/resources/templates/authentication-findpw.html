@@ -20,50 +20,122 @@
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="../assets/images/logos/Logo1.svg" width="180" alt="">
                 </a>
 
                 <!-- 비밀번호 찾기 ---------------------------------------------->
-                <form>
+                <form action="/findPw" method="post" id="findPasswordForm">
                   <h2><b>비밀번호 찾기 </b></h2>
                   <p class="fs-4 mb-0 fw-bold">이메일을 입력하고 비밀번호를 재설정하세요.</p>
                   <br>
 
                   <div class="mb-3">
                     <label for="exampleInputId1" class="form-label">아이디</label>
-                    <input type="text" placeholder="아이디" class="form-control" id="Inputid" aria-describedby="textHelp">
+                    <input type="text" name="id" placeholder="아이디" class="form-control" id="InputId"
+                      aria-describedby="textHelp">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">이메일</label>
                     <div class="input-group">
-                      <input type="email" placeholder="이메일" class="form-control rounded-2" id="InputEmail"
+                      <input type="email" name="email" placeholder="이메일" class="form-control rounded-2" id="InputEmail"
                         aria-describedby="emailHelp">
-                      <button type="submit" class="btn btn-primary ms-2 rounded-2">전송</button>
+                      <button type="button" class="btn btn-primary ms-2 rounded-2" id="sendCodeButton">전송</button>
                     </div>
                   </div>
 
                   <div class="mb-3">
                     <label for="exampleInputCode" class="form-label">인증번호</label>
                     <div class="input-group">
-                      <input type="text" placeholder="인증번호 입력" class="form-control rounded-2" id="InputCode"
+                      <input type="text" name="code" placeholder="인증번호 입력" class="form-control rounded-2" id="InputCode"
                         aria-describedby="codeHelp">
-                      <button type="submit" class="btn btn-primary ms-2 rounded-2">입력</button>
+                      <button type="button" class="btn btn-primary ms-2 rounded-2" id="verifyCodeButton">인증</button>
                     </div>
                     <br>
                   </div>
                   <!-- 인증번호가 맞으면 새로운 비밀번호 입력뜨게------------->
-                  <div class="mb-3">
-                    <input type="text" placeholder="새로운 비밀번호" class="form-control" id="Inputid"
-                      aria-describedby="textHelp">
+                  <div class="mb-3" id="newPasswordSection" style="display: none;">
+                    <input type="password" name="newPassword" placeholder="새로운 비밀번호" class="form-control"
+                      id="InputNewPassword">
                   </div>
                   <br>
                   <div class="d-flex align-items-center justify-content-center">
-                    <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
-                      href="./authentication-login.html">로그인</button>
+                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">비밀번호 수정 완료</button>
                   </div>
                   <br>
                 </form>
+                <script>
+
+                  // 인증 번호 요청
+                  document.getElementById("sendCodeButton").addEventListener("click", function () {
+                    const email = document.getElementById("InputEmail").value;
+                    if (!email) {
+                      alert("이메일을 입력해주세요.");
+                      return;
+                    }
+
+                    fetch("/ans/sendCode", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                      body: `email=${email}`
+                    })
+                      .then(response => response.text())
+                      .then(data => alert(data))
+                      .catch(error => console.error("Error:", error));
+                  });
+
+                  // 인증 번호 확인
+                  document.getElementById("verifyCodeButton").addEventListener("click", function () {
+                    const email = document.getElementById("InputEmail").value;
+                    const code = document.getElementById("InputCode").value;
+
+                    if (!code) {
+                      alert("인증번호를 입력해주세요.");
+                      return;
+                    }
+
+                    fetch("/ans/verifyCode", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                      body: `email=${email}&code=${code}`
+                    })
+                      .then(response => response.text())
+                      .then(data => {
+                        if (data === "인증 성공") {
+                          alert("이메일 인증이 완료되었습니다.");
+                          document.getElementById("newPasswordSection").style.display = "block"; // 새 비밀번호 입력란 보이기
+                        } else {
+                          alert("인증번호가 일치하지 않습니다.");
+                        }
+                      })
+                      .catch(error => console.error("Error:", error));
+                  });
+
+                  // 비밀번호 수정
+                  document.getElementById("findPasswordForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const id = document.getElementById("InputId").value;
+                    const email = document.getElementById("InputEmail").value;
+                    const newPassword = document.getElementById("InputNewPassword").value;
+
+                    fetch("/ans/findPw", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                      body: `id=${id}&email=${email}&newPassword=${newPassword}`
+                    })
+                      .then(response => response.text())
+                      .then(data => {
+                        if (data === "비밀번호가 성공적으로 변경되었습니다.") {
+                          alert(data);
+                          window.location.href = "/login.do";
+                        } else {
+                          alert(data);
+                        }
+                      })
+                      .catch(error => console.error("Error:", error));
+                  });
+                </script>
               </div>
             </div>
           </div>
