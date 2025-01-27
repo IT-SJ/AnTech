@@ -16,11 +16,10 @@ public class MemberService {
 
     // 회원가입
     public void registerMember(Member member) {
-        System.out.println("여기 서비스임: "+member.toString());
         mapper.insertMember(member);
     }
 
-    // 특정 회원 조회
+    // ID로 회원 검색
     public Member getMemberById(String id) {
         return mapper.selectMemberById(id);
     }
@@ -28,6 +27,11 @@ public class MemberService {
     // 모든 회원 조회
     public ArrayList<Member> getAllMembers() {
         return mapper.selectAllMembers();
+    }
+
+    // ID와 PW로 사용자 조회
+    public Member login(String id, String pw) {
+        return mapper.selectMemberByIdAndPw(id, pw);
     }
 
 }

@@ -18,4 +18,8 @@ public interface MemberMapper {
 
     // 모든 회원 조회
     public ArrayList<Member> selectAllMembers();
+
+    // ID와 PW로 사용자 조회
+    public Member selectMemberByIdAndPw(@Param("id") String id, @Param("pw") String pw);
+
 }
