@@ -22,4 +22,13 @@ public interface MemberMapper {
     // ID와 PW로 사용자 조회
     public Member selectMemberByIdAndPw(@Param("id") String id, @Param("pw") String pw);
 
+    // 이메일로 회원 조회
+    public Member selectMemberByEmail(@Param("email") String email);
+    
+    // ID와 EMAIL로 사용자 조회
+    public Member findMemberByIdAndEmail(@Param("id") String id, @Param("email") String email);
+
+    // 비밀번호 찾기 -> 비밀번호 업데이트
+    public void updatePassword(@Param("id") String id, @Param("newPassword") String newPassword);
+
 }
