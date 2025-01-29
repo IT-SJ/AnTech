@@ -18,8 +18,8 @@
             <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
-                        <img src="../assets/images/logos/Logo.png" width="180" alt="" />
+                    <a href="home" class="text-nowrap logo-img">
+                        <img src="../assets/images/logos/Logo1.svg" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -29,7 +29,7 @@
                 <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                            <a class="sidebar-link" href="home" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
@@ -41,7 +41,7 @@
                             <span class="hide-menu">pages</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                            <a class="sidebar-link" href="breaking" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-article"></i>
                                 </span>
@@ -49,7 +49,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+                            <a class="sidebar-link" href="main" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-alert-circle"></i>
                                 </span>
@@ -57,7 +57,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                            <a class="sidebar-link" href="stockinfo" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-cards"></i>
                                 </span>
@@ -93,15 +93,18 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- 검색창 -->
-                    <form class="d-flex align-items-center me-auto ms-3" role="search">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-primary" type="submit">
-                                <i class="ti ti-search"></i>
-                            </button>
-                        </div>
-                    </form>
+                     <!-- 검색창 -->
+                    <div class="ms-3">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"> <!-- 너비 증가 -->
+                            <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
+                                <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
+                                    <i class="ti ti-search text-dark"></i>
+                                </button>
+                                <input type="text" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
+                            </div>
+                        </form>
+                    </div>
+                    
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -127,7 +130,7 @@
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a> -->
-                                        <a href="./authentication-login.html"
+                                        <a href="login.do"
                                             class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
@@ -140,7 +143,7 @@
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title fw-bold mb-0">주요 뉴스</h5>
+                    <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">주요 뉴스 분석</h5>
                     <button class="btn btn-outline-primary">스크랩</button>
                   </div>
                   
