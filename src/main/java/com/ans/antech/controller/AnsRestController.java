@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
+import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NewsService;
 import com.ans.antech.service.StockService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class AnsRestController {
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private NewsService newsService;
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -105,4 +110,9 @@ public class AnsRestController {
         return ResponseEntity.ok(stockService.getKospiKosdaqData());
     }
 
+    // 주요 뉴스 6개 조회
+    @GetMapping
+    public ArrayList<News> getAllNews() {
+        return newsService.getAllNews();
+    }
 }

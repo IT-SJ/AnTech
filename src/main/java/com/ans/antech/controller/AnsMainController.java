@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ans.antech.model.Member;
+import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NewsService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -103,6 +105,17 @@ public class AnsMainController {
         redirectAttributes.addFlashAttribute("foundId", member.getId());
         return "redirect:/findidsuccess";
     }
+
+    @Autowired
+    private NewsService newsService;
+
+    @GetMapping("/home")
+    public String showNewsPage(Model model) {
+        List<News> newsList = newsService.getAllNews();  // 뉴스 리스트 가져오기
+        model.addAttribute("newsList", newsList);  // Thymeleaf에 전달
+        return "home"; 
+    }
+
 
     // 검색 페이지로 이동
     @GetMapping("/search")
