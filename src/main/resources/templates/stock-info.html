@@ -212,26 +212,29 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         async function fetchStockData() {
             try {
                 const response = await fetch('/ans/kospi-kosdaq');
                 const data = await response.json();
-
-                const dates = data.dates;
-                const kospiPrices = data.kospi;
-                const kosdaqPrices = data.kosdaq;
-
+                
+                console.log("API 응답 데이터:", data);
+    
+                if (!data || !data.dates || !data.kospi || !data.kosdaq) {
+                    console.error("데이터가 올바르게 받아지지 않았습니다.");
+                    document.getElementById('kospiKosdaqChart').style.display = "none"; // 오류 발생 시 차트 숨김
+                    return;
+                }
+    
                 const ctx = document.getElementById('kospiKosdaqChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: dates,
+                        labels: data.dates,
                         datasets: [
                             {
                                 label: 'KOSPI',
-                                data: kospiPrices,
+                                data: data.kospi,
                                 borderColor: 'red',
                                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 borderWidth: 2,
@@ -239,7 +242,7 @@
                             },
                             {
                                 label: 'KOSDAQ',
-                                data: kosdaqPrices,
+                                data: data.kosdaq,
                                 borderColor: 'blue',
                                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 borderWidth: 2,
@@ -249,7 +252,7 @@
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true,  /* 비율 유지 */
+                        maintainAspectRatio: false,
                         scales: {
                             x: {
                                 display: true,
@@ -266,7 +269,7 @@
                 console.error("Error fetching stock data:", error);
             }
         }
-
+    
         fetchStockData();
     </script>
 

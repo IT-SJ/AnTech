@@ -2,9 +2,11 @@ package com.ans.antech.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
@@ -107,7 +109,28 @@ public class AnsRestController {
 
     @GetMapping("/kospi-kosdaq")
     public ResponseEntity<Map<String, Object>> getKospiKosdaqData() {
-        return ResponseEntity.ok(stockService.getKospiKosdaqData());
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<String> dates = stockService.getDates("KS11");
+            List<Double> kospiPrices = stockService.getStockData("KS11");
+            List<Double> kosdaqPrices = stockService.getStockData("KOSDAQ150.KQ");
+
+            if (dates.isEmpty() || kospiPrices.isEmpty() || kosdaqPrices.isEmpty()) {
+                response.put("error", "No data found");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+            }
+
+            response.put("dates", dates);
+            response.put("kospi", kospiPrices);
+            response.put("kosdaq", kosdaqPrices);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("error", "Failed to fetch stock data");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     // 주요 뉴스 6개 조회
