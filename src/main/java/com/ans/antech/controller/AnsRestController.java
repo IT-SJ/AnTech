@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.StockService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,9 @@ public class AnsRestController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private StockService stockService;
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -94,6 +98,11 @@ public class AnsRestController {
         // 비밀번호 업데이트
         service.updatePassword(id, newPassword);
         return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
+    @GetMapping("/kospi-kosdaq")
+    public ResponseEntity<Map<String, Object>> getKospiKosdaqData() {
+        return ResponseEntity.ok(stockService.getKospiKosdaqData());
     }
 
 }

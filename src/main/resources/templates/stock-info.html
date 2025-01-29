@@ -7,6 +7,22 @@
     <title>Modernize Free</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+
+    <style>
+        .chart-wrapper {
+            width: 100%;
+            height: 300px;
+            /* 차트 높이 고정 */
+            max-height: 300px;
+            overflow: hidden;
+        }
+
+        #kospiKosdaqChart {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -95,9 +111,11 @@
                     </ul>
                     <!-- 검색창 -->
                     <div class=ms-3>
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 500px;" action="/search" method="GET">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 500px;"
+                            action="/search" method="GET">
                             <div class="input-group" style="width: 70%;">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Search" name="keyword">
+                                <input type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                    name="keyword">
                                 <button class="btn" type="submit" style="border: 1px solid #DFE5EF;">
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
@@ -116,8 +134,7 @@
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="mypage"
-                                            class="d-flex align-items-center gap-2 dropdown-item">
+                                        <a href="mypage" class="d-flex align-items-center gap-2 dropdown-item">
                                             <i class="ti ti-user fs-6"></i>
                                             <p class="mb-0 fs-3">My Page</p>
                                         </a>
@@ -141,18 +158,20 @@
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">증권 정보</h5>
-                  </div>
-              
+                </div>
 
-                <!-- 카드 -------------------------------------------------------------------------------------------------------------------------->
+
+                <!-- 증권 -------------------------------------------------------------------------------------------------------------------------->
                 <div class="row">
                     <div class="row row-cols-1 row-cols-md-2">
-                        <!-- 카드 1 -->
+                        <!-- 코스피 / 코스닥 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
                                     <h6 class="card-title fw-semibold mb-4">코스피 / 코스닥</h6>
-                                    <div class="chart-container" style="min-height: 250px;">그래프 영역</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="kospiKosdaqChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -185,13 +204,73 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 카드 끝 -->
 
             </div>
         </div>
     </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function fetchStockData() {
+            try {
+                const response = await fetch('/ans/kospi-kosdaq');
+                const data = await response.json();
+
+                const dates = data.dates;
+                const kospiPrices = data.kospi;
+                const kosdaqPrices = data.kosdaq;
+
+                const ctx = document.getElementById('kospiKosdaqChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [
+                            {
+                                label: 'KOSPI',
+                                data: kospiPrices,
+                                borderColor: 'red',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 2,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'KOSDAQ',
+                                data: kosdaqPrices,
+                                borderColor: 'blue',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderWidth: 2,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,  /* 비율 유지 */
+                        scales: {
+                            x: {
+                                display: true,
+                                title: { display: true, text: '날짜' }
+                            },
+                            y: {
+                                display: true,
+                                title: { display: true, text: '지수' }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+            }
+        }
+
+        fetchStockData();
+    </script>
+
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sidebarmenu.js"></script>
@@ -200,5 +279,5 @@
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
 </body>
-3
+
 </html>

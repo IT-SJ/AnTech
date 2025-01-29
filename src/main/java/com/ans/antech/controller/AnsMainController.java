@@ -27,8 +27,8 @@ public class AnsMainController {
 
     @Autowired
     private EmailService emailService;
-    // localhost:8080/
 
+    // localhost:8080/
     @GetMapping("/")
     public String index2() {
         return "index2";
