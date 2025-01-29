@@ -188,5 +188,10 @@ public class AnsMainController {
     public String analysis() {
         return "analysis";
     }
-
+    
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "mypage";
+    }
+    
 }
