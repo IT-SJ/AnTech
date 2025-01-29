@@ -2,69 +2,82 @@ package com.ans.antech.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class StockService {
 
-    private static final String YAHOO_API = "https://query1.finance.yahoo.com/v8/finance/chart/";
-    private static final String KOSPI_SYMBOL = "KS11";
-    private static final String KOSDAQ_SYMBOL = "KQ11";
+    private static final String YAHOO_FINANCE_API = "https://query1.finance.yahoo.com/v8/finance/chart/";
 
-    public Map<String, Object> getKospiKosdaqData() {
-        Map<String, Object> response = new HashMap<>();
-
-        JSONObject kospiData = fetchStockData(KOSPI_SYMBOL);
-        JSONObject kosdaqData = fetchStockData(KOSDAQ_SYMBOL);
-
-        // JSON 데이터에서 날짜 및 주가 정보 추출
-        List<String> dates = extractDates(kospiData);
-        List<Double> kospiPrices = extractPrices(kospiData);
-        List<Double> kosdaqPrices = extractPrices(kosdaqData);
-
-        response.put("dates", dates);
-        response.put("kospi", kospiPrices);
-        response.put("kosdaq", kosdaqPrices);
-        return response;
-    }
-
-    private JSONObject fetchStockData(String symbol) {
-        String url = YAHOO_API + symbol + "?range=1mo&interval=1d";
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return new JSONObject(response.getBody()).getJSONObject("chart").getJSONArray("result").getJSONObject(0);
-    }
-
-    private List<String> extractDates(JSONObject jsonData) {
-        JSONArray timestamps = jsonData.getJSONArray("timestamp");
-
+    public List<String> getDates(String stockSymbol) {
         List<String> dates = new ArrayList<>();
-        for (int i = 0; i < timestamps.length(); i++) {
-            long timestamp = timestamps.getLong(i) * 1000;
-            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(timestamp));
-            dates.add(date);
+        String url = YAHOO_FINANCE_API + stockSymbol + "?range=1mo&interval=1d";
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String response = restTemplate.getForObject(url, String.class);
+            JSONObject jsonObject = new JSONObject(response);
+
+            // API 응답 확인 (디버깅용)
+            System.out.println("API 응답 확인 (dates) : " + jsonObject.toString());
+
+            JSONArray timestamps = jsonObject.getJSONObject("chart")
+                    .getJSONArray("result")
+                    .getJSONObject(0)
+                    .getJSONArray("timestamp");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            for (int i = 0; i < timestamps.length(); i++) {
+                long timestamp = timestamps.getLong(i) * 1000L; // Unix timestamp 변환
+                dates.add(sdf.format(new Date(timestamp)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("❌ 날짜 데이터 가져오기 실패 : " + e.getMessage());
         }
         return dates;
     }
 
-    private List<Double> extractPrices(JSONObject jsonData) {
-        JSONArray prices = jsonData.getJSONObject("indicators")
-                .getJSONObject("quote")
-                .getJSONArray("close");
+    public List<Double> getStockData(String stockSymbol) {
+        List<Double> prices = new ArrayList<>();
+        String url = YAHOO_FINANCE_API + stockSymbol + "?range=1mo&interval=1d";
 
-        List<Double> priceList = new ArrayList<>();
-        for (int i = 0; i < prices.length(); i++) {
-            priceList.add(prices.isNull(i) ? 0.0 : prices.getDouble(i));
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String response = restTemplate.getForObject(url, String.class);
+            JSONObject jsonObject = new JSONObject(response);
+
+            // API 응답 확인 (디버깅용)
+            System.out.println("API 응답 확인 (prices) : " + jsonObject.toString());
+
+            JSONArray resultArray = jsonObject.getJSONObject("chart")
+                    .getJSONArray("result");
+
+            if (resultArray.length() > 0) {
+                JSONObject indicators = resultArray.getJSONObject(0)
+                        .getJSONObject("indicators");
+
+                if (indicators.has("quote")) {
+                    JSONArray quoteArray = indicators.getJSONArray("quote");
+                    if (quoteArray.length() > 0 && quoteArray.getJSONObject(0).has("close")) {
+                        JSONArray closePrices = quoteArray.getJSONObject(0).getJSONArray("close");
+
+                        for (int i = 0; i < closePrices.length(); i++) {
+                            prices.add(closePrices.isNull(i) ? 0.0 : closePrices.getDouble(i));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("❌ 주가 데이터 가져오기 실패 : " + e.getMessage());
         }
-        return priceList;
+        return prices;
     }
 }
