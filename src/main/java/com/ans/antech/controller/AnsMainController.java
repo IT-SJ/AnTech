@@ -104,6 +104,13 @@ public class AnsMainController {
         return "redirect:/findidsuccess";
     }
 
+    // 검색 페이지로 이동
+    @GetMapping("/search")
+    public String search(@RequestParam String keyword, Model model) {
+        model.addAttribute("keyword", keyword);
+        return "search"; // 검색 결과 페이지로 이동
+    }
+
     @GetMapping("/login.do")
     public String login() {
         return "authentication-login";
@@ -178,20 +185,15 @@ public class AnsMainController {
     public String stockinfo() {
         return "stock-info";
     }
-    
-    @GetMapping("/search")
-    public String search() {
-        return "search";
-    } 
 
     @GetMapping("/analysis")
     public String analysis() {
         return "analysis";
     }
-    
+
     @GetMapping("/mypage")
     public String mypage() {
         return "mypage";
     }
-    
+
 }
