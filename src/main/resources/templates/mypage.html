@@ -95,17 +95,6 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- 검색창 -->
-                    <div class=ms-3>
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 500px;">
-                            <div class="input-group" style="width: 70%;">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-                                <button class="btn" type="submit" style="border: 1px solid #DFE5EF;">
-                                    <i class="ti ti-search text-dark"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -153,34 +142,64 @@
                     <!-- 내 정보 -->
                     <div class="profile">
                         <div class="card" style="height: 300px;">
-                            <div class="position-relative rounded-top" style="background-color: #D6EBFC; height: 200px;">
+                            <div class="position-relative rounded-top"
+                                style="background-color: #D6EBFC; height: 200px;">
                             </div>
                             <div class="card-body pt-5 p-4">
                                 <div class="d-flex align-items-center">
                                     <div style="margin-left: 170px;">
                                         <!-- 이미지 -->
-                                        <div class="position-absolute bottom-0 start-0 mb-3 ms-4 rounded" 
-                                             style="width: 160px; height: 160px; background-color: white; display: flex; justify-content: center; align-items: center;">
-                                            <img src="../assets/images/logos/profile.png" 
-                                                 class="img-fluid" 
-                                                 style="width: 150px; height: 150px; object-fit: contain;">
+                                        <div class="position-absolute bottom-0 start-0 mb-3 ms-4 rounded"
+                                            style="width: 140px; height: 140px; background-color: white; display: flex; justify-content: center; align-items: center;">
+                                            <img src="../assets/images/logos/profile.png" class="img-fluid rounded"
+                                                style="width: 130px; height: 130px; object-fit: cover;">
                                         </div>
-                                        
+
                                         <!-- 텍스트 -->
                                         <h6 class="fw-semibold fs-4 mb-2">내 아이디</h6>
                                         <p class="fw-semibold fs-3 mb-0"><i class="ti ti-mail"></i> 이메일</p>
                                     </div>
                                 </div>
-                    
+
                                 <!-- 버튼도 absolute위치로 함 -->
-                                <button class="btn btn-primary position-absolute bottom-0 end-0 mb-4 me-4">
+                                <button class="btn btn-primary position-absolute bottom-0 end-0 mb-4 me-4"
+                                    data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                     수정하기
                                 </button>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- 뉴스 즐겨찾기 -->
+                    <!-- 프로필 수정 모달 --------------------------------------------------------------------------------------------------------->
+                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editProfileModalLabel">프로필 수정</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editProfileForm">
+                                        <!-- 프로필 사진 변경 -->
+                                        <div class="mb-3 text-center">
+                                            <input type="file" class="form-control" id="profileImageUpload"
+                                                accept="image/*">
+                                            <img id="previewImage" src="../assets/images/logos/profile.png"
+                                                class="img-fluid rounded mt-2"
+                                                style="width: 100px; height: 100px; object-fit: cover;">
+                                        </div>
+                            
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="saveProfileBtn">저장</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 뉴스 즐겨찾기 ------------------------------------------------------------------------------------------------->
                     <div class="col-sm-6 col-xl-4">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between py-1 px-2">
@@ -361,6 +380,39 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const profileImageUpload = document.getElementById("profileImageUpload");
+            const previewImage = document.getElementById("previewImage");
+            const saveProfileBtn = document.getElementById("saveProfileBtn");
+
+            // 파일 선택 시 미리보기 변경
+            profileImageUpload.addEventListener("change", function () {
+                const file = profileImageUpload.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 저장 버튼 클릭 시 프로필 업데이트 (예제)
+            saveProfileBtn.addEventListener("click", function () {
+                alert("프로필이 업데이트되었습니다!");
+                const newEmail = document.getElementById("emailInput").value;
+
+
+                // 여기서 서버로 업데이트 요청 가능 (AJAX, fetch 등)
+
+                // 모달 닫기
+                const modal = bootstrap.Modal.getInstance(document.getElementById("editProfileModal"));
+                modal.hide();
+            });
+        });
+    </script>
+
 
 </body>
 
