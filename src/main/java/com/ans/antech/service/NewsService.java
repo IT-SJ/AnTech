@@ -1,14 +1,11 @@
 package com.ans.antech.service;
 
-import org.springframework.stereotype.Service;
-
 import com.ans.antech.mapper.NewsMapper;
-import com.ans.antech.model.Member;
-import com.ans.antech.model.News;
-
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
 
 
 @Service
@@ -16,8 +13,14 @@ public class NewsService {
     @Autowired
     private NewsMapper mapper;
 
-    // 모든 회원 조회
-    public ArrayList<News> getAllNews() {
+    // 주요 뉴스 타이틀 조회
+    public List<String> getAllNewsTitles() {
         return mapper.selectTitle();
     }    
+
+    // 속보 뉴스 타이틀 가져오기
+    public List<String> getAllBNewsTitles() {
+        return mapper.selectBNewsTitle();
+    }
+
 }

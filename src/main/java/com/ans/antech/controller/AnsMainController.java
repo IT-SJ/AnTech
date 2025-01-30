@@ -1,5 +1,7 @@
 package com.ans.antech.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ans.antech.model.Member;
-import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
@@ -29,6 +30,9 @@ public class AnsMainController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NewsService newsService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -84,7 +88,7 @@ public class AnsMainController {
         }
 
         // 메인 페이지로 이동
-        return "home";
+        return "redirect:/home";
     }
 
     // 로그아웃 처리
@@ -106,14 +110,16 @@ public class AnsMainController {
         return "redirect:/findidsuccess";
     }
 
-    @Autowired
-    private NewsService newsService;
-
+    
+    // 주요뉴스 타이틀 가져오기
     @GetMapping("/home")
     public String showNewsPage(Model model) {
-        List<News> newsList = newsService.getAllNews();  // 뉴스 리스트 가져오기
-        model.addAttribute("newsList", newsList);  // Thymeleaf에 전달
-        return "home"; 
+    List<String> newsTitles = newsService.getAllNewsTitles();  // 뉴스 타이틀 가져오기
+    List<String> breakingNewsTitles = newsService.getAllBNewsTitles();
+        
+        model.addAttribute("newsTitles", newsTitles);  
+        model.addAttribute("breakingNewsTitles", breakingNewsTitles);  
+    return "home"; 
     }
 
 
@@ -182,11 +188,6 @@ public class AnsMainController {
     @GetMapping("/main")
     public String main() {
         return "main-news";
-    }
-
-    @GetMapping("/home")
-    public String home() {
-        return "home";
     }
 
     @GetMapping("/breaking")

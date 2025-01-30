@@ -6,11 +6,18 @@
 <mapper namespace="com.ans.antech.mapper.NewsMapper">
 
 <!-- 주요 뉴스 최신순 6개 조회하기-->  
+  <select id="selectTitle" resultType = "string">
+      SELECT TITLE 
+      FROM ANS_MAIN_NEWS 
+      ORDER BY DT DESC 
+      LIMIT 6
+  </select>
 
-<select id="selectTitle" resultType = "News">
-    SELECT TITLE 
-    FROM ANS_MAIN_NEWS 
-    ORDER BY DT DESC 
+  <select id="selectBNewsTitle" resultType="string">
+    SELECT TITLE
+    FROM ANS_BREAKING_NEWS
+    ORDER BY DT DESC
     LIMIT 6
-</select>
+  </select>
+
 </mapper>
