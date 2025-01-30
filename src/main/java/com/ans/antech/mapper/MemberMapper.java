@@ -31,4 +31,7 @@ public interface MemberMapper {
     // 비밀번호 찾기 -> 비밀번호 업데이트
     public void updatePassword(@Param("id") String id, @Param("newPassword") String newPassword);
 
+    // 프로필 이미지 수정
+    public int profileUpdate(String fileName);
+
 }

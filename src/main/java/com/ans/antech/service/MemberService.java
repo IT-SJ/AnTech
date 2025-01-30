@@ -48,4 +48,8 @@ public class MemberService {
     public void updatePassword(String id, String newPassword) {
         mapper.updatePassword(id, newPassword);
     }
+
+    public boolean profileUpdate(String imagePath) {
+        return mapper.profileUpdate(imagePath) > 0 ;
+    }
 }

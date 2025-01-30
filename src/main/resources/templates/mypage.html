@@ -107,8 +107,7 @@
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="mypage"
-                                            class="d-flex align-items-center gap-2 dropdown-item">
+                                        <a href="mypage" class="d-flex align-items-center gap-2 dropdown-item">
                                             <i class="ti ti-user fs-6"></i>
                                             <p class="mb-0 fs-3">My Page</p>
                                         </a>
@@ -120,8 +119,7 @@
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a> -->
-                                        <a href="logout"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a href="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -156,9 +154,11 @@
                                         </div>
 
                                         <!-- 텍스트 -->
-                                        <h6 class="fw-semibold fs-4 mb-2" th:text="${session.loginMember?.id}">내 아이디</h6>
+                                        <h6 class="fw-semibold fs-4 mb-2" th:text="${session.loginMember?.id}">내 아이디
+                                        </h6>
                                         <p class="fw-semibold fs-3 mb-0">
-                                            <i class="ti ti-mail"></i> <span th:text="${session.loginMember?.email}">이메일</span>
+                                            <i class="ti ti-mail"></i> <span
+                                                th:text="${session.loginMember?.email}">이메일</span>
                                         </p>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
                                                 class="img-fluid rounded mt-2"
                                                 style="width: 100px; height: 100px; object-fit: cover;">
                                         </div>
-                            
+
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -387,6 +387,7 @@
             const profileImageUpload = document.getElementById("profileImageUpload");
             const previewImage = document.getElementById("previewImage");
             const saveProfileBtn = document.getElementById("saveProfileBtn");
+            const loggedInUserId = document.getElementById("loggedInUserId").value;
 
             // 파일 선택 시 미리보기 변경
             profileImageUpload.addEventListener("change", function () {
@@ -400,18 +401,36 @@
                 }
             });
 
-            // 저장 버튼 클릭 시 프로필 업데이트 (예제)
+            // 저장 버튼 클릭 시 프로필 업데이트
             saveProfileBtn.addEventListener("click", function () {
-                alert("프로필이 업데이트되었습니다!");
-                const newEmail = document.getElementById("emailInput").value;
+                const file = profileImageUpload.files[0];
+                if (!file) {
+                    alert("프로필 이미지를 선택해주세요.");
+                    return;
+                }
 
+                const formData = new FormData();
+                formData.append("profileImage", file);
+                formData.append("userId", getUserID()); // 로그인한 사용자 ID
 
-                // 여기서 서버로 업데이트 요청 가능 (AJAX, fetch 등)
-                $ajax({})
-
-                // 모달 닫기
-                const modal = bootstrap.Modal.getInstance(document.getElementById("editProfileModal"));
-                modal.hide();
+                $.ajax({
+                    url: "/ans/profileupdate",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("프로필 업데이트 성공:", response);
+                        alert("프로필이 업데이트되었습니다!");
+                        // 모달 닫기
+                        const modal = bootstrap.Modal.getInstance(document.getElementById("editProfileModal"));
+                        modal.hide();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("프로필 업데이트 실패:", error);
+                        alert("프로필 업데이트에 실패했습니다.");
+                    }
+                });
             });
         });
     </script>

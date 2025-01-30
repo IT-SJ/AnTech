@@ -34,6 +34,7 @@ public class AnsMainController {
         return "index2";
     }
 
+// -------------------------------------------------------------------------------------------------------------------------
     // 회원가입
     @PostMapping("/register.join")
     public String register(@ModelAttribute Member member) {
@@ -50,6 +51,7 @@ public class AnsMainController {
         return "authentication-login";
     }
 
+// -------------------------------------------------------------------------------------------------------------------------    
     // 로그인 처리
     @PostMapping("/login.do")
     public String login(@RequestParam String id,
@@ -103,7 +105,7 @@ public class AnsMainController {
         redirectAttributes.addFlashAttribute("foundId", member.getId());
         return "redirect:/findidsuccess";
     }
-
+// -------------------------------------------------------------------------------------------------------------------------
     // 검색 페이지로 이동
     @GetMapping("/search")
     public String search(@RequestParam String keyword, Model model) {
