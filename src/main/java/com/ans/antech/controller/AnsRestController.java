@@ -42,6 +42,8 @@ public class AnsRestController {
     @Autowired
     private StockService stockService;
 
+    
+
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
     public Member getMember(@PathVariable String id) {

@@ -1,5 +1,7 @@
 package com.ans.antech.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NewsService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +30,9 @@ public class AnsMainController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NewsService newsService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -84,7 +90,7 @@ public class AnsMainController {
         }
 
         // 메인 페이지로 이동
-        return "home";
+        return "redirect:/home";
     }
 
     // 로그아웃 처리
@@ -171,11 +177,6 @@ public class AnsMainController {
     @GetMapping("/main")
     public String main() {
         return "main-news";
-    }
-
-    @GetMapping("/home")
-    public String home() {
-        return "home";
     }
 
     @GetMapping("/breaking")
