@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>2.7.18</version>
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.3</version>
+			<version>2.3.1</version>
 		</dependency>
 
 		<dependency>
@@ -82,6 +82,26 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20210307</version>
+		</dependency>
+
+		<!-- 파일 업로드 처리를 위한 의존성 -->
+		<!--cos.jar 의존성 추가-->
+		<dependency>
+			<groupId>servlets.com</groupId>
+			<artifactId>cos</artifactId>
+			<version>05Nov2002</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 
 	</dependencies>

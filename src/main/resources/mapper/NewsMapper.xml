@@ -19,6 +19,36 @@
     ORDER BY DT DESC
     LIMIT 6
   </select>
+<!-- 주요 뉴스 -->
+  <select id="countNews" resultType="int">
+        SELECT COUNT(*) FROM ANS_MAIN_NEWS
+    </select>
+
+    <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS 
+        ORDER BY DT DESC 
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+<!-- 속보 뉴스 -->
+  <select id="countBNews" resultType="int">
+        SELECT COUNT(*) FROM ANS_BREAKING_NEWS
+    </select>
+
+    <select id="findBNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, PRESS, IMG_URL1, URL
+        FROM ANS_BREAKING_NEWS 
+        ORDER BY DT DESC 
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+<!-- 메인 분석페이지 뉴스 내용 가져오기 -->
+   <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, SMR, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS 
+        WHERE idx=${idx}
+    </select>
 
 <!-- 은진 // 요약 내용 부실하면 본문에서 내용 조회하기 -->
 <select id="getProcessedNewsContent" resultType="string">

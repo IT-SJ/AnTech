@@ -2,17 +2,27 @@ package com.ans.antech.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.StockService;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/ans")
@@ -106,43 +114,52 @@ public class AnsRestController {
     // --------------------------------------------------------------------------------------------------
     // 성진 : 마이페이지 관련 여기부터 정의하세요
     @PostMapping("/profileupdate")
-    public String profileUpdate(@RequestParam("profileImage") MultipartFile file, @RequestParam("userId") String id, RedirectAttributes redirectAttributes) {
-        System.out.println("프로필 이미지 업데이트 기능");
-
-        if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "파일이 비어있습니다.");
-            return "redirect:/profile";
-        }
+    public ResponseEntity<?> profileUpdate(HttpServletRequest request, HttpSession session) {
+        MultipartRequest multi = null;
+        String uploadDir = "C:/upload/profiles";
+        int fileMaxSize = 10 * 1024 * 1024; // 10MB
 
         try {
-            // 파일을 저장할 경로 설정
-            String uploadDir = "resources/uploads";
-            File dir = new File(uploadDir);
-            // 경로에 폴더가 없으면 만들어주는 조건문
-            if (!dir.exists()) {
-                dir.mkdirs();
+            multi = new MultipartRequest(
+                    request,
+                    uploadDir,
+                    fileMaxSize,
+                    "UTF-8");
+
+            String fileName = multi.getFilesystemName("profileImage");
+            String userId = multi.getParameter("userId");
+            // DB에는 파일 경로를 저장
+            String dbPath = "/profiles/" + fileName; // 상대 경로로 저장
+            boolean updateResult = service.updateProfileImage(userId, dbPath);
+
+            if (updateResult) {
+                Member updatedMember = service.getMemberById(userId);
+                session.setAttribute("loginMember", updatedMember);
+                return ResponseEntity.ok("프로필 이미지가 성공적으로 업데이트되었습니다.");
             }
-
-            // 파일 이름 생성 (중복 방지를 위해 타임스탬프 추가)
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            File destFile = new File(dir, fileName);
-
-            // 파일 저장
-            file.transferTo(destFile);
-
-            // DB 업데이트 로직
-            boolean updateresult = service.profileUpdate(id,fileName); // DB에 파일이름 전달
-
-            if (updateresult) {
-                redirectAttributes.addFlashAttribute("message", "프로필 이미지가 성공적으로 업데이트되었습니다.");
-            } else {
-                redirectAttributes.addFlashAttribute("error", "프로필 이미지 업데이트에 실패했습니다.");
-            }
+            return ResponseEntity.badRequest().body("프로필 이미지 업데이트에 실패했습니다.");
         } catch (IOException e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("파일 업로드 중 오류가 발생했습니다.");
         }
-        return "redirect:/error";
-
     }
+
+    // 코스피 차트 가져오기
+    private final StockService stockService;
+
+    // @Autowired 생략 가능 (생성자 주입 방식 사용)
+    public AnsRestController(StockService stockService) {
+        this.stockService = stockService;
+    }
+
+    /**
+     * 코스피(KOSPI)와 코스닥(KOSDAQ) 데이터를 반환하는 API 엔드포인트
+     * @return 날짜별 KOSPI & KOSDAQ 데이터
+     */
+    @GetMapping("/kospi-kosdaq")
+    public Map<String, Object> getKospiKosdaqData() {
+        return stockService.getKospiKosdaqData();
+    }
+
 }
