@@ -19,5 +19,16 @@
     ORDER BY DT DESC
     LIMIT 6
   </select>
+<!-- 주요 뉴스 -->
+  <select id="countNews" resultType="int">
+        SELECT COUNT(*) FROM ANS_MAIN_NEWS
+    </select>
+
+    <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS 
+        ORDER BY DT DESC 
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
 
 </mapper>
