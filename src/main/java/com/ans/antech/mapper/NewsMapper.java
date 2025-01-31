@@ -19,12 +19,15 @@ public interface NewsMapper {
 
     // 은진 요약(smr)을 기본으로 사용하고 부족하면 본문(text)을 반환 (워드클라우드 구현)
     List<String> getProcessedNewsContent();  
+
     // 메인 뉴스(+갯수)
     public int countNews();
+
     public List<News> findNewsByPage(int pageSize, int offset);
     
     // 속보 뉴스(+갯수)
     public int countBNews();
+    
     public List<News> findBNewsByPage(int pageSize, int offset);
     
     // 검색된 뉴스 개수 조회
