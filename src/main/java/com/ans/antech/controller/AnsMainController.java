@@ -40,7 +40,7 @@ public class AnsMainController {
         return "index2";
     }
 
-// -------------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------------------
     // 회원가입
     @PostMapping("/register.join")
     public String register(@ModelAttribute Member member) {
@@ -57,7 +57,7 @@ public class AnsMainController {
         return "authentication-login";
     }
 
-// -------------------------------------------------------------------------------------------------------------------------    
+    // -------------------------------------------------------------------------------------------------------------------------
     // 로그인 처리
     @PostMapping("/login.do")
     public String login(@RequestParam String id,
@@ -90,7 +90,7 @@ public class AnsMainController {
         }
 
         // 메인 페이지로 이동
-        return "redirect:/home";
+        return "home";
     }
 
     // 로그아웃 처리
@@ -111,7 +111,19 @@ public class AnsMainController {
         redirectAttributes.addFlashAttribute("foundId", member.getId());
         return "redirect:/findidsuccess";
     }
-// -------------------------------------------------------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------------------------------------------
+    // 주요뉴스 타이틀 가져오기
+    @GetMapping("/home")
+    public String showNewsPage(Model model) {
+        List<String> newsTitles = newsService.getAllNewsTitles(); // 뉴스 타이틀 가져오기
+        List<String> breakingNewsTitles = newsService.getAllBNewsTitles();
+
+        model.addAttribute("newsTitles", newsTitles);
+        model.addAttribute("breakingNewsTitles", breakingNewsTitles);
+        return "home";
+    }
+
     // 검색 페이지로 이동
     @GetMapping("/search")
     public String search(@RequestParam String keyword, Model model) {
