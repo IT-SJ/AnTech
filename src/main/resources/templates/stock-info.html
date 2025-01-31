@@ -109,9 +109,10 @@
                             </a>
                         </li>
                     </ul>
-                     <!-- 검색창 -->
-                     <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"> <!-- 너비 증가 -->
+                    <!-- 검색창 -->
+                    <div class="ms-3">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;">
+                            <!-- 너비 증가 -->
                             <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
                                 <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
                                     <i class="ti ti-search text-dark"></i>
@@ -121,15 +122,15 @@
                             </div>
                         </form>
                     </div>
-                    
+
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
-                                        class="rounded-circle">
+                                    <img th:src="${session.loginMember?.profile_Img != null ? session.loginMember.profile_Img : '/assets/images/logos/profile.png'}"
+                                        alt="" width="35" height="35" class="rounded-circle">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
