@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
-
+import com.ans.antech.service.StockService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -106,7 +106,8 @@ public class AnsRestController {
     // --------------------------------------------------------------------------------------------------
     // 성진 : 마이페이지 관련 여기부터 정의하세요
     @PostMapping("/profileupdate")
-    public String profileUpdate(@RequestParam("profileImage") MultipartFile file, @RequestParam("userId") String id, RedirectAttributes redirectAttributes) {
+    public String profileUpdate(@RequestParam("profileImage") MultipartFile file, @RequestParam("userId") String id,
+            RedirectAttributes redirectAttributes) {
         System.out.println("프로필 이미지 업데이트 기능");
 
         if (file.isEmpty()) {
@@ -131,7 +132,7 @@ public class AnsRestController {
             file.transferTo(destFile);
 
             // DB 업데이트 로직
-            boolean updateresult = service.profileUpdate(id,fileName); // DB에 파일이름 전달
+            boolean updateresult = service.profileUpdate(id, fileName); // DB에 파일이름 전달
 
             if (updateresult) {
                 redirectAttributes.addFlashAttribute("message", "프로필 이미지가 성공적으로 업데이트되었습니다.");
@@ -145,4 +146,22 @@ public class AnsRestController {
         return "redirect:/error";
 
     }
+
+    // 코스피 차트 가져오기
+    private final StockService stockService;
+
+    // @Autowired 생략 가능 (생성자 주입 방식 사용)
+    public AnsRestController(StockService stockService) {
+        this.stockService = stockService;
+    }
+
+    /**
+     * 코스피(KOSPI)와 코스닥(KOSDAQ) 데이터를 반환하는 API 엔드포인트
+     * @return 날짜별 KOSPI & KOSDAQ 데이터
+     */
+    @GetMapping("/kospi-kosdaq")
+    public Map<String, Object> getKospiKosdaqData() {
+        return stockService.getKospiKosdaqData();
+    }
+
 }
