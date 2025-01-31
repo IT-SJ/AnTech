@@ -144,4 +144,22 @@ public class AnsRestController {
                     .body("파일 업로드 중 오류가 발생했습니다.");
         }
     }
+
+    // 코스피 차트 가져오기
+    private final StockService stockService;
+
+    // @Autowired 생략 가능 (생성자 주입 방식 사용)
+    public AnsRestController(StockService stockService) {
+        this.stockService = stockService;
+    }
+
+    /**
+     * 코스피(KOSPI)와 코스닥(KOSDAQ) 데이터를 반환하는 API 엔드포인트
+     * @return 날짜별 KOSPI & KOSDAQ 데이터
+     */
+    @GetMapping("/kospi-kosdaq")
+    public Map<String, Object> getKospiKosdaqData() {
+        return stockService.getKospiKosdaqData();
+    }
+
 }

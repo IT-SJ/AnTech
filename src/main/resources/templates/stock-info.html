@@ -9,20 +9,18 @@
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .chart-wrapper {
+        .chart-container {
             width: 100%;
-            height: 300px;
-            /* 차트 높이 고정 */
-            max-height: 300px;
+            height: 400px; /* 크기 증가 */
+            max-height: 400px;
             overflow: hidden;
         }
-
-        #kospiKosdaqChart {
-            width: 100%;
-            height: 100%;
+    
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
         }
     </style>
-
 </head>
 
 <body>
@@ -165,39 +163,48 @@
                 <!-- 증권 -------------------------------------------------------------------------------------------------------------------------->
                 <div class="row">
                     <div class="row row-cols-1 row-cols-md-2">
-                        <!-- 코스피 / 코스닥 -->
+                        <!-- 코스피 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">코스피 / 코스닥 지수</h6>
-                                    <canvas id="kospiKosdaqChart"></canvas>
+                                    <h6 class="card-title fw-semibold mb-4">코스피 지수</h6>
+                                    <div class="chart-container">
+                                        <canvas id="kospiKosdaqChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 카드 2 -->
+                        <!-- 코스닥 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">상승 종목 / 하락 종목</h6>
-                                    <div class="chart-container" style="min-height: 250px;">그래프 영역</div>
+                                    <h6 class="card-title fw-semibold mb-4">코스닥 지수</h6>
+                                    <div class="chart-wrapper">
+                                        <canvas id="kosdaqChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 카드 3 -->
+                        <!-- 환율 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
                                     <h6 class="card-title fw-semibold mb-4">환율</h6>
-                                    <div class="chart-container" style="min-height: 250px;">그래프 영역</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="exchangeRateChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 카드 4 -->
+                        <!-- 원자재 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
                                     <h6 class="card-title fw-semibold mb-4">원자재</h6>
-                                    <div class="chart-container" style="min-height: 250px;">그래프 영역</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="goldChart"></canvas>
+                                        <canvas id="oilChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +217,82 @@
         </div>
     </div>
     </div>
+    <script>
+        let stockChartInstances = {}; // 차트 인스턴스를 저장하는 객체
+    
+        /**
+         * Yahoo Finance API에서 데이터를 가져와 Chart.js로 그래프를 그리는 함수
+         * @param {string} apiUrl - 데이터를 가져올 API 엔드포인트
+         * @param {string} chartId - 차트를 표시할 canvas 요소의 ID
+         * @param {array} labels - 데이터셋 정보 (이름, 색상, 데이터 키)
+         */
+        async function fetchStockData(apiUrl, chartId, labels) {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+    
+                if (!data || !data.dates || data.dates.length === 0) {
+                    console.error("데이터 가져오기 실패:", data.error || "No data received.");
+                    return;
+                }
+    
+                const ctx = document.getElementById(chartId);
+                if (!ctx) {
+                    console.error("Chart container not found:", chartId);
+                    return;
+                }
+    
+                // 기존 차트 삭제
+                if (stockChartInstances[chartId]) {
+                    stockChartInstances[chartId].destroy();
+                }
+    
+                let datasets = labels.map((labelObj, index) => ({
+                    label: labelObj.name,
+                    data: data[labelObj.dataKey], // 예: data.kospi, data.kosdaq
+                    borderColor: labelObj.color,
+                    backgroundColor: labelObj.bgColor,
+                    borderWidth: 2,
+                    tension: 0.1,
+                    yAxisID: `y-axis-${index + 1}` // KOSPI & KOSDAQ을 개별 y축에 매핑
+                }));
+    
+                stockChartInstances[chartId] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { display: true, title: { display: true, text: '날짜' } },
+                            "y-axis-1": { 
+                                position: "left", 
+                                title: { display: true, text: "KOSPI 지수" }, 
+                                beginAtZero: false
+                            },
+                            "y-axis-2": { 
+                                position: "right", 
+                                title: { display: true, text: "KOSDAQ 지수" }, 
+                                beginAtZero: false,
+                                grid: { drawOnChartArea: false } // KOSPI & KOSDAQ 겹치는 문제 방지
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+            }
+        }
+    
+        // API 호출 (코스피 & 코스닥을 같은 차트에 표시)
+        fetchStockData("/ans/kospi-kosdaq", "kospiKosdaqChart", [
+            { name: "KOSPI", color: "red", bgColor: "rgba(255, 99, 132, 0.2)", dataKey: "kospi" },
+            { name: "KOSDAQ", color: "blue", bgColor: "rgba(54, 162, 235, 0.2)", dataKey: "kosdaq" }
+        ]);
+    </script>
 
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

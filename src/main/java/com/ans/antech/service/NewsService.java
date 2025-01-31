@@ -1,6 +1,7 @@
 package com.ans.antech.service;
 
 import com.ans.antech.mapper.NewsMapper;
+import com.ans.antech.model.News;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,15 @@ public class NewsService {
         return mapper.selectBNewsTitle();
     }
 
+    // 전체 뉴스 개수 조회 (페이지네이션 계산용)
+    public int getTotalNewsCount() {
+        return mapper.countNews();
+    }
+
+    // 특정 페이지 뉴스 조회 (페이지네이션 적용)
+    public List<News> getNewsByPage(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mapper.findNewsByPage(pageSize, offset);
+    }
+    
 }
