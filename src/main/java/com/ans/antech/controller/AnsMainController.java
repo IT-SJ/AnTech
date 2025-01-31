@@ -18,9 +18,10 @@ import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/")
@@ -77,7 +78,6 @@ public class AnsMainController {
 
         // 로그인 성공 시 세션에 사용자 정보 저장
         session.setAttribute("loginMember", member);
-
         // 아이디 저장 처리 (쿠키에 저장)
         if (rememberId) {
             Cookie idCookie = new Cookie("rememberId", id);

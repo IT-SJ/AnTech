@@ -49,7 +49,8 @@ public class MemberService {
         mapper.updatePassword(id, newPassword);
     }
 
-    public boolean profileUpdate(String userId, String imagePath) {
-        return mapper.profileUpdate(userId, imagePath) > 0 ;
+    // 프로필 이미지 업데이트
+    public boolean updateProfileImage(String userId, String imagePath) {
+        return mapper.updateProfileImage(userId, imagePath) > 0;
     }
 }

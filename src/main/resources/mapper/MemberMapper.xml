@@ -7,8 +7,8 @@
 
   <!-- 회원 추가 -->
   <insert id="insertMember" parameterType="com.ans.antech.model.Member">
-        INSERT INTO ANS_MEMBER (ID, PW, EMAIL, PROFILE_IMG, CREATE_DT)
-        VALUES (#{id}, #{pw}, #{email}, 'default.png', NOW())
+        INSERT INTO ANS_MEMBER (ID, PW, EMAIL, CREATE_DT)
+        VALUES (#{id}, #{pw}, #{email}, NOW())
   </insert>
 
   <!-- ID로 회원 조회 -->
@@ -49,8 +49,8 @@
   </update>
 
   <!-- 프로필 이미지 업데이트-->
-  <update id="profileUpdate">
-    UPDATE ANS_MEMBER SET PROFILE_IMG = #{profileImage} WHERE ID = #{id}
+  <update id="updateProfileImage">
+  UPDATE ANS_MEMBER SET PROFILE_IMG = #{profileImage} WHERE ID = #{id}
   </update>
 
 </mapper>
