@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class News {
+    private int idx;
     private String title;
     private String text;
     private String press;

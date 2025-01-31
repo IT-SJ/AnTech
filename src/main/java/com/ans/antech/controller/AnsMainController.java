@@ -18,9 +18,9 @@ import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
@@ -77,7 +77,6 @@ public class AnsMainController {
 
         // 로그인 성공 시 세션에 사용자 정보 저장
         session.setAttribute("loginMember", member);
-
         // 아이디 저장 처리 (쿠키에 저장)
         if (rememberId) {
             Cookie idCookie = new Cookie("rememberId", id);
@@ -180,11 +179,6 @@ public class AnsMainController {
         return "authentication-findidsuccess";
     }
 
-    @GetMapping("/breaking")
-    public String breaking() {
-        return "breaking-news";
-    }
-
     @GetMapping("/stockinfo")
     public String stockinfo() {
         return "stock-info";
@@ -233,12 +227,6 @@ public class AnsMainController {
         int totalNews = newsService.getTotalSearchCount(keyword); // 검색 결과 개수
         int totalPages = (int) Math.ceil((double) totalNews / pageSize);
 
-        // 페이지 범위 제한
-        if (page < 1)
-            page = 1;
-        if (page > totalPages)
-            page = totalPages;
-
         // 검색된 뉴스 가져오기 (페이지네이션 적용)
         List<News> searchResults = newsService.getNewsByKeyword(keyword, page, pageSize);
 
@@ -255,4 +243,25 @@ public class AnsMainController {
         return "search"; // 검색 결과 페이지로 이동
     }
 
+    // 페이지 범위 제한
+    @GetMapping("/breaking")
+    public String getBNewsList(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 6; // 한 페이지당 뉴스 개수
+        int totalNews = newsService.getTotalBNewsCount();
+        int totalPages = (int) Math.ceil((double) totalNews / pageSize);
+
+        // 페이지가 범위를 벗어나지 않도록 제한
+        if (page < 1)
+            page = 1;
+        if (page > totalPages)
+            page = totalPages;
+
+        // 페이지별 뉴스 가져오기 (OFFSET 적용)
+        List<News> newsList = newsService.getBNewsByPage(page, pageSize);
+
+        model.addAttribute("newsList", newsList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "breaking-news";
+    }
 }
