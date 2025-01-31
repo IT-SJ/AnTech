@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ans.antech.model.Member;
+import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
@@ -90,7 +91,7 @@ public class AnsMainController {
         }
 
         // 메인 페이지로 이동
-        return "home";
+        return "redirect:/home";
     }
 
     // 로그아웃 처리
@@ -186,11 +187,6 @@ public class AnsMainController {
         return "authentication-findidsuccess";
     }
 
-    @GetMapping("/main")
-    public String main() {
-        return "main-news";
-    }
-
     @GetMapping("/breaking")
     public String breaking() {
         return "breaking-news";
@@ -209,6 +205,29 @@ public class AnsMainController {
     @GetMapping("/mypage")
     public String mypage() {
         return "mypage";
+    }
+
+    // 뉴스 목록 페이지 (페이지네이션 적용)
+    @GetMapping("/main")
+    public String getNewsList(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 6; // 한 페이지당 뉴스 개수
+        int totalNews = newsService.getTotalNewsCount();
+        int totalPages = (int) Math.ceil((double) totalNews / pageSize);
+
+        // 페이지가 범위를 벗어나지 않도록 제한
+        if (page < 1)
+            page = 1;
+        if (page > totalPages)
+            page = totalPages;
+
+        // 페이지별 뉴스 가져오기 (OFFSET 적용)
+        List<News> newsList = newsService.getNewsByPage(page, pageSize);
+
+        model.addAttribute("newsList", newsList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "main-news"; // Thymeleaf 템플릿 반환
     }
 
 }
