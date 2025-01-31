@@ -19,4 +19,9 @@ public interface NewsMapper {
     // 메인 뉴스(+갯수)
     public int countNews();
     public List<News> findNewsByPage(int pageSize, int offset);
+
+    // 속보 뉴스(+갯수)
+    public int countBNews();
+    public List<News> findBNewsByPage(int pageSize, int offset);
+
 }

@@ -31,4 +31,16 @@
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
+<!-- 속보 뉴스 -->
+  <select id="countBNews" resultType="int">
+        SELECT COUNT(*) FROM ANS_BREAKING_NEWS
+    </select>
+
+    <select id="findBNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, PRESS, IMG_URL1, URL
+        FROM ANS_BREAKING_NEWS 
+        ORDER BY DT DESC 
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
 </mapper>

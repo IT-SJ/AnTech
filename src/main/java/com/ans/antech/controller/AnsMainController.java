@@ -187,11 +187,6 @@ public class AnsMainController {
         return "authentication-findidsuccess";
     }
 
-    @GetMapping("/breaking")
-    public String breaking() {
-        return "breaking-news";
-    }
-
     @GetMapping("/stockinfo")
     public String stockinfo() {
         return "stock-info";
@@ -230,4 +225,24 @@ public class AnsMainController {
         return "main-news"; // Thymeleaf 템플릿 반환
     }
 
+    @GetMapping("/breaking")
+    public String getBNewsList(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 6; // 한 페이지당 뉴스 개수
+        int totalNews = newsService.getTotalBNewsCount();
+        int totalPages = (int) Math.ceil((double) totalNews / pageSize);
+
+        // 페이지가 범위를 벗어나지 않도록 제한
+        if (page < 1)
+            page = 1;
+        if (page > totalPages)
+            page = totalPages;
+
+        // 페이지별 뉴스 가져오기 (OFFSET 적용)
+        List<News> newsList = newsService.getBNewsByPage(page, pageSize);
+
+        model.addAttribute("newsList", newsList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "breaking-news";
+    }
 }

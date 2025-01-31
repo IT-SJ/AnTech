@@ -24,15 +24,26 @@ public class NewsService {
         return mapper.selectBNewsTitle();
     }
 
-    // 전체 뉴스 개수 조회 (페이지네이션 계산용)
+    // 메인 뉴스 개수 조회 (페이지네이션 계산용)
     public int getTotalNewsCount() {
         return mapper.countNews();
     }
 
-    // 특정 페이지 뉴스 조회 (페이지네이션 적용)
+    // 메인 페이지 뉴스 조회 (페이지네이션 적용)
     public List<News> getNewsByPage(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
         return mapper.findNewsByPage(pageSize, offset);
+    }
+
+    // 속보 뉴스 개수 조회 (페이지네이션 계산용)
+    public int getTotalBNewsCount() {
+        return mapper.countBNews();
+    }
+
+    // 속보 페이지 뉴스 조회 (페이지네이션 적용)
+    public List<News> getBNewsByPage(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mapper.findBNewsByPage(pageSize, offset);
     }
     
 }

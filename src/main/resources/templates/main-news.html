@@ -182,7 +182,8 @@
 
                                 <!-- 버튼 (항상 하단 고정) -->
                                 <div class="d-flex justify-content-center mt-auto">
-                                    <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 분석
+                                    <a th:href="analysis" class="btn btn-outline-primary w-100" th:attr="data-id=${news.idx}" 
+                                    onclick="moveToAnalysis(this)">뉴스 분석
                                         보기</a>
                                 </div>
                             </div>
@@ -235,6 +236,12 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
+    <script>
+        function moveToAnalysis(button) {
+            let newsId = button.getAttribute("data-id"); // 뉴스 ID 가져오기
+            window.location.href = "/analysis/" + newsId; // 현재 창에서 이동
+        }
+        </script>
 </body>
 
 </html>
