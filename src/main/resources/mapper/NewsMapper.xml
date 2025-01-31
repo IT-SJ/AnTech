@@ -43,4 +43,11 @@
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
+<!-- 메인 분석페이지 뉴스 내용 가져오기 -->
+   <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, SMR, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS 
+        WHERE idx=${idx}
+    </select>
+
 </mapper>
