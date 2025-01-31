@@ -147,61 +147,83 @@
 
 
                 <!-- 카드 -------------------------------------------------------------------------------------------------------------------------->
-                <div class="row">
-                    <!-- 워드클라우드 ------------------------------------------------------>
-                    <div class="card" style="height: 400px;">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold mb-4">워드 클라우드</h5>
-
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body" style="min-height: 200px;">
-                            <h5 class="card-title fw-semibold mb-4">주요 뉴스</h5>
-
-                            <!-- 전체를 flex로 나누기 (부모 div) -->
-                            <div class="d-flex">
-                                <!-- 왼쪽 콘텐츠 (50% 크기) -->
-                                <div class="d-flex flex-column" style="flex: 1;">
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                </div>
-
-                                <!-- 오른쪽 콘텐츠 (50% 크기) -->
-                                <div class="d-flex flex-column" style="flex: 1;">
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body" style="height: 200px;">
-                            <h5 class="card-title fw-semibold mb-4">속보 뉴스</h5>
-                            <!-- 전체를 flex로 나누기 (부모 div) -->
-                            <div class="d-flex">
-                                <!-- 왼쪽 콘텐츠 (50% 크기) -->
-                                <div class="d-flex flex-column" style="flex: 1;">
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                </div>
-    
-                                <!-- 오른쪽 콘텐츠 (50% 크기) -->
-                                <div class="d-flex flex-column" style="flex: 1;">
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
-                                    <p class="mb-0">This is a sample page</p>
+                <div class="container mt-5">
+                    <div class="row">
+                        <!-- 워드 클라우드 -->
+                        <div class="col-md-12 mb-3">
+                            <div class="card" style="height: 400px;">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-semibold mb-4">워드 클라우드</h5>
                                 </div>
                             </div>
                         </div>
+                
+                        <div class="container mt-5">
+                            <div class="row">
+                                <!-- 주요 뉴스 -->
+                                <div class="col-md-12 mb-3">
+                                    <div class="card">
+                                        <div class="card-body" style="min-height: 200px; height: auto;">
+                                            <h5 class="card-title fw-semibold mb-4">주요 뉴스</h5>
+                        
+                                            <div class="d-flex flex-wrap">
+                                                <div class="d-flex flex-column w-50 p-2" style="min-width: 300px; overflow: hidden;">
+                                                    <p class="mb-2 text-truncate"
+                                                       th:each="title, iterStat : ${newsTitles}" 
+                                                       th:text="${title}" 
+                                                       th:if="${iterStat.index % 2 == 0}">
+                                                    </p>
+                                                </div>
+                        
+                                                <div class="d-flex flex-column w-50 p-2" style="min-width: 300px; overflow: hidden;">
+                                                    <p class="mb-2 text-truncate"
+                                                       th:each="title, iterStat : ${newsTitles}" 
+                                                       th:text="${title}" 
+                                                       th:if="${iterStat.index % 2 == 1}">
+                                                    </p>
+                                                </div>
+                                            </div>
+                        
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- 속보 뉴스 -->
+                                <div class="col-md-12 mb-3">
+                                    <div class="card">
+                                        <div class="card-body" style="min-height: 200px; height: auto;">
+                                            <h5 class="card-title fw-semibold mb-4">속보 뉴스</h5>
+                        
+                                            <div class="d-flex flex-wrap">
+                                                <div class="d-flex flex-column w-50 p-2" style="min-width: 300px; overflow: hidden;">
+                                                    <p class="mb-2 text-truncate"
+                                                       th:each="title, iterStat : ${breakingNewsTitles}" 
+                                                       th:text="${title}" 
+                                                       th:if="${iterStat.index % 2 == 0}">
+                                                    </p>
+                                                </div>
+                        
+                                                <div class="d-flex flex-column w-50 p-2" style="min-width: 300px; overflow: hidden;">
+                                                    <p class="mb-2 text-truncate"
+                                                       th:each="title, iterStat : ${breakingNewsTitles}" 
+                                                       th:text="${title}" 
+                                                       th:if="${iterStat.index % 2 == 1}">
+                                                    </p>
+                                                </div>
+                                            </div>
+                        
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                            </div>
+                        </div>
+                        
+                        
+                
                     </div>
-                    
                 </div>
+                
 
 
             </div>

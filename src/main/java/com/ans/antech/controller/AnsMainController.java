@@ -1,5 +1,7 @@
 package com.ans.antech.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NewsService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,12 +31,16 @@ public class AnsMainController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private NewsService newsService;
+
     // localhost:8080/
     @GetMapping("/")
     public String index2() {
         return "index2";
     }
 
+    // -------------------------------------------------------------------------------------------------------------------------
     // 회원가입
     @PostMapping("/register.join")
     public String register(@ModelAttribute Member member) {
@@ -50,6 +57,7 @@ public class AnsMainController {
         return "authentication-login";
     }
 
+    // -------------------------------------------------------------------------------------------------------------------------
     // 로그인 처리
     @PostMapping("/login.do")
     public String login(@RequestParam String id,
@@ -102,6 +110,18 @@ public class AnsMainController {
         }
         redirectAttributes.addFlashAttribute("foundId", member.getId());
         return "redirect:/findidsuccess";
+    }
+
+    // -------------------------------------------------------------------------------------------------------------------------
+    // 주요뉴스 타이틀 가져오기
+    @GetMapping("/home")
+    public String showNewsPage(Model model) {
+        List<String> newsTitles = newsService.getAllNewsTitles(); // 뉴스 타이틀 가져오기
+        List<String> breakingNewsTitles = newsService.getAllBNewsTitles();
+
+        model.addAttribute("newsTitles", newsTitles);
+        model.addAttribute("breakingNewsTitles", breakingNewsTitles);
+        return "home";
     }
 
     // 검색 페이지로 이동
@@ -169,11 +189,6 @@ public class AnsMainController {
     @GetMapping("/main")
     public String main() {
         return "main-news";
-    }
-
-    @GetMapping("/home")
-    public String home() {
-        return "home";
     }
 
     @GetMapping("/breaking")

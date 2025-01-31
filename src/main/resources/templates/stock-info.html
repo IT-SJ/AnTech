@@ -109,14 +109,11 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- 검색창 -->
-                    <div class=ms-3>
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 500px;"
-                            action="/search" method="GET">
-                            <div class="input-group" style="width: 70%;">
-                                <input type="text" class="form-control" placeholder="Search" aria-label="Search"
-                                    name="keyword">
-                                <button class="btn" type="submit" style="border: 1px solid #DFE5EF;">
+                     <!-- 검색창 -->
+                     <div class="ms-3">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"> <!-- 너비 증가 -->
+                            <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
+                                <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
                                 <input type="text" class="form-control border-0 shadow-none form-control-lg"
@@ -124,6 +121,7 @@
                             </div>
                         </form>
                     </div>
+                    
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
