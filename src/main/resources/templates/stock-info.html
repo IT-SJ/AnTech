@@ -7,7 +7,7 @@
     <title>Modernize Free</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .chart-wrapper {
             width: 100%;
@@ -119,10 +119,11 @@
                                 <button class="btn" type="submit" style="border: 1px solid #DFE5EF;">
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
-                                <input type="text" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
+                                <input type="text" class="form-control border-0 shadow-none form-control-lg"
+                                    placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
                             </div>
                         </form>
-                    </div>    
+                    </div>
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -169,10 +170,8 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">코스피 / 코스닥</h6>
-                                    <div class="chart-wrapper">
-                                        <canvas id="kospiKosdaqChart"></canvas>
-                                    </div>
+                                    <h6 class="card-title fw-semibold mb-4">코스피 / 코스닥 지수</h6>
+                                    <canvas id="kospiKosdaqChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -212,68 +211,6 @@
         </div>
     </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        async function fetchStockData() {
-            try {
-                const response = await fetch('/ans/kospi-kosdaq');
-                const data = await response.json();
-                
-                console.log("API 응답 데이터:", data);
-    
-                if (!data || !data.dates || !data.kospi || !data.kosdaq) {
-                    console.error("데이터가 올바르게 받아지지 않았습니다.");
-                    document.getElementById('kospiKosdaqChart').style.display = "none"; // 오류 발생 시 차트 숨김
-                    return;
-                }
-    
-                const ctx = document.getElementById('kospiKosdaqChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.dates,
-                        datasets: [
-                            {
-                                label: 'KOSPI',
-                                data: data.kospi,
-                                borderColor: 'red',
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderWidth: 2,
-                                tension: 0.1
-                            },
-                            {
-                                label: 'KOSDAQ',
-                                data: data.kosdaq,
-                                borderColor: 'blue',
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderWidth: 2,
-                                tension: 0.1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                display: true,
-                                title: { display: true, text: '날짜' }
-                            },
-                            y: {
-                                display: true,
-                                title: { display: true, text: '지수' }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error("Error fetching stock data:", error);
-            }
-        }
-    
-        fetchStockData();
-    </script>
 
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

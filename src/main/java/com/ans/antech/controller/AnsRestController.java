@@ -2,17 +2,14 @@ package com.ans.antech.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
-import com.ans.antech.service.StockService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +27,6 @@ public class AnsRestController {
 
     @Autowired
     private EmailService emailService;
-
-    @Autowired
-    private StockService stockService;
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -100,32 +94,6 @@ public class AnsRestController {
         // 비밀번호 업데이트
         service.updatePassword(id, newPassword);
         return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
-    }
-
-    @GetMapping("/kospi-kosdaq")
-    public ResponseEntity<Map<String, Object>> getKospiKosdaqData() {
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            List<String> dates = stockService.getDates("KS11");
-            List<Double> kospiPrices = stockService.getStockData("KS11");
-            List<Double> kosdaqPrices = stockService.getStockData("KOSDAQ150.KQ");
-
-            if (dates.isEmpty() || kospiPrices.isEmpty() || kosdaqPrices.isEmpty()) {
-                response.put("error", "No data found");
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
-            }
-
-            response.put("dates", dates);
-            response.put("kospi", kospiPrices);
-            response.put("kosdaq", kosdaqPrices);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("error", "Failed to fetch stock data");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
     }
 
 }
