@@ -230,15 +230,17 @@ public class AnsMainController {
         // 검색된 뉴스 가져오기 (페이지네이션 적용)
         List<News> searchResults = newsService.getNewsByKeyword(keyword, page, pageSize);
 
-        // 검색 결과가 없는 경우 메시지 설정
-        boolean isEmptyResult = searchResults.isEmpty();
+        // 검색 결과가 없는 경우 search-no.html로 이동
+        if (searchResults.isEmpty()) {
+            model.addAttribute("keyword", keyword);
+            return "search-no"; // 검색 결과 없음 페이지로 이동
+        }
 
         // 모델에 데이터 추가
         model.addAttribute("keyword", keyword);
         model.addAttribute("newsList", searchResults);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("isEmptyResult", isEmptyResult); // 검색 결과 없음 여부
 
         return "search"; // 검색 결과 페이지로 이동
     }
