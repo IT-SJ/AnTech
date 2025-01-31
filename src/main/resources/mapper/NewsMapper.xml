@@ -5,53 +5,53 @@
 
 <mapper namespace="com.ans.antech.mapper.NewsMapper">
 
-  <!-- 주요 뉴스 최신순 6개 조회하기-->
-  <select id="selectTitle" resultType = "string">
+    <!-- 주요 뉴스 최신순 6개 조회하기-->
+    <select id="selectTitle" resultType = "string">
       SELECT TITLE 
       FROM ANS_MAIN_NEWS 
       ORDER BY DT DESC 
       LIMIT 6
-  </select>
+    </select>
 
-  <select id="selectBNewsTitle" resultType="string">
+    <select id="selectBNewsTitle" resultType="string">
     SELECT TITLE
     FROM ANS_BREAKING_NEWS
     ORDER BY DT DESC
     LIMIT 6
-  </select>
-  <!-- 주요 뉴스 -->
-  <select id="countNews" resultType="int">
+    </select>
+    <!-- 주요 뉴스 -->
+    <select id="countNews" resultType="int">
         SELECT COUNT(*) FROM ANS_MAIN_NEWS
-  </select>
+    </select>
 
-  <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+    <select id="findNewsByPage" resultType="com.ans.antech.model.News">
         SELECT TITLE, PRESS, IMG_URL1, URL
         FROM ANS_MAIN_NEWS 
         ORDER BY DT DESC 
         LIMIT #{pageSize} OFFSET #{offset}
-  </select>
+    </select>
 
-  <!-- 검색된 뉴스 개수 조회 -->
-  <select id="countSearchNews" resultType="int">
+    <!-- 검색된 뉴스 개수 조회 -->
+    <select id="countSearchNews" resultType="int">
         SELECT COUNT(*) FROM (
             SELECT TITLE FROM ANS_BREAKING_NEWS WHERE TITLE LIKE CONCAT('%', #{keyword}, '%') 
             UNION 
             SELECT TITLE FROM ANS_MAIN_NEWS WHERE TITLE LIKE CONCAT('%', #{keyword}, '%')
         ) AS search_results
-  </select>
+    </select>
 
-  <!-- 페이징 적용하여 뉴스 검색 -->
-  <select id="searchNewsWithPagination" resultType="com.ans.antech.model.News">
+    <!-- 페이징 적용하여 뉴스 검색 -->
+    <select id="searchNewsWithPagination" resultType="com.ans.antech.model.News">
         SELECT * FROM (
             SELECT * FROM ANS_BREAKING_NEWS WHERE TITLE LIKE CONCAT('%', #{keyword}, '%') 
             UNION 
             SELECT * FROM ANS_MAIN_NEWS WHERE TITLE LIKE CONCAT('%', #{keyword}, '%')
         ) AS search_results 
         LIMIT #{pageSize} OFFSET #{offset}
-  </select>
+    </select>
 
-  <!-- 속보 뉴스 -->
-  <select id="countBNews" resultType="int">
+    <!-- 속보 뉴스 -->
+    <select id="countBNews" resultType="int">
         SELECT COUNT(*) FROM ANS_BREAKING_NEWS
   </select>
 
@@ -62,5 +62,31 @@
         LIMIT #{pageSize} OFFSET #{offset}
   </select>
 
+
+    <!-- 성진 0131 오후 4시 55분 push 최종 병합 및 정상화 -->
+    <!-- 나 누군데, 이 부분 아직 미완성이야~ 근데 지금 push해야대 여기부터 내가할께~-->
+    <!-- 메인 분석페이지 뉴스 내용 가져오기 -->
+    <!-- <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+        SELECT TITLE, SMR, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS 
+        WHERE idx=${idx}
+    </select> -->
+
+    <!-- 은진 // 요약 내용 부실하면 본문에서 내용 조회하기 -->
+    <!-- <select id="getProcessedNewsContent" resultType="string">
+        SELECT 
+            CASE 
+                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
+                ELSE smr
+            END AS content
+        FROM ANS_MAIN_NEWS
+        UNION ALL
+        SELECT 
+            CASE 
+                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
+                ELSE smr
+            END AS content
+        FROM ANS_BREAKING_NEWS;
+    </select> -->
 
 </mapper>
