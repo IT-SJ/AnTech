@@ -411,7 +411,7 @@
 
                 const formData = new FormData();
                 formData.append("profileImage", file);
-                formData.append("userId", getUserID()); // 로그인한 사용자 ID
+                formData.append("userId", loggedInUserId); // 로그인한 사용자 ID
 
                 $.ajax({
                     url: "/ans/profileupdate",

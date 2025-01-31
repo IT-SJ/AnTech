@@ -1,5 +1,6 @@
 package com.ans.antech.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/ans")
@@ -41,8 +43,6 @@ public class AnsRestController {
 
     @Autowired
     private StockService stockService;
-
-    
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -143,41 +143,43 @@ public class AnsRestController {
     // --------------------------------------------------------------------------------------------------
     // 성진 : 마이페이지 관련 여기부터 정의하세요
     @PostMapping("/profileupdate")
-    public String profileUpdate(@RequestParam("profileImage") MultipartFile file) {
+    public String profileUpdate(@RequestParam("profileImage") MultipartFile file, @RequestParam("userId") String id, RedirectAttributes redirectAttributes) {
         System.out.println("프로필 이미지 업데이트 기능");
-        
-        if(file.isEmpty()){
-            return "redirect:/error";
+
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "파일이 비어있습니다.");
+            return "redirect:/profile";
         }
 
         try {
-        // 파일을 저장할 경로 설정
-        String uploadDir = "resources/upload";
-        Path uploadPath = Paths.get(uploadDir);
-        // 경로에 폴더가 없으면 만들어주는 조건문
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-        
-        // 파일 이름 생성 (중복 방지를 위해 타임스탬프 추가)
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        Path filePath = uploadPath.resolve(fileName);
+            // 파일을 저장할 경로 설정
+            String uploadDir = "resources/uploads";
+            File dir = new File(uploadDir);
+            // 경로에 폴더가 없으면 만들어주는 조건문
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
 
-        // 파일 저장
-        Files.copy(file.getInputStream(), filePath);
-		
-        // DB 업데이트 로직
-        boolean updateresult = service.profileUpdate(fileName); // DB에 파일이름 전달
-        
-        if (updateresult) {
-            return "프로필 이미지가 성공적으로 업데이트되었습니다.";
-        } else {
-            return "프로필 이미지 업데이트에 실패했습니다.";
-        }
-        }catch (IOException e) {
+            // 파일 이름 생성 (중복 방지를 위해 타임스탬프 추가)
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File destFile = new File(dir, fileName);
+
+            // 파일 저장
+            file.transferTo(destFile);
+
+            // DB 업데이트 로직
+            boolean updateresult = service.profileUpdate(id,fileName); // DB에 파일이름 전달
+
+            if (updateresult) {
+                redirectAttributes.addFlashAttribute("message", "프로필 이미지가 성공적으로 업데이트되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "프로필 이미지 업데이트에 실패했습니다.");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-            return "redirect:/error";
+            redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
         }
+        return "redirect:/error";
 
     }
 }

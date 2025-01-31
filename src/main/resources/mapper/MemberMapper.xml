@@ -49,11 +49,8 @@
   </update>
 
   <!-- 프로필 이미지 업데이트-->
-  <update id="updateProfileImage">
+  <update id="profileUpdate">
     UPDATE ANS_MEMBER SET PROFILE_IMG = #{profileImage} WHERE ID = #{id}
   </update>
-
-
-
 
 </mapper>

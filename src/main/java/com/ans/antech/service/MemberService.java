@@ -49,7 +49,7 @@ public class MemberService {
         mapper.updatePassword(id, newPassword);
     }
 
-    public boolean profileUpdate(String imagePath) {
-        return mapper.profileUpdate(imagePath) > 0 ;
+    public boolean profileUpdate(String userId, String imagePath) {
+        return mapper.profileUpdate(userId, imagePath) > 0 ;
     }
 }
