@@ -125,13 +125,6 @@ public class AnsMainController {
         return "home";
     }
 
-    // 검색 페이지로 이동
-    @GetMapping("/search")
-    public String search(@RequestParam String keyword, Model model) {
-        model.addAttribute("keyword", keyword);
-        return "search"; // 검색 결과 페이지로 이동
-    }
-
     @GetMapping("/login.do")
     public String login() {
         return "authentication-login";
@@ -228,6 +221,38 @@ public class AnsMainController {
         model.addAttribute("totalPages", totalPages);
 
         return "main-news"; // Thymeleaf 템플릿 반환
+    }
+
+    // 검색 페이지 (페이징 적용)
+    @GetMapping("/search")
+    public String search(@RequestParam String keyword,
+            @RequestParam(defaultValue = "1") int page,
+            Model model) {
+
+        int pageSize = 6; // 한 페이지당 뉴스 개수
+        int totalNews = newsService.getTotalSearchCount(keyword); // 검색 결과 개수
+        int totalPages = (int) Math.ceil((double) totalNews / pageSize);
+
+        // 페이지 범위 제한
+        if (page < 1)
+            page = 1;
+        if (page > totalPages)
+            page = totalPages;
+
+        // 검색된 뉴스 가져오기 (페이지네이션 적용)
+        List<News> searchResults = newsService.getNewsByKeyword(keyword, page, pageSize);
+
+        // 검색 결과가 없는 경우 메시지 설정
+        boolean isEmptyResult = searchResults.isEmpty();
+
+        // 모델에 데이터 추가
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("newsList", searchResults);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("isEmptyResult", isEmptyResult); // 검색 결과 없음 여부
+
+        return "search"; // 검색 결과 페이지로 이동
     }
 
 }

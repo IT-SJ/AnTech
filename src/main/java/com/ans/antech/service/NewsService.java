@@ -35,4 +35,15 @@ public class NewsService {
         return mapper.findNewsByPage(pageSize, offset);
     }
     
+    // -------------------------검색 페이지 -------------
+    // 검색 결과 개수 조회
+    public int getTotalSearchCount(String keyword) {
+        return mapper.countSearchNews(keyword);
+    }
+
+    // 페이지별 뉴스 검색 결과 가져오기
+    public List<News> getNewsByKeyword(String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mapper.searchNewsWithPagination(keyword, offset, pageSize);
+    }
 }

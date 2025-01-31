@@ -95,12 +95,12 @@
                     </ul>
                     <!-- 검색창 -->
                     <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"> <!-- 너비 증가 -->
-                            <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
-                                <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;" action="/search" method="GET">
+                            <div class="input-group" style="width: 90%;">
+                                <button class="btn border-0 shadow-none btn-lg" type="submit">
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
-                                <input type="text" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
+                                <input type="text" name="keyword" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search">
                             </div>
                         </form>
                     </div>
