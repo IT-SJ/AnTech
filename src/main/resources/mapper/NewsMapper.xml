@@ -72,21 +72,11 @@
         WHERE idx=${idx}
     </select> -->
 
-    <!-- 은진 // 요약 내용 부실하면 본문에서 내용 조회하기 -->
-    <!-- <select id="getProcessedNewsContent" resultType="string">
-        SELECT 
-            CASE 
-                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
-                ELSE smr
-            END AS content
-        FROM ANS_MAIN_NEWS
+    <!-- 은진 // 주요 뉴스와 속보 요약 내용 조회하기 (워드클라우드 키워드 추출 목적)-->
+    <select id="getProcessedNewsContent" resultType="string">
+        SELECT smr FROM ANS_MAIN_NEWS
         UNION ALL
-        SELECT 
-            CASE 
-                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
-                ELSE smr
-            END AS content
-        FROM ANS_BREAKING_NEWS;
-    </select> -->
+        SELECT smr FROM ANS_BREAKING_NEWS;
+    </select>
 
 </mapper>

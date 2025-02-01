@@ -1,27 +1,32 @@
-from flask import Flask, request, send_file
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import io
+from flask import Flask, request, jsonify  # Flask 웹 서버 및 JSON 응답 처리
+from kiwipiepy import Kiwi  # 형태소 분석 라이브러리
+from collections import Counter  # 단어 빈도수 계산을 위한 Counter
 
+# Flask 서버 초기화
 app = Flask(__name__)
 
-@app.route('/generate-wordcloud', methods=['POST'])
-def generate_wordcloud():
-    data = request.get_json()
-    word_freq = data.get("wordFreq", {})
+# Kiwi 형태소 분석기 초기화
+kiwi = Kiwi()
 
-    wordcloud = WordCloud(font_path='/usr/share/fonts/truetype/nanum/NanumGothic.ttf',
-                          background_color="white",
-                          width=800, height=400).generate_from_frequencies(word_freq)
+@app.route('/process-text', methods=['POST'])
+def process_text():
+    """
+    Spring Boot에서 전달한 뉴스 요약 데이터를 Kiwi로 분석하여 키워드 빈도수를 반환하는 API
+    """
+    data = request.json  # JSON 데이터 받기
+    text = data.get("text", "")  # "text" 키의 값 가져오기
 
-    img_io = io.BytesIO()
-    plt.figure(figsize=(10, 5))
-    plt.imshow(wordcloud, interpolation="bilinear")
-    plt.axis("off")
-    plt.savefig(img_io, format='png')
-    img_io.seek(0)
+    if not text:
+        return jsonify({"error": "No text provided"}), 400  # 에러 처리 (텍스트 없음)
 
-    return send_file(img_io, mimetype='image/png')
+    # Kiwi 형태소 분석 후 명사(NNP, NNG)만 추출
+    tokens = [token.form for token in kiwi.tokenize(text) if token.tag.startswith("N")]
+
+    # 키워드 빈도수 계산
+    word_freq = Counter(tokens)
+
+    return jsonify(word_freq)  # JSON 형식으로 반환
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Flask 서버 실행 (localhost:5001)
+    app.run(host='0.0.0.0', port=5001, debug=True)
