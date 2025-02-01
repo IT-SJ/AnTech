@@ -1,5 +1,6 @@
 package com.ans.antech.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -230,15 +232,17 @@ public class AnsMainController {
         // 검색된 뉴스 가져오기 (페이지네이션 적용)
         List<News> searchResults = newsService.getNewsByKeyword(keyword, page, pageSize);
 
-        // 검색 결과가 없는 경우 메시지 설정
-        boolean isEmptyResult = searchResults.isEmpty();
+        // 검색 결과가 없는 경우 search-no.html로 이동
+        if (searchResults.isEmpty()) {
+            model.addAttribute("keyword", keyword);
+            return "search-no"; // 검색 결과 없음 페이지로 이동
+        }
 
         // 모델에 데이터 추가
         model.addAttribute("keyword", keyword);
         model.addAttribute("newsList", searchResults);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("isEmptyResult", isEmptyResult); // 검색 결과 없음 여부
 
         return "search"; // 검색 결과 페이지로 이동
     }
@@ -263,5 +267,21 @@ public class AnsMainController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         return "breaking-news";
+    }
+
+    // 뉴스 분석 페이지 (주요 뉴스 & 속보 뉴스 공통)
+    @GetMapping("/analysis/{type}/{idx}")
+    public String showAnalysisPage(@PathVariable String type, @PathVariable int idx, Model model) {
+        News news;
+
+        if ("breaking".equals(type)) {
+            news = newsService.getBNewsById(idx); // 속보 뉴스 가져오기
+        } else {
+            news = newsService.getNewsById(idx); // 주요 뉴스 가져오기
+        }
+
+        model.addAttribute("news", news);
+        model.addAttribute("type", type); // 뉴스 종류 전달
+        return "analysis"; // 공통 analysis.html 사용
     }
 }

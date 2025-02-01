@@ -1,6 +1,7 @@
 package com.ans.antech.mapper;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,8 @@ public interface NewsMapper {
                                          @Param("offset") int offset,
                                          @Param("pageSize") int pageSize);
 
+
+    //분석 페이지
+    public News findNewsById(@Param("idx") int idx);
+    public News findBNewsById(@Param("idx") int idx);
 }

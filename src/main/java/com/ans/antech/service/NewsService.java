@@ -5,6 +5,8 @@ import com.ans.antech.model.News;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,5 +64,14 @@ public class NewsService {
     public List<News> getNewsByKeyword(String keyword, int page, int pageSize) {
         int offset = (page - 1) * pageSize;
         return mapper.searchNewsWithPagination(keyword, offset, pageSize);
+    }
+
+    // 분석페이지 --------------------------------------------------------------------------
+    public News getNewsById(int idx) {
+        return mapper.findNewsById(idx);
+    }
+
+    public News getBNewsById(int idx) {
+        return mapper.findBNewsById(idx);
     }
 }
