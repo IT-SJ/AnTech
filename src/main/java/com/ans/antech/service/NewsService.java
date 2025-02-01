@@ -4,32 +4,38 @@ import com.ans.antech.mapper.NewsMapper;
 import com.ans.antech.model.News;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
     @Autowired
     private NewsMapper mapper;
 
+    @Autowired
+    private RestTemplate restTemplate; // RestTemplate 주입
+
+    @Value("${flask.url}") // Flask 서버 URL 주입
+    private String flaskUrl;
+
     // 주요 뉴스 타이틀 조회
     public List<String> getAllNewsTitles() {
         return mapper.selectTitle();
-    }    
+    }
 
     // 속보 뉴스 타이틀 가져오기
     public List<String> getAllBNewsTitles() {
         return mapper.selectBNewsTitle();
-    }
-
-    // 은진 `smr`이 부족하면 자동으로 `text`를 사용하여 가져오기 (주요뉴스 + 속보뉴스) (워드클라우드)
-    public String getProcessedNewsContent() {
-        List<String> newsContentList = mapper.getProcessedNewsContent();
-        return String.join(" ", newsContentList);  // 모든 뉴스 내용을 하나의 문자열로 합치기
     }
 
     // 메인 뉴스 개수 조회 (페이지네이션 계산용)
@@ -53,7 +59,7 @@ public class NewsService {
         int offset = (page - 1) * pageSize;
         return mapper.findBNewsByPage(pageSize, offset);
     }
-    
+
     // -------------------------검색 페이지 -------------
     // 검색 결과 개수 조회
     public int getTotalSearchCount(String keyword) {
@@ -66,7 +72,8 @@ public class NewsService {
         return mapper.searchNewsWithPagination(keyword, offset, pageSize);
     }
 
-    // 분석페이지 --------------------------------------------------------------------------
+    // 분석페이지
+    // --------------------------------------------------------------------------
     public News getNewsById(int idx) {
         return mapper.findNewsById(idx);
     }

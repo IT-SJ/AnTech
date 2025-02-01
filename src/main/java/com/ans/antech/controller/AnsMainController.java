@@ -2,6 +2,7 @@ package com.ans.antech.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
+import com.ans.antech.service.WordCloudService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +38,9 @@ public class AnsMainController {
 
     @Autowired
     private NewsService newsService;
+
+    @Autowired
+    private WordCloudService wordCloudService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -115,14 +120,24 @@ public class AnsMainController {
     }
 
     // -------------------------------------------------------------------------------------------------------------------------
-    // 주요뉴스 타이틀 가져오기
+    // 주요뉴스 타이틀, 워드클라우드 가져오기
     @GetMapping("/home")
     public String showNewsPage(Model model) {
         List<String> newsTitles = newsService.getAllNewsTitles(); // 뉴스 타이틀 가져오기
         List<String> breakingNewsTitles = newsService.getAllBNewsTitles();
 
+        // 성진 - 워드 클라우드 값 가져오기 위한 List 작성 및 Map 사용
+        List<String> mainNewsSummaries = wordCloudService.getAllMainNewsSummaries();
+        List<String> breakingNewsSummaries = wordCloudService.getAllBreakingNewsSummaries();
+
+        Map<String, Integer> wordFrequencies = wordCloudService.getWordFrequencies(mainNewsSummaries, breakingNewsSummaries);
+        
         model.addAttribute("newsTitles", newsTitles);
         model.addAttribute("breakingNewsTitles", breakingNewsTitles);
+        // 워드 클라우드 관련 모델에 담아두기
+        model.addAttribute("wordFreq", wordFrequencies);
+
+        System.out.println(wordFrequencies.toString());
         return "home";
     }
 
