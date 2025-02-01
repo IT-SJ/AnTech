@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from kiwipiepy import Kiwi
 from collections import defaultdict
 
+# Flask 서버 초기화
 app = Flask(__name__)
 
 # Kiwi 형태소 분석기 초기화
@@ -32,4 +33,5 @@ def process_text():
     return jsonify(top_word_freq)  # JSON 형태로 반환
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Flask 서버 실행 (localhost:5001)
+    app.run(host='0.0.0.0', port=5001, debug=True)
