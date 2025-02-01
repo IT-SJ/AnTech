@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
+import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.StockService;
 import com.oreilly.servlet.MultipartRequest;
@@ -145,21 +146,34 @@ public class AnsRestController {
         }
     }
 
-    // 코스피 차트 가져오기
+    // 코스피 & 환율 서비스 선언
     private final StockService stockService;
-
-    // @Autowired 생략 가능 (생성자 주입 방식 사용)
-    public AnsRestController(StockService stockService) {
+    private final ExchangeRateService exchangeRateService;
+    
+    
+    // 생성자 주입 (final 필드 적용)
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService) {
         this.stockService = stockService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     /**
      * 코스피(KOSPI)와 코스닥(KOSDAQ) 데이터를 반환하는 API 엔드포인트
+     * 
      * @return 날짜별 KOSPI & KOSDAQ 데이터
      */
     @GetMapping("/kospi-kosdaq")
     public Map<String, Object> getKospiKosdaqData() {
         return stockService.getKospiKosdaqData();
+    }
+
+    /**
+     * 어제 날짜 기준 환율 데이터 제공 API
+     * @return 주요 통화의 최신 환율 데이터
+     */
+    @GetMapping("/exchange-rates")
+    public Map<String, Object> getExchangeRates() {
+        return exchangeRateService.getExchangeRates();
     }
 
 }
