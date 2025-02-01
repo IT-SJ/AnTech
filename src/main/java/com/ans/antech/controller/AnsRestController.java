@@ -125,7 +125,7 @@ public class AnsRestController {
                     uploadDir,
                     fileMaxSize,
                     "UTF-8");
-
+            
             String fileName = multi.getFilesystemName("profileImage");
             String userId = multi.getParameter("userId");
             // DB에는 파일 경로를 저장
