@@ -157,7 +157,7 @@
                     <div class="col-sm-6 col-xl-4" th:each="news : ${newsList}">
                         <div class="card overflow-hidden rounded-2 ">
                             <div class="position-relative">
-                                <a th:href="${news.url}" target="_blank">
+                                <a>
                                     <!-- 뉴스 이미지가 있을 경우 -->
                                     <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
                                         th:src="${news.img_url1}" class="card-img-top rounded border border-5 border-white"
@@ -183,7 +183,7 @@
 
                                 <!-- 버튼 (항상 하단 고정) -->
                                 <div class="d-flex justify-content-center mt-auto">
-                                    <a th:href="analysis" class="btn btn-outline-primary w-100" target="_blank">뉴스 분석
+                                    <a th:href="@{/analysis/breaking/{idx}(idx=${news.idx})}" class="btn btn-outline-primary w-100">뉴스 분석
                                         보기</a>
                                 </div>
                             </div>

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modernize Free</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
+
 </head>
 
 <body>
@@ -29,7 +30,7 @@
                 <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="home" aria-expanded="false">
+                            <a class="sidebar-link" th:href="@{/home}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
@@ -38,10 +39,10 @@
                         </li>
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">pages</span>
+                            <span class="hide-menu">Pages</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="breaking" aria-expanded="false">
+                            <a class="sidebar-link" th:href="@{/breaking}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-article"></i>
                                 </span>
@@ -49,7 +50,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="main" aria-expanded="false">
+                            <a class="sidebar-link" th:href="@{/main}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-alert-circle"></i>
                                 </span>
@@ -57,7 +58,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="stockinfo" aria-expanded="false">
+                            <a class="sidebar-link" th:href="@{/stockinfo}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-cards"></i>
                                 </span>
@@ -65,7 +66,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="mypage" aria-expanded="false">
+                            <a class="sidebar-link" th:href="@{/mypage}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-user"></i>
                                 </span>
@@ -73,8 +74,8 @@
                             </a>
                         </li>
                     </ul>
-
                 </nav>
+                
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
@@ -93,18 +94,20 @@
                             </a>
                         </li>
                     </ul>
-                     <!-- 검색창 -->
+                    <!-- 검색창 -->
                     <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"> <!-- 너비 증가 -->
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;">
+                            <!-- 너비 증가 -->
                             <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
                                 <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
-                                <input type="text" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
+                                <input type="text" class="form-control border-0 shadow-none form-control-lg"
+                                    placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
                             </div>
                         </form>
                     </div>
-                    
+
                     <!-- 프로필 클릭했을때 내려오는 아이들 -->
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -130,8 +133,7 @@
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a> -->
-                                        <a href="logout"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a href="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -143,27 +145,32 @@
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">주요 뉴스 분석</h5>
+                    <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;"
+                    th:text="${type == 'breaking' ? '속보 뉴스 분석' : '주요 뉴스 분석'}">주요 뉴스 분석</h5>
                     <button class="btn btn-outline-primary">스크랩</button>
-                  </div>
-                  
+                </div>
+
                 <!--  첫번째 줄 -->
                 <!-- 카드 -------------------------------------------------------------------------------------------------------------------------->
                 <div class="row">
                     <!-- 왼쪽 큰 카드 -->
                     <div class="col-md-6">
-                        <div class="card overflow-hidden rounded-2" style="height: 630px;">
+                        <div class="card overflow-hidden rounded-2" style="min-height: 630px; height: auto;">
                             <div class="position-relative mb-4">
                                 <a href="javascript:void(0)">
-                                    <img src="../assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."
-                                         style="object-fit: cover; height: 300px; width: 100%;">
+                                    <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
+                                        th:src="${news.img_url1}" class="card-img-top rounded-0 border border-5 border-white"
+                                        style="object-fit: cover; height: 300px; width: 100%;">
+                                    <img th:if="${news.img_url1 == null or news.img_url1 == ''}"
+                                    th:src="@{/assets/images/logo/Frame.svg}" class="card-img-top rounded border border-5 border-white"
+                                        style="object-fit: cover; height: 300px; width: 100%;">
                                 </a>
                             </div>
                             <div class="card-body pt-3 p-4">
-                                <h5 class="fw-semibold ">뉴스기사 제목</h5>
+                                <h5 class="fw-semibold" th:text="${news.title}">뉴스기사 제목</h5>
                                 <div>
-                                    <h5 class="fw-normal mb-2 fs-4" style="color:rgb(95, 95, 95)">
-                                        연휴 앞, 한국유니온제약은 횡령·배임 혐의로 임원 6명을 고소하며 제3자배정 유상증자를 철회했다. 이로 인해 유상증자 자금 69억원과 전환사채 발행금 41억원이 납입되지 않았다. 또한, 코스닥 상장사 나노브릭도 유상증자 납입일을 연기했다. 이와 함께, 기업의 실적 악화 소식도 장 마감 후 전해졌다. 롯데하이마트와 호텔신라의 경우, 작년 영업이익이 급감하고 적자가 전환되었다. 이러한 악재 공시는 불법이 아니지만, 투자자의 각별한 주의가 필요하다.
+                                    <h5 class="fw-normal mb-2 fs-4" style="color:rgb(95, 95, 95)" th:text="${news.smr}">
+                                        뉴스요약
                                     </h5>
                                 </div>
                                 <!-- 해시태그 영역 -->
@@ -173,12 +180,12 @@
                                     <h5 class="fw-bold" style="color: black;">#검정태그</h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
-                                    <a href="#" class="btn btn-outline-primary w-100">뉴스 원문 링크</a>
+                                    <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문 보기</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                
+
                     <!-- 오른쪽 위아래 두 개 카드 -->
                     <div class="col-md-6">
                         <div class="row">
@@ -187,7 +194,7 @@
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
                                         <h6 class="fw-semibold fs-4">관련 주</h6>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -196,16 +203,16 @@
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
                                         <h6 class="fw-semibold fs-4">감정 분석</h6>
-                                     
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
-                
+
+
+
                 <!-- Row 끝 --------------------------------------------------------------------->
             </div>
         </div>

@@ -25,7 +25,7 @@
     </select>
 
     <select id="findNewsByPage" resultType="com.ans.antech.model.News">
-        SELECT TITLE, PRESS, IMG_URL1, URL
+        SELECT IDX, TITLE, PRESS, IMG_URL1, URL
         FROM ANS_MAIN_NEWS 
         ORDER BY DT DESC 
         LIMIT #{pageSize} OFFSET #{offset}
@@ -56,21 +56,24 @@
   </select>
 
   <select id="findBNewsByPage" resultType="com.ans.antech.model.News">
-        SELECT TITLE, PRESS, IMG_URL1, URL
+        SELECT IDX, TITLE, PRESS, IMG_URL1, URL
         FROM ANS_BREAKING_NEWS 
         ORDER BY DT DESC 
         LIMIT #{pageSize} OFFSET #{offset}
   </select>
-
-
-    <!-- 성진 0131 오후 4시 55분 push 최종 병합 및 정상화 -->
-    <!-- 나 누군데, 이 부분 아직 미완성이야~ 근데 지금 push해야대 여기부터 내가할께~-->
-    <!-- 메인 분석페이지 뉴스 내용 가져오기 -->
-    <!-- <select id="findNewsByPage" resultType="com.ans.antech.model.News">
+    <!-- 메인뉴스 분석페이지 -->
+    <select id="findNewsById" resultType="com.ans.antech.model.News">
         SELECT TITLE, SMR, PRESS, IMG_URL1, URL
         FROM ANS_MAIN_NEWS 
-        WHERE idx=${idx}
-    </select> -->
+        WHERE idx=#{idx}
+    </select>
+
+    <!-- 속보뉴스 분석페이지 -->
+    <select id="findBNewsById" resultType="com.ans.antech.model.News">
+        SELECT TITLE, SMR, PRESS, IMG_URL1, URL
+        FROM ANS_BREAKING_NEWS  
+        WHERE idx=#{idx}
+    </select>
 
     <!-- 은진 // 요약 내용 부실하면 본문에서 내용 조회하기 -->
     <!-- <select id="getProcessedNewsContent" resultType="string">
