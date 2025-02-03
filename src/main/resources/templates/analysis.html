@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="/src/main/resources/static/assets/images/logos/favicon.png" />
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
 
 </head>
@@ -19,8 +19,8 @@
             <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="home" class="text-nowrap logo-img">
-                        <img src="../assets/images/logos/Logo1.svg" width="180" alt="" />
+                    <a href="/home" class="text-nowrap logo-img">
+                        <img src="/assets/images/logos/Logo1.svg" width="180" alt="Logo" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -114,13 +114,13 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
-                                        class="rounded-circle">
+                                    <img th:src="@{${session.loginMember?.profile_Img != null ? session.loginMember.profile_Img : '/assets/images/logos/profile.png'}}"
+                                        alt="" width="35" height="35" class="rounded-circle">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="javascript:void(0)"
+                                        <a  th:href="@{/mypage}"
                                             class="d-flex align-items-center gap-2 dropdown-item">
                                             <i class="ti ti-user fs-6"></i>
                                             <p class="mb-0 fs-3">My Page</p>
@@ -133,7 +133,7 @@
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a> -->
-                                        <a href="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a th:href="@{/logout}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -148,8 +148,9 @@
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;"
                         th:text="${type == 'breaking' ? '속보 뉴스 분석' : '주요 뉴스 분석'}">주요 뉴스 분석</h5>
                     <!-- 스크랩 버튼 -->
-                    <button id="scrapButton" class="btn btn-outline-primary" th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'"
-                        th:data-type="${type}" th:data-idx="${news.idx}" onclick="toggleScrap()">
+                    <button id="scrapButton" class="btn btn-outline-primary"
+                        th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-type="${type}"
+                        th:data-idx="${news.idx}" onclick="toggleScrap()">
                     </button>
                 </div>
 
@@ -231,7 +232,7 @@
         const idx = "[[${news.idx}]]";
         const id = "[[${session.loginMember.id}]]"; // 서버에서 로그인된 사용자 ID 가져오기
         const scrapButton = document.getElementById("scrapButton");
-    
+
         async function checkScrapStatus() {
             try {
                 const response = await fetch(`/ans/${type}/${idx}?id=${id}`);
@@ -241,24 +242,24 @@
                 console.error("스크랩 상태 확인 실패:", error);
             }
         }
-    
+
         async function toggleScrap() {
             try {
                 const isScrapped = scrapButton.textContent === "스크랩 취소";
                 const method = isScrapped ? "DELETE" : "POST";
-    
+
                 const response = await fetch(`/ans/${type}/${idx}?id=${id}`, {
                     method: method,
                     headers: { "Content-Type": "application/json" }
                 });
-    
+
                 const data = await response.json();
                 scrapButton.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
             } catch (error) {
                 console.error("스크랩 토글 실패:", error);
             }
         }
-    
+
         checkScrapStatus();
     </script>
 
@@ -268,13 +269,14 @@
     </script>
 
 
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/sidebarmenu.js}"></script>
+    <script th:src="@{/assets/js/app.min.js}"></script>
+    <script th:src="@{/assets/libs/apexcharts/dist/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
+    <script th:src="@{/assets/js/dashboard.js}"></script>
+
 </body>
 
 </html>
