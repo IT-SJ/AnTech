@@ -15,6 +15,7 @@ import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NasdaqService;
 import com.ans.antech.service.ScrapService;
 import com.ans.antech.service.StockService;
 import com.oreilly.servlet.MultipartRequest;
@@ -152,9 +153,10 @@ public class AnsRestController {
     private final ExchangeRateService exchangeRateService;
 
     // 생성자 주입 (final 필드 적용)
-    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService) {
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,NasdaqService nasdaqService) {
         this.stockService = stockService;
         this.exchangeRateService = exchangeRateService;
+        this.nasdaqService = nasdaqService;
     }
 
     /**
@@ -254,4 +256,19 @@ public class AnsRestController {
         return exchangeRateService.getExchangeRates();
     }
 
+    private final NasdaqService nasdaqService;
+
+  
+        
+
+
+    /**
+     * 나스닥, 다우존스, S&P 500 데이터를 반환하는 API 엔드포인트
+     * 
+     * @return 날짜별 주가지수 데이터
+     */
+    @GetMapping("/nasdaq-dow")
+    public Map<String, Object> getNasdaqDowData() {
+        return nasdaqService.getNasdaqDowData();
+    }
 }
