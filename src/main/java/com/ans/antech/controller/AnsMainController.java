@@ -1,6 +1,5 @@
 package com.ans.antech.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -284,4 +283,5 @@ public class AnsMainController {
         model.addAttribute("type", type); // 뉴스 종류 전달
         return "analysis"; // 공통 analysis.html 사용
     }
+
 }

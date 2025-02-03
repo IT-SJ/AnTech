@@ -1,11 +1,8 @@
 package com.ans.antech.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +14,14 @@ import org.springframework.http.ResponseEntity;
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.ScrapService;
 import com.ans.antech.service.StockService;
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +38,9 @@ public class AnsRestController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private ScrapService scrapService;
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -155,11 +156,91 @@ public class AnsRestController {
 
     /**
      * 코스피(KOSPI)와 코스닥(KOSDAQ) 데이터를 반환하는 API 엔드포인트
+     * 
      * @return 날짜별 KOSPI & KOSDAQ 데이터
      */
     @GetMapping("/kospi-kosdaq")
     public Map<String, Object> getKospiKosdaqData() {
         return stockService.getKospiKosdaqData();
+    }
+
+    // ---------------------영빈 즐찾-----------------------
+    // 특정 뉴스가 스크랩 되어 있는지 확인
+    @GetMapping("/{type}/{idx}")
+    public ResponseEntity<?> checkScrapStatus(@PathVariable String type,
+            @PathVariable int idx,
+            @RequestParam String id) {
+        try {
+            boolean isScrapped = scrapService.isScrapped(id, type, idx);
+            return ResponseEntity.ok(Collections.singletonMap("scrapped", isScrapped));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "스크랩 상태 확인 중 오류 발생: " + e.getMessage()));
+        }
+    }
+
+    // 뉴스 스크랩 추가
+    @PostMapping("/{type}/{idx}")
+    public ResponseEntity<?> toggleScrap(@PathVariable String type,
+            @PathVariable int idx,
+            @RequestParam String id) {
+        try {
+            boolean isScrapped = scrapService.toggleScrap(id, type, idx);
+            Map<String, Boolean> response = new HashMap<>();
+            response.put("scrapped", isScrapped);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "스크랩 처리 중 오류 발생"));
+        }
+    }
+
+    // 뉴스 스크랩 취소
+    @DeleteMapping("/{type}/{idx}")
+    public ResponseEntity<Map<String, Object>> deleteScrap(@PathVariable String type,
+            @PathVariable int idx,
+            @RequestParam String id) { // ✅ id 추가
+        try {
+            boolean deleted = scrapService.deleteScrap(id, type, idx);
+            if (deleted) {
+                return ResponseEntity.ok(Map.of("success", true));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "스크랩 항목을 찾을 수 없습니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "스크랩 취소 중 오류 발생"));
+        }
+    }
+
+    // ✅ 마이페이지 - 스크랩한 뉴스 목록 조회
+    @GetMapping("/scrap-list")
+    public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "ID가 유효하지 않습니다."));
+        }
+
+        try {
+            int pageSize = 6;
+            System.out.println("🔍 API 호출됨! id=" + id + ", page=" + page);
+
+            List<Map<String, Object>> newsList = scrapService.getScrapNewsList(id, page, pageSize);
+            int totalScrapNews = scrapService.getTotalScrapNews(id);
+            int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
+
+            System.out.println("📝 최종 newsList 반환: " + newsList);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("newsList", newsList);
+            response.put("currentPage", page);
+            response.put("totalPages", totalPages);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
+        }
     }
 
 }
