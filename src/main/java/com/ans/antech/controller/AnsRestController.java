@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
+import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.ScrapService;
 import com.ans.antech.service.StockService;
@@ -146,12 +147,14 @@ public class AnsRestController {
         }
     }
 
-    // 코스피 차트 가져오기
+    // 코스피 & 환율 서비스 선언
     private final StockService stockService;
+    private final ExchangeRateService exchangeRateService;
 
-    // @Autowired 생략 가능 (생성자 주입 방식 사용)
-    public AnsRestController(StockService stockService) {
+    // 생성자 주입 (final 필드 적용)
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService) {
         this.stockService = stockService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     /**
@@ -238,9 +241,17 @@ public class AnsRestController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
+            return ResponseEntity.internalServerError().body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
         }
+    }
+    /**
+     * 어제 날짜 기준 환율 데이터 제공 API
+     * 
+     * @return 주요 통화의 최신 환율 데이터
+     */
+    @GetMapping("/exchange-rates")
+    public Map<String, Object> getExchangeRates() {
+        return exchangeRateService.getExchangeRates();
     }
 
 }

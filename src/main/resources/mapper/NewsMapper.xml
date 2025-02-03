@@ -63,8 +63,8 @@
       </select>
       <!-- 메인뉴스 분석페이지 -->
       <select id="findNewsById" resultType="com.ans.antech.model.News">
-        SELECT IDX, TITLE, SMR, PRESS, IMG_URL1, URL
-        FROM ANS_MAIN_NEWS 
+        SELECT TITLE, SMR, PRESS, IMG_URL1, URL
+        FROM ANS_MAIN_NEWS
         WHERE idx=#{idx}
       </select>
 
@@ -75,22 +75,22 @@
         WHERE idx=#{idx}
       </select>
 
-      <!-- 은진 // 요약 내용 부실하면 본문에서 내용 조회하기 -->
-      <!-- <select id="getProcessedNewsContent" resultType="string">
-        SELECT 
-            CASE 
-                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
-                ELSE smr
-            END AS content
-        FROM ANS_MAIN_NEWS
-        UNION ALL
-        SELECT 
-            CASE 
-                WHEN LENGTH(smr) < 20 OR smr IS NULL OR smr = '' THEN text
-                ELSE smr
-            END AS content
-        FROM ANS_BREAKING_NEWS;
-    </select> -->
+      <!--  ////////////////////////////////////////////////////////// 
+    성진 작성 부분 - 워드클라우드 구현을 위한 컬럼 검색기능 (하루 기준)
+    -->
+      <select id="getAllMainNewsSummaries" resultType="string">
+        SELECT SMR 
+        FROM ANS_MAIN_NEWS 
+        ORDER BY DT DESC 
+        LIMIT 80
+      </select>
+
+      <select id="getAllBreakingNewsSummaries" resultType="string">
+        SELECT SMR 
+        FROM ANS_BREAKING_NEWS 
+        ORDER BY DT DESC 
+        LIMIT 80
+      </select>
 
       <!--영빈 즐찾-->
       <!-- 스크랩 여부 확인 -->
