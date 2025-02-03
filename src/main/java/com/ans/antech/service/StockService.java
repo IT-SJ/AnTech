@@ -71,7 +71,7 @@ public class StockService {
                     JSONArray timestamps = result.getJSONArray("timestamp");
                     for (int i = 0; i < timestamps.length(); i++) {
                         long timestamp = timestamps.getLong(i) * 1000L;
-                        dates.add(new java.text.SimpleDateFormat("yyyy-MM-dd")
+                        dates.add(new java.text.SimpleDateFormat("MM-dd")
                                 .format(new java.util.Date(timestamp)));
                     }
                 }

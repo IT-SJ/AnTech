@@ -18,6 +18,7 @@ import com.ans.antech.model.Member;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
+import com.ans.antech.service.NasdaqService;
 import com.ans.antech.service.StockService;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -126,7 +127,7 @@ public class AnsRestController {
                     uploadDir,
                     fileMaxSize,
                     "UTF-8");
-            
+
             String fileName = multi.getFilesystemName("profileImage");
             String userId = multi.getParameter("userId");
             // DB에는 파일 경로를 저장
@@ -149,12 +150,12 @@ public class AnsRestController {
     // 코스피 & 환율 서비스 선언
     private final StockService stockService;
     private final ExchangeRateService exchangeRateService;
-    
-    
+
     // 생성자 주입 (final 필드 적용)
-    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService) {
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,NasdaqService nasdaqService) {
         this.stockService = stockService;
         this.exchangeRateService = exchangeRateService;
+        this.nasdaqService = nasdaqService;
     }
 
     /**
@@ -169,6 +170,7 @@ public class AnsRestController {
 
     /**
      * 어제 날짜 기준 환율 데이터 제공 API
+     * 
      * @return 주요 통화의 최신 환율 데이터
      */
     @GetMapping("/exchange-rates")
@@ -176,4 +178,19 @@ public class AnsRestController {
         return exchangeRateService.getExchangeRates();
     }
 
+    private final NasdaqService nasdaqService;
+
+  
+        
+
+
+    /**
+     * 나스닥, 다우존스, S&P 500 데이터를 반환하는 API 엔드포인트
+     * 
+     * @return 날짜별 주가지수 데이터
+     */
+    @GetMapping("/nasdaq-dow")
+    public Map<String, Object> getNasdaqDowData() {
+        return nasdaqService.getNasdaqDowData();
+    }
 }
