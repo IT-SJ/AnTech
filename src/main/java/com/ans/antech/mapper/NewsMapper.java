@@ -1,11 +1,11 @@
 package com.ans.antech.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ans.antech.model.News;
+import com.ans.antech.model.Scrap;
 
 @Mapper
 public interface NewsMapper {
@@ -38,6 +38,33 @@ public interface NewsMapper {
     public News findNewsById(@Param("idx") int idx);
 
     public News findBNewsById(@Param("idx") int idx);
+
+    // ----------------영빈 즐찾 ----------------------
+    // 스크랩 여부 확인
+    int checkScrap(@Param("id") String id, @Param("type") String type, @Param("idx") int idx);
+
+    // 스크랩 추가
+    int insertScrap(Scrap scrap);
+
+    // 스크랩 삭제
+    int deleteScrap(@Param("id") String id, @Param("type") String type, @Param("idx") int idx);
+
+    // ✅ 특정 사용자의 스크랩한 뉴스 목록 조회
+    List<News> getScrapNewsByUser(@Param("id") String id, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    // ✅ 특정 사용자의 전체 스크랩 뉴스 개수 조회
+    int getTotalScrapNews(@Param("id") String id);
+
+    // ✅ 특정 사용자의 스크랩 뉴스 목록 가져오기
+    List<Scrap> getScrapList(@Param("id") String id,
+            @Param("offset") int offset,
+            @Param("pageSize") int pageSize);
+
+    // ✅ 주요 뉴스 ID로 조회
+    News getMainNewsById(@Param("idx") int idx);
+
+    // ✅ 속보 뉴스 ID로 조회
+    News getBreakingNewsById(@Param("idx") int idx);
 
     // --------------------------------------------------------------------------
     // 성진 - 워드 클라우드 관련 요약 컬럼 가져오기

@@ -156,8 +156,7 @@
 
                                         <!-- 텍스트 -->
                                         <h6 class="fw-semibold fs-4 mb-2" id="loggedInUserId"
-                                            th:text="${session.loginMember?.id}">내 아이디
-                                        </h6>
+                                            th:text="${session.loginMember?.id}">내 아이디</h6>
                                         <p class="fw-semibold fs-3 mb-0">
                                             <i class="ti ti-mail"></i> <span
                                                 th:text="${session.loginMember?.email}">이메일</span>
@@ -203,188 +202,27 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 뉴스 즐겨찾기 ------------------------------------------------------------------------------------------------->
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
+                    <!-- 스크랩한 뉴스 목록 (동적 렌더링) -->
+                    <div class="row" id="scrapNewsContainer">
+                        <p class="text-center">스크랩한 뉴스가 없습니다.</p>
                     </div>
 
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between py-1 px-2">
-                                <button class="btn btn-outline-light ms-auto">
-                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">뉴스 제목</h5>
-                                <p class="card-text fw-normal" style="display: -webkit-box; 
-                                          -webkit-line-clamp: 2; 
-                                          -webkit-box-orient: vertical; 
-                                          overflow: hidden; 
-                                          text-overflow: ellipsis; 
-                                          line-height: 1.5; 
-                                          max-height: 3rem;">
-                                    뉴스 요약을 두줄로 잘라서 내보낼 예정입니다. 뉴스 요약을 두줄로 잘라서 내보낼 예정입니다.
-                                <p>
-                                <p class="badge bg-secondary rounded-3 mb-0">언론사</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- 페이지네이션 ---------------------------------------------------->
+                    <!-- 페이지네이션 -->
                     <div class="container mt-2">
                         <nav>
-                            <ul class="pagination justify-content-center p-0 m-0" style="gap: 10px;">
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">«</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">3</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">4</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">5</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-circle" href="#">»</a>
-                                </li>
+                            <ul class="pagination justify-content-center p-0 m-0" style="gap: 10px;"
+                                id="paginationContainer">
+                                <!-- 페이지네이션 버튼이 JavaScript에서 동적으로 추가될 예정 -->
                             </ul>
                         </nav>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+
+    <!-- 성진 마이프로필 수정-->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const profileImageUpload = document.getElementById("profileImageUpload");
@@ -437,6 +275,149 @@
             });
         });
     </script>
+
+    <!-- 영빈 즐겨찾기 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loggedInUserId = document.getElementById("loggedInUserId").innerText.trim();
+            const newsContainer = document.getElementById("scrapNewsContainer");
+            const paginationContainer = document.getElementById("paginationContainer");
+            let currentPage = 1;
+            const pageSize = 6;
+
+            async function fetchScrapNews(page) {
+
+                if (typeof event !== "undefined" && event !== null) {
+                    event.preventDefault(); // ✅ 페이지 이동 방지
+                }
+
+                if (!loggedInUserId) {
+                    console.error("로그인한 사용자 ID가 없습니다.");
+                    return;
+                }
+                try {
+                    console.log("🛠 fetchScrapNews 실행됨. 현재 사용자 ID:", loggedInUserId);
+                    const response = await fetch(`/ans/scrap-list?id=${encodeURIComponent(loggedInUserId)}&page=${page}`);
+                    const data = await response.json();
+
+                    console.log("API 응답 데이터:", data);
+                    if (!data || !data.newsList || data.newsList.length === 0) {
+                        newsContainer.innerHTML = "<p class='text-center'>스크랩한 뉴스가 없습니다.</p>";
+                        return;
+                    }
+
+                    renderScrapNews(data.newsList);
+                    renderPagination(data.currentPage, data.totalPages);
+                } catch (error) {
+                    console.error("스크랩 뉴스 목록 불러오기 실패:", error);
+                }
+            }
+
+            function renderScrapNews(newsList) {
+                newsContainer.innerHTML = "";
+                newsList.forEach(news => {
+                    if (!news.idx) return;
+                    const newsCard = document.createElement("div");
+                    newsCard.classList.add("col-sm-6", "col-xl-4");
+                    newsCard.innerHTML = `
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between py-1 px-2">
+                                <button class="btn btn-outline-light ms-auto" onclick="toggleScrap('${news.idx}', '${news.type}')">
+                                    <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/analysis/${news.type}/${news.idx}" class="text-decoration-none text-dark">${news.title}</a>
+                                </h5>
+                                 <p class="card-text fw-normal text-truncate" style="max-height: 3rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                            ${news.smr}
+                        </p>
+                                <p class="badge bg-secondary rounded-3 mb-0">${news.press}</p>
+                            </div>
+                        </div>
+                    `;
+                    newsContainer.appendChild(newsCard);
+                });
+            }
+
+            function renderPagination(currentPage, totalPages) {
+                paginationContainer.innerHTML = "";
+                if (totalPages <= 1) return;
+
+                const ul = document.createElement("ul");
+                ul.classList.add("pagination", "justify-content-center", "p-0", "m-0");
+                ul.style.gap = "10px";
+
+                if (currentPage > 1) {
+                    ul.innerHTML += `<li class="page-item"><a class="page-link rounded-circle" href="#" onclick="fetchScrapNews(${currentPage - 1})">«</a></li>`;
+                }
+
+                for (let i = 1; i <= totalPages; i++) {
+                    ul.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link rounded-circle" href="#" onclick="fetchScrapNews(${i})">${i}</a>
+            </li>`;
+                }
+
+                if (currentPage < totalPages) {
+                    ul.innerHTML += `<li class="page-item"><a class="page-link rounded-circle" href="#" onclick="fetchScrapNews(${currentPage + 1})">»</a></li>`;
+                }
+
+                paginationContainer.appendChild(ul);
+            }
+
+            fetchScrapNews(currentPage);
+            window.fetchScrapNews = fetchScrapNews; // ✅ 함수가 전역에서 접근 가능하도록 등록
+        });
+
+        // ✅ 스크랩 추가/삭제 (비동기)
+        async function toggleScrap(idx, type) {
+            try {
+                const userId = document.getElementById("loggedInUserId").textContent.trim(); // ✅ 현재 로그인한 사용자 ID 가져오기
+
+                const response = await fetch(`/ans/${type}/${idx}?id=${encodeURIComponent(userId)}`, { // ✅ id 추가
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                if (!response.ok) {
+                    throw new Error("서버 요청 실패");
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    alert("스크랩이 취소되었습니다.");
+                    fetchScrapNews(1); // ✅ 스크랩 목록 갱신
+                } else {
+                    alert("스크랩 취소 실패");
+                }
+            } catch (error) {
+                console.error("스크랩 취소 실패:", error);
+            }
+        }
+
+        // ApexCharts 오류 실행 안시키기
+        document.addEventListener("DOMContentLoaded", function () {
+            const chartContainer = document.getElementById("userActivityChart");
+            if (chartContainer) {
+                var options = {
+                    chart: { type: 'line' },
+                    series: [{ name: '활동', data: [10, 15, 7, 20] }]
+                };
+                var chart = new ApexCharts(chartContainer, options);
+                chart.render();
+            }
+        });
+    </script>
+
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+
 
 
 </body>

@@ -11,11 +11,12 @@
     <style>
         .chart-container {
             width: 100%;
-            height: 400px; /* 크기 증가 */
+            height: 400px;
+            /* 크기 증가 */
             max-height: 400px;
             overflow: hidden;
         }
-    
+
         canvas {
             width: 100% !important;
             height: 100% !important;
@@ -109,12 +110,15 @@
                     </ul>
                     <!-- 검색창 -->
                     <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;" action="/search" method="GET">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"
+                            action="/search" method="GET">
                             <div class="input-group" style="width: 90%;">
                                 <button class="btn border-0 shadow-none btn-lg" type="submit">
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
-                                <input type="text" name="keyword" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search">
+                                <input type="text" name="keyword"
+                                    class="form-control border-0 shadow-none form-control-lg" placeholder="Search"
+                                    aria-label="Search">
                             </div>
                         </form>
                     </div>
@@ -165,20 +169,20 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">코스피 지수</h6>
+                                    <h6 class="card-title fw-semibold mb-4">코스피/코스닥</h6>
                                     <div class="chart-container">
                                         <canvas id="kospiKosdaqChart"></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 코스닥 -->
+                        <!-- 나스닥/S&P 500 -->
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">코스닥 지수</h6>
-                                    <div class="chart-wrapper">
-                                        <canvas id="kosdaqChart"></canvas>
+                                    <h6 class="card-title fw-semibold mb-4">나스닥/다우</h6>
+                                    <div class="chart-container">
+                                        <canvas id="nasdaqDowChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -188,8 +192,8 @@
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
                                     <h6 class="card-title fw-semibold mb-4">환율</h6>
-                                    <div class="chart-wrapper">
-                                        <canvas id="exchangeRateChart"></canvas>
+                                    <div id="exchangeRateText" style="font-size: 18px; font-weight: bold;">
+                                        <!-- 환율 데이터가 여기에 업데이트됨 -->
                                     </div>
                                 </div>
                             </div>
@@ -215,9 +219,10 @@
         </div>
     </div>
     </div>
+    <!-- 스크립트 공간입니다 -------------------------------------------------------------------------------------------------------->
     <script>
         let stockChartInstances = {}; // 차트 인스턴스를 저장하는 객체
-    
+
         /**
          * Yahoo Finance API에서 데이터를 가져와 Chart.js로 그래프를 그리는 함수
          * @param {string} apiUrl - 데이터를 가져올 API 엔드포인트
@@ -228,52 +233,55 @@
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-    
+
                 if (!data || !data.dates || data.dates.length === 0) {
                     console.error("데이터 가져오기 실패:", data.error || "No data received.");
                     return;
                 }
-    
+
                 const ctx = document.getElementById(chartId);
                 if (!ctx) {
                     console.error("Chart container not found:", chartId);
                     return;
                 }
-    
+
                 // 기존 차트 삭제
                 if (stockChartInstances[chartId]) {
                     stockChartInstances[chartId].destroy();
                 }
-    
+
                 let datasets = labels.map((labelObj, index) => ({
                     label: labelObj.name,
-                    data: data[labelObj.dataKey], // 예: data.kospi, data.kosdaq
+                    data: data[labelObj.dataKey],
                     borderColor: labelObj.color,
                     backgroundColor: labelObj.bgColor,
                     borderWidth: 2,
                     tension: 0.1,
                     yAxisID: `y-axis-${index + 1}` // KOSPI & KOSDAQ을 개별 y축에 매핑
                 }));
-    
+
                 stockChartInstances[chartId] = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: data.dates,
+                        labels: formattedDates, // 수정된 날짜 적용
                         datasets: datasets
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            x: { display: true, title: { display: true, text: '날짜' } },
-                            "y-axis-1": { 
-                                position: "left", 
-                                title: { display: true, text: "KOSPI 지수" }, 
+                            x: {
+                                display: true,
+                                title: { display: true, text: '날짜 (MM-DD)' }
+                            },
+                            "y-axis-1": {
+                                position: "left",
+                                title: { display: true, text: "KOSPI 지수" },
                                 beginAtZero: false
                             },
-                            "y-axis-2": { 
-                                position: "right", 
-                                title: { display: true, text: "KOSDAQ 지수" }, 
+                            "y-axis-2": {
+                                position: "right",
+                                title: { display: true, text: "KOSDAQ 지수" },
                                 beginAtZero: false,
                                 grid: { drawOnChartArea: false } // KOSPI & KOSDAQ 겹치는 문제 방지
                             }
@@ -284,14 +292,144 @@
                 console.error("Error fetching stock data:", error);
             }
         }
-    
+
+
         // API 호출 (코스피 & 코스닥을 같은 차트에 표시)
         fetchStockData("/ans/kospi-kosdaq", "kospiKosdaqChart", [
-            { name: "KOSPI", color: "red", bgColor: "rgba(255, 99, 132, 0.2)", dataKey: "kospi" },
-            { name: "KOSDAQ", color: "blue", bgColor: "rgba(54, 162, 235, 0.2)", dataKey: "kosdaq" }
+            { name: "KOSPI", color: "#007FEE", bgColor: "#007FEE", dataKey: "kospi" },
+            { name: "KOSDAQ", color: "#FC8B9F", bgColor: "#FC8B9F", dataKey: "kosdaq" }
         ]);
-    </script>
+        // 여기서부터 환율 입니다 ----------------------------------------------------------------------------------------------------------------
+        async function fetchExchangeRatesText() {
+            try {
+                console.log("Fetching exchange rates...");
+                const response = await fetch("/ans/exchange-rates");
 
+                if (!response.ok) {
+                    console.error("HTTP 요청 실패:", response.status, response.statusText);
+                    document.getElementById("exchangeRateText").innerText = "환율 데이터를 불러올 수 없습니다.";
+                    return;
+                }
+
+                const data = await response.json();
+                console.log("Exchange Rate Data:", data);
+
+                if (data.error) {
+                    document.getElementById("exchangeRateText").innerText = data.error;
+                    return;
+                }
+
+                // 표시할 환율 목록 (USD를 가장 먼저 표시)
+                const targetCurrencies = [
+                    { code: "USD/KRW", name: "미국 USD" },
+                    { code: "EUR/KRW", name: "유럽 EUR" },
+                    { code: "JPY/KRW", name: "일본 JPY (100엔)" },
+                    { code: "CNY/KRW", name: "중국 CNY" }
+                ];
+
+                let exchangeRateHTML = `
+                <div class="container-fluid">
+                    <div class="row row-cols-2 g-3">
+            `;
+                targetCurrencies.forEach(({ code, name }) => {
+                    let rate = data[code];
+                    if (!isNaN(rate)) {
+                        exchangeRateHTML += `
+                    <div class="col">
+                        <div class="card shadow-sm border-0 text-center">
+                            <div class="card-header rounded">
+                                <h6 class="fw-semibold mb-2">${name}</h6>
+                                <div class="rate-box" style="color: #007FEE;">${rate.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>`;
+                    }
+                });
+
+                document.getElementById("exchangeRateText").innerHTML = exchangeRateHTML;
+            } catch (error) {
+                console.error("환율 데이터를 가져오는 중 오류 발생:", error);
+                document.getElementById("exchangeRateText").innerText = "환율 데이터를 가져오는 중 오류 발생";
+            }
+        }
+
+        // 환율 텍스트 데이터 가져오기
+        fetchExchangeRatesText();
+
+        // 여기서부터 나스닥 입니다---------------------------------------------------------------------------
+        async function fetchStockData(apiUrl, chartId, labels) {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (!data || !data.dates || data.dates.length === 0) {
+                    console.error("데이터 가져오기 실패:", data.error || "No data received.");
+                    return;
+                }
+
+                const ctx = document.getElementById(chartId);
+                if (!ctx) {
+                    console.error("Chart container not found:", chartId);
+                    return;
+                }
+
+                // 기존 차트 삭제
+                if (stockChartInstances[chartId]) {
+                    stockChartInstances[chartId].destroy();
+                }
+
+                let datasets = labels.map((labelObj, index) => ({
+                    label: labelObj.name,
+                    data: data[labelObj.dataKey],
+                    borderColor: labelObj.color,
+                    backgroundColor: labelObj.bgColor,
+                    borderWidth: 3,
+                    tension: 0.1,
+                    yAxisID: `y-axis-${index + 1}`
+                }));
+
+                stockChartInstances[chartId] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                display: true,
+                                title: { display: true, text: '날짜' }
+                            },
+                            "y-axis-1": {
+                                position: "left",
+                                title: { display: true, text: "NASDAQ 지수" },
+                                beginAtZero: false
+                            },
+                            "y-axis-2": {
+                                position: "right",
+                                title: { display: true, text: "DOW JONES 지수" },
+                                beginAtZero: false,
+                                grid: { drawOnChartArea: false }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+            }
+        }
+
+        // 나스닥 & 다우 차트 적용
+        fetchStockData("/ans/nasdaq-dow", "nasdaqDowChart", [
+            { name: "NASDAQ", color: "#007FEE", bgColor: "#007FEE", dataKey: "nasdaq" },
+            { name: "DOW JONES", color: "#FC8B9F", bgColor: "#FC8B9F", dataKey: "dow" }
+        ]);
+
+
+    </script>
+    <!-- 차트 띠우는 스크립트 끝 ------------------------------------------------------------------------------------>
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sidebarmenu.js"></script>
