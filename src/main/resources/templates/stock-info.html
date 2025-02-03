@@ -180,7 +180,7 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body pt-3 p-4">
-                                    <h6 class="card-title fw-semibold mb-4">나스닥/다우</h6>
+                                    <h6 class="card-title fw-semibold mb-4">나스닥/다우존스</h6>
                                     <div class="chart-container">
                                         <canvas id="nasdaqDowChart"></canvas>
                                     </div>
@@ -201,22 +201,21 @@
                         <!-- 원자재 -->
                         <div class="col">
                             <div class="card">
-                                <div class="card-body pt-3 p-4">
+                                <d class="card-body pt-3 p-4">
                                     <h6 class="card-title fw-semibold mb-4">원자재</h6>
-                                    <div class="chart-wrapper">
-                                        <canvas id="goldChart"></canvas>
-                                        <canvas id="oilChart"></canvas>
+                                    <div id="commoditiesText" style="font-size: 18px; font-weight: bold;">
+                                        <!-- 원자재 데이터가 여기에 업데이트됨 -->
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 카드 끝 -->
-
             </div>
+
+            <!-- 카드 끝 -->
+
         </div>
+    </div>
     </div>
     </div>
     <!-- 스크립트 공간입니다 -------------------------------------------------------------------------------------------------------->
@@ -304,57 +303,38 @@
             try {
                 console.log("Fetching exchange rates...");
                 const response = await fetch("/ans/exchange-rates");
+                const data = await response.json();
 
-                if (!response.ok) {
-                    console.error("HTTP 요청 실패:", response.status, response.statusText);
+                if (!data || data.error) {
                     document.getElementById("exchangeRateText").innerText = "환율 데이터를 불러올 수 없습니다.";
                     return;
                 }
 
-                const data = await response.json();
-                console.log("Exchange Rate Data:", data);
+                let exchangeRateHTML = "";
+                for (const [country, values] of Object.entries(data)) {
+                    let changeColor = values.change > 0 ? "red" : "#007FEE";
+                    let changeSymbol = values.change > 0 ? "▲" : "▼";
 
-                if (data.error) {
-                    document.getElementById("exchangeRateText").innerText = data.error;
-                    return;
+                    exchangeRateHTML += `
+                <p style="font-size: 16px; margin: 5px 0;">
+                    <strong>${values.name}</strong>: 
+                    <span style="font-weight: bold;">${values.currentRate.toFixed(2)} KRW</span> 
+                    <span style="color: ${changeColor}; font-weight: bold;">
+                        ${changeSymbol} ${Math.abs(values.change.toFixed(2))} (${values.changePercent.toFixed(2)}%)
+                    </span>
+                </p>`;
                 }
-
-                // 표시할 환율 목록 (USD를 가장 먼저 표시)
-                const targetCurrencies = [
-                    { code: "USD/KRW", name: "미국 USD" },
-                    { code: "EUR/KRW", name: "유럽 EUR" },
-                    { code: "JPY/KRW", name: "일본 JPY (100엔)" },
-                    { code: "CNY/KRW", name: "중국 CNY" }
-                ];
-
-                let exchangeRateHTML = `
-                <div class="container-fluid">
-                    <div class="row row-cols-2 g-3">
-            `;
-                targetCurrencies.forEach(({ code, name }) => {
-                    let rate = data[code];
-                    if (!isNaN(rate)) {
-                        exchangeRateHTML += `
-                    <div class="col">
-                        <div class="card shadow-sm border-0 text-center">
-                            <div class="card-header rounded">
-                                <h6 class="fw-semibold mb-2">${name}</h6>
-                                <div class="rate-box" style="color: #007FEE;">${rate.toFixed(2)}</div>
-                            </div>
-                        </div>
-                    </div>`;
-                    }
-                });
 
                 document.getElementById("exchangeRateText").innerHTML = exchangeRateHTML;
             } catch (error) {
-                console.error("환율 데이터를 가져오는 중 오류 발생:", error);
-                document.getElementById("exchangeRateText").innerText = "환율 데이터를 가져오는 중 오류 발생";
+                console.error("Error fetching exchange rates:", error);
+                document.getElementById("exchangeRateText").innerText = "데이터를 가져오는 중 오류 발생";
             }
         }
 
         // 환율 텍스트 데이터 가져오기
         fetchExchangeRatesText();
+
 
         // 여기서부터 나스닥 입니다---------------------------------------------------------------------------
         async function fetchStockData(apiUrl, chartId, labels) {
@@ -426,6 +406,43 @@
             { name: "NASDAQ", color: "#007FEE", bgColor: "#007FEE", dataKey: "nasdaq" },
             { name: "DOW JONES", color: "#FC8B9F", bgColor: "#FC8B9F", dataKey: "dow" }
         ]);
+
+        //원자재
+        async function fetchCommoditiesText() {
+            try {
+                console.log("Fetching commodities data...");
+                const response = await fetch("/ans/commodities");
+                const data = await response.json();
+
+                if (!data || data.error) {
+                    document.getElementById("commoditiesText").innerText = "원자재 데이터를 불러올 수 없습니다.";
+                    return;
+                }
+
+                let commoditiesHTML = "";
+                for (const [commodity, values] of Object.entries(data)) {
+                    let changeColor = values.change > 0 ? "red" : "#007FEE";
+                    let changeSymbol = values.change > 0 ? "▲" : "▼";
+
+                    commoditiesHTML += `
+                <p style="font-size: 16px; margin: 5px 0;">
+                    <strong>${values.name}</strong>: 
+                    <span style="font-weight: bold;">${values.currentPrice.toFixed(2)} USD</span> 
+                    <span style="color: ${changeColor}; font-weight: bold;">
+                        ${changeSymbol} ${Math.abs(values.change.toFixed(2))} (${values.changePercent.toFixed(2)}%)
+                    </span>
+                </p>`;
+                }
+
+                document.getElementById("commoditiesText").innerHTML = commoditiesHTML;
+            } catch (error) {
+                console.error("Error fetching commodities data:", error);
+                document.getElementById("commoditiesText").innerText = "데이터를 가져오는 중 오류 발생";
+            }
+        }
+
+        // 원자재 텍스트 데이터 가져오기
+        fetchCommoditiesText();
 
 
     </script>

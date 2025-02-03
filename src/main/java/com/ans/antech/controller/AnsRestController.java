@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
+import com.ans.antech.service.CommoditiesService;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
@@ -153,10 +154,13 @@ public class AnsRestController {
     private final ExchangeRateService exchangeRateService;
 
     // 생성자 주입 (final 필드 적용)
-    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,NasdaqService nasdaqService) {
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,NasdaqService nasdaqService,CommoditiesService commoditiesService) {
         this.stockService = stockService;
         this.exchangeRateService = exchangeRateService;
         this.nasdaqService = nasdaqService;
+        this.commoditiesService = commoditiesService;
+        
+
     }
 
     /**
@@ -270,5 +274,16 @@ public class AnsRestController {
     @GetMapping("/nasdaq-dow")
     public Map<String, Object> getNasdaqDowData() {
         return nasdaqService.getNasdaqDowData();
+    }
+
+    private final CommoditiesService commoditiesService;
+
+    /**
+     * 원자재 가격 데이터 반환 API (현재가 및 증감 포함)
+     * @return 원자재별 가격 데이터
+     */
+    @GetMapping("/commodities")
+    public Map<String, Object> getCommoditiesData() {
+        return commoditiesService.getCommoditiesData();
     }
 }
