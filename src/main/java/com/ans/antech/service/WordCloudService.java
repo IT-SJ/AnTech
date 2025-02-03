@@ -25,13 +25,6 @@ public class WordCloudService {
     @Value("${flask.url}") // Flask 서버 URL 주입
     private String flaskUrl;
 
-    
-    public Map<String, Integer> generateWordCloud() {
-        List<String> mainNewsSummaries = getAllMainNewsSummaries();
-        List<String> breakingNewsSummaries = getAllBreakingNewsSummaries();
-        return getWordFrequencies(mainNewsSummaries, breakingNewsSummaries);
-    }
-
     public List<String> getAllMainNewsSummaries() {
 
         return mapper.getAllMainNewsSummaries();

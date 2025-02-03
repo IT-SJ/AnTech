@@ -5,148 +5,148 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="@{/assets/images/logos/favicon.png}" />
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
 
 </head>
 
 <body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- 사이드바 시작 -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="home" class="text-nowrap logo-img">
-                        <img src="../assets/images/logos/Logo1.svg" width="180" alt="" />
-                    </a>
-                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                        <i class="ti ti-x fs-8"></i>
+        <!--  Body Wrapper -->
+        <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+            data-sidebar-position="fixed" data-header-position="fixed">
+            <!-- 사이드바 시작 -->
+            <aside class="left-sidebar">
+                <!-- Sidebar scroll-->
+                <div>
+                    <div class="brand-logo d-flex align-items-center justify-content-between">
+                        <a th:href="@{/home}" class="text-nowrap logo-img">
+                            <img th:src="@{/assets/images/logos/Logo1.svg}" width="180" alt="Logo1" />
+                        </a>
+                        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                            <i class="ti ti-x fs-8"></i>
+                        </div>
                     </div>
-                </div>
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" th:href="@{/home}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-layout-dashboard"></i>
-                                </span>
-                                <span class="hide-menu">Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Pages</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" th:href="@{/breaking}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-article"></i>
-                                </span>
-                                <span class="hide-menu">실시간 속보</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" th:href="@{/main}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-alert-circle"></i>
-                                </span>
-                                <span class="hide-menu">주요 뉴스</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" th:href="@{/stockinfo}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-cards"></i>
-                                </span>
-                                <span class="hide-menu">증권 정보</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" th:href="@{/mypage}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user"></i>
-                                </span>
-                                <span class="hide-menu">마이페이지</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!--  사이드바 끝  ------------------------------------------------------------------------------------>
-        <!--  Main wrapper -->
-        <div class="body-wrapper">
-            <!--  헤더 시작 -->
-            <header class="app-header">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <ul class="navbar-nav">
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
-                                href="javascript:void(0)">
-                                <i class="ti ti-menu-2"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- 검색창 -->
-                    <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;">
-                            <!-- 너비 증가 -->
-                            <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
-                                <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
-                                    <i class="ti ti-search text-dark"></i>
-                                </button>
-                                <input type="text" class="form-control border-0 shadow-none form-control-lg"
-                                    placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- 프로필 클릭했을때 내려오는 아이들 -->
-                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
-                                        class="rounded-circle">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                        <ul id="sidebarnav">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/home}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-layout-dashboard"></i>
+                                    </span>
+                                    <span class="hide-menu">Home</span>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-                                    aria-labelledby="drop2">
-                                    <div class="message-body">
-                                        <a href="javascript:void(0)"
-                                            class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-user fs-6"></i>
-                                            <p class="mb-0 fs-3">My Page</p>
-                                        </a>
-                                        <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-3">My Account</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">My Task</p>
-                    </a> -->
-                                        <a href="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                                    </div>
-                                </div>
+                            </li>
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">Pages</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/breaking}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-article"></i>
+                                    </span>
+                                    <span class="hide-menu">실시간 속보</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/main}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-alert-circle"></i>
+                                    </span>
+                                    <span class="hide-menu">주요 뉴스</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/stockinfo}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-cards"></i>
+                                    </span>
+                                    <span class="hide-menu">증권 정보</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" th:href="@{/mypage}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-user"></i>
+                                    </span>
+                                    <span class="hide-menu">마이페이지</span>
+                                </a>
                             </li>
                         </ul>
-                    </div>
-                </nav>
-            </header>
-            <!--  헤더 끝 ------------------------------------------------------------------------------------------------------------------------------------>
+                    </nav>
+
+                    <!-- End Sidebar navigation -->
+                </div>
+                <!-- End Sidebar scroll-->
+            </aside>
+            <!--  사이드바 끝  ------------------------------------------------------------------------------------>
+            <!--  Main wrapper -->
+            <div class="body-wrapper">
+                <!--  헤더 시작 -->
+                <header class="app-header">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <ul class="navbar-nav">
+                            <li class="nav-item d-block d-xl-none">
+                                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
+                                    href="javascript:void(0)">
+                                    <i class="ti ti-menu-2"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- 검색창 -->
+                        <div class="ms-3">
+                            <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;">
+                                <!-- 너비 증가 -->
+                                <div class="input-group" style="width: 90%;"> <!-- 내부 요소도 키우기 -->
+                                    <button class="btn border-0 shadow-none btn-lg" type="submit"> <!-- 버튼 크기 증가 -->
+                                        <i class="ti ti-search text-dark"></i>
+                                    </button>
+                                    <input type="text" class="form-control border-0 shadow-none form-control-lg"
+                                        placeholder="Search" aria-label="Search"> <!-- 입력창 크기 증가 -->
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 프로필 클릭했을때 내려오는 아이들 -->
+                        <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img th:src="@{${session.loginMember?.profile_Img != null ? session.loginMember.profile_Img : '/assets/images/logos/profile.png'}}"
+                                            alt="" width="35" height="35" class="rounded-circle">
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                        aria-labelledby="drop2">
+                                        <div class="message-body">
+                                            <a href="javascript:void(0)"
+                                                class="d-flex align-items-center gap-2 dropdown-item">
+                                                <i class="ti ti-user fs-6"></i>
+                                                <p class="mb-0 fs-3">My Page</p>
+                                            </a>
+                                            <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                        </a>
+                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                        </a> -->
+                                            <a th:href="@{/logout}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <!--  헤더 끝 ------------------------------------------------------------------------------------------------------------------------------------>
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;"
-                    th:text="${type == 'breaking' ? '속보 뉴스 분석' : '주요 뉴스 분석'}">주요 뉴스 분석</h5>
+                        th:text="${type == 'breaking' ? '속보 뉴스 분석' : '주요 뉴스 분석'}">주요 뉴스 분석</h5>
                     <button class="btn btn-outline-primary">스크랩</button>
                 </div>
 
@@ -159,10 +159,12 @@
                             <div class="position-relative mb-4">
                                 <a href="javascript:void(0)">
                                     <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
-                                        th:src="${news.img_url1}" class="card-img-top rounded-0 border border-5 border-white"
+                                        th:src="${news.img_url1}"
+                                        class="card-img-top rounded-0 border border-5 border-white"
                                         style="object-fit: cover; height: 300px; width: 100%;">
                                     <img th:if="${news.img_url1 == null or news.img_url1 == ''}"
-                                    th:src="@{/assets/images/logo/Frame.svg}" class="card-img-top rounded border border-5 border-white"
+                                        th:src="@{/assets/images/logo/Frame.svg}"
+                                        class="card-img-top rounded border border-5 border-white"
                                         style="object-fit: cover; height: 300px; width: 100%;">
                                 </a>
                             </div>
@@ -174,13 +176,22 @@
                                     </h5>
                                 </div>
                                 <!-- 해시태그 영역 -->
-                                <div class="d-flex flex-wrap gap-3 mb-2 ">
-                                    <h5 class="fw-bold" style="color: red; ">#빨강태그</h5>
-                                    <h5 class="fw-bold" style="color: blue; ">#파랑태그</h5>
-                                    <h5 class="fw-bold" style="color: black;">#검정태그</h5>
+                                <div class="d-flex flex-wrap gap-3 mb-2">
+                                    <!-- 주요 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${mainHashtags}" th:if="${type == 'main'}"
+                                        th:text="${hashtag}" class="fw-bold" style="color: red;"
+                                        onclick="alert('Clicked on 주요 뉴스 태그: ' + this.innerText)">
+                                    </h5>
+
+                                    <!-- 실시간 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${breakingHashtags}" th:if="${type == 'breaking'}"
+                                        th:text="${hashtag}" class="fw-bold" style="color: blue;"
+                                        onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
+                                    </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
-                                    <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문 보기</a>
+                                    <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문
+                                        보기</a>
                                 </div>
                             </div>
                         </div>
@@ -210,20 +221,19 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <!-- Row 끝 --------------------------------------------------------------------->
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+
+    <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/sidebarmenu.js}"></script>
+    <script th:src="@{/assets/js/app.min.js}"></script>
+    <script th:src="@{/assets/libs/apexcharts/dist/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
+    <script th:src="@{/assets/js/dashboard.js}"></script>
+
 </body>
 
 </html>

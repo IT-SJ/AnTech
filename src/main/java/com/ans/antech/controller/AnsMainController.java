@@ -21,6 +21,7 @@ import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
 import com.ans.antech.service.WordCloudService;
+import com.ans.antech.service.HashTagService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,7 @@ public class AnsMainController {
     private MemberService service;
 
     @Autowired
+
     private EmailService emailService;
 
     @Autowired
@@ -41,6 +43,10 @@ public class AnsMainController {
 
     @Autowired
     private WordCloudService wordCloudService;
+
+    // 해시태그 서비스
+    @Autowired
+    HashTagService hashTagService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -130,8 +136,9 @@ public class AnsMainController {
         List<String> mainNewsSummaries = wordCloudService.getAllMainNewsSummaries();
         List<String> breakingNewsSummaries = wordCloudService.getAllBreakingNewsSummaries();
 
-        Map<String, Integer> wordFrequencies = wordCloudService.getWordFrequencies(mainNewsSummaries, breakingNewsSummaries);
-        
+        Map<String, Integer> wordFrequencies = wordCloudService.getWordFrequencies(mainNewsSummaries,
+                breakingNewsSummaries);
+
         model.addAttribute("newsTitles", newsTitles);
         model.addAttribute("breakingNewsTitles", breakingNewsTitles);
         // 워드 클라우드 관련 모델에 담아두기
@@ -205,6 +212,7 @@ public class AnsMainController {
     public String analysis() {
         return "analysis";
     }
+
 
     @GetMapping("/mypage")
     public String mypage() {
@@ -295,8 +303,24 @@ public class AnsMainController {
             news = newsService.getNewsById(idx); // 주요 뉴스 가져오기
         }
 
+        // 성진 - 해시태그 키워드 추출을 위한 뉴스 내용(Text) 주요뉴스, 속보뉴스에서 가져오기
+        String mainNewsContent = hashTagService.getMainNewsContent(idx);
+        String breakingNewsContent = hashTagService.getBreakingNewsContent(idx);
+
+        // Flask API 호출하여 해시태그 추출
+        List<String> mainHashtags = hashTagService.getMainNewsHashtags(mainNewsContent);
+        List<String> breakingHashtags = hashTagService.getBreakingNewsHashtags(breakingNewsContent);
+
         model.addAttribute("news", news);
         model.addAttribute("type", type); // 뉴스 종류 전달
+        // 모델에 데이터 추가
+        model.addAttribute("mainHashtags", mainHashtags);
+        model.addAttribute("breakingHashtags", breakingHashtags);
+
+        // 감성 분석
+        
+        // 관련 주 로직
+
         return "analysis"; // 공통 analysis.html 사용
     }
 }

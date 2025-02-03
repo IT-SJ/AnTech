@@ -92,6 +92,18 @@
         LIMIT 80
     </select>
 
+    <!-- 성진 작성 부분 - 해시태그 구현을 위한 내용 컬럼 검색기능-->
+    <select id="findMainNewsContent" resultType="String">
+        SELECT TEXT
+        FROM ANS_MAIN_NEWS  
+        WHERE idx=#{idx}
+    </select>
+
+    <select id="findBreakingNewsContent" resultType="String">
+        SELECT TEXT
+        FROM ANS_BREAKING_NEWS  
+        WHERE idx=#{idx}
+    </select>
 
 
 
