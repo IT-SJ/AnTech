@@ -171,7 +171,7 @@ public class AnsRestController {
 
     // ---------------------영빈 즐찾-----------------------
     // 특정 뉴스가 스크랩 되어 있는지 확인
-    @GetMapping("/{type}/{idx}")
+    @GetMapping("analysis/{type}/{idx}")
     public ResponseEntity<?> checkScrapStatus(@PathVariable String type,
             @PathVariable int idx,
             @RequestParam String id) {
