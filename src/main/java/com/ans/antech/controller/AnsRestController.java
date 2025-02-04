@@ -174,7 +174,6 @@ public class AnsRestController {
 
     // ---------------------영빈 즐찾-----------------------
     // ✅ 스크랩 여부 확인 (메인/속보 구분)
-    // ✅ 스크랩 여부 확인 (메인/속보 구분)
     @GetMapping("/scrap/{idx}")
     public ResponseEntity<Map<String, Boolean>> checkScrap(
             @PathVariable int idx,

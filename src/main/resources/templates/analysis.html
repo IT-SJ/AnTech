@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="/src/main/resources/static/assets/images/logos/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="@{/assets/images/logos/favicon.png}" />
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
 
 </head>
@@ -60,10 +60,18 @@
                                     </h5>
                                 </div>
                                 <!-- 해시태그 영역 -->
-                                <div class="d-flex flex-wrap gap-3 mb-2 ">
-                                    <h5 class="fw-bold" style="color: red; ">#빨강태그</h5>
-                                    <h5 class="fw-bold" style="color: blue; ">#파랑태그</h5>
-                                    <h5 class="fw-bold" style="color: black;">#검정태그</h5>
+                                <div class="d-flex flex-wrap gap-3 mb-2">
+                                    <!-- 주요 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${mainHashtags}" th:if="${type == 'main'}"
+                                        th:text="${hashtag}" class="fw-bold" style="color: red;"
+                                        onclick="alert('Clicked on 주요 뉴스 태그: ' + this.innerText)">
+                                    </h5>
+
+                                    <!-- 실시간 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${breakingHashtags}" th:if="${type == 'breaking'}"
+                                        th:text="${hashtag}" class="fw-bold" style="color: blue;"
+                                        onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
+                                    </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
                                     <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문
@@ -97,16 +105,12 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <!-- Row 끝 --------------------------------------------------------------------->
             </div>
         </div>
     </div>
-
+    
     <!-- 영빈 즐찾-->
-
     <script>
         async function toggleScrap(button) {
             const idx = button.getAttribute("data-idx");
@@ -155,6 +159,8 @@
     <script th:src="@{/assets/libs/apexcharts/dist/apexcharts.min.js}"></script>
     <script th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
     <script th:src="@{/assets/js/dashboard.js}"></script>
+
+    
 
 </body>
 

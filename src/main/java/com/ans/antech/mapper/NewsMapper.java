@@ -71,4 +71,10 @@ public interface NewsMapper {
     public List<String> getAllMainNewsSummaries();
 
     public List<String> getAllBreakingNewsSummaries();
+
+
+    // 성진 - 해시태그 관련 내용 컬럼 가져오기
+    public String findMainNewsContent(@Param("idx") int idx);
+
+    public String findBreakingNewsContent(@Param("idx") int idx);
 }

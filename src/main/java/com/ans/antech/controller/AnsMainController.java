@@ -20,6 +20,7 @@ import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
 import com.ans.antech.service.WordCloudService;
+import com.ans.antech.service.HashTagService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ public class AnsMainController {
     private MemberService service;
 
     @Autowired
+
     private EmailService emailService;
 
     @Autowired
@@ -40,6 +42,10 @@ public class AnsMainController {
 
     @Autowired
     private WordCloudService wordCloudService;
+
+    // 해시태그 서비스
+    @Autowired
+    HashTagService hashTagService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -205,6 +211,7 @@ public class AnsMainController {
     public String analysis() {
         return "analysis";
     }
+
 
     @GetMapping("/mypage")
     public String mypage() {

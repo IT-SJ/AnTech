@@ -32,6 +32,44 @@ def process_text():
 
     return jsonify(top_word_freq)  # JSON 형태로 반환
 
+# 주요 뉴스 해시태그 추출
+@app.route('/extract-main-hashtags', methods=['POST'])
+def extract_main_hashtags():
+    data = request.get_json()
+    main_content = data.get("mainContent", "")
+
+    # 형태소 분석 및 키워드 추출
+    tokens = kiwi.tokenize(main_content)
+    word_freq = defaultdict(int)
+    for token in tokens:
+        if token.tag in ['NNG', 'NNP']:  # 일반 명사(NNG), 고유 명사(NNP)만 포함
+            word_freq[token.form] += 1
+
+    # 상위 5개의 단어 추출 및 해시태그 변환
+    sorted_word_freq = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:5]
+    hashtags = [f"#{word}" for word, freq in sorted_word_freq]
+
+    return jsonify(hashtags)
+
+# 속보 뉴스 해시태그 추출
+@app.route('/extract-breaking-hashtags', methods=['POST'])
+def extract_breaking_hashtags():
+    data = request.get_json()
+    breaking_content = data.get("breakingContent", "")
+
+    # 형태소 분석 및 키워드 추출
+    tokens = kiwi.tokenize(breaking_content)
+    word_freq = defaultdict(int)
+    for token in tokens:
+        if token.tag in ['NNG', 'NNP']:
+            word_freq[token.form] += 1
+
+    # 상위 5개의 단어 추출 및 해시태그 변환
+    sorted_word_freq = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:5]
+    hashtags = [f"#{word}" for word, freq in sorted_word_freq]
+
+    return jsonify(hashtags)
+
 if __name__ == '__main__':
-    # Flask 서버 실행 (localhost:5001)
+    # Flask 서버 실행 (localhost:5000)
     app.run(host='0.0.0.0', port=5000, debug=True)
