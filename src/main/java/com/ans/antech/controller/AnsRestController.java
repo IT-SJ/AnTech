@@ -181,10 +181,15 @@ public class AnsRestController {
         return ResponseEntity.ok(Collections.singletonMap("scrapped", isScrapped));
     }
 
-    // ✅ 스크랩 추가 (POST)
+    // ✅ 스크랩 추가/토글 (POST)
     @PostMapping("/scrap/{idx}")
     public ResponseEntity<?> toggleScrap(@PathVariable int idx, @RequestParam String id, @RequestParam String type) {
         try {
+            // ✅ type 값 검증
+            if (type == null || (!"main".equalsIgnoreCase(type) && !"breaking".equalsIgnoreCase(type))) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Invalid type parameter"));
+            }
+
             boolean isScrapped = scrapService.addScrap(id, idx, type); // ✅ type으로 구분
             Map<String, Boolean> response = new HashMap<>();
             response.put("scrapped", isScrapped);
@@ -198,9 +203,14 @@ public class AnsRestController {
     // ✅ 스크랩 삭제 (DELETE)
     @DeleteMapping("/scrap/{idx}")
     public ResponseEntity<?> removeScrap(@PathVariable int idx, @RequestParam String id) {
-        boolean result = scrapService.removeScrap(id, idx);
-        return result ? ResponseEntity.ok(Collections.singletonMap("scrapped", false))
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("스크랩 삭제 실패");
+        try {
+            boolean result = scrapService.removeScrap(id, idx);
+            return result ? ResponseEntity.ok(Collections.singletonMap("scrapped", false))
+                    : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "스크랩 삭제 실패"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "스크랩 삭제 중 오류 발생: " + e.getMessage()));
+        }
     }
 
     /**

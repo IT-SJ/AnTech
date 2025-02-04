@@ -26,6 +26,7 @@
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">속보 뉴스 분석</h5>
+                    <input type="hidden" id="type" value="breaking">
                     <!-- 스크랩 버튼 -->
                     <button class="btn btn-outline-primary"
                         th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-idx="${news.idx}"
