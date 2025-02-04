@@ -27,9 +27,9 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">속보 뉴스 분석</h5>
                     <!-- 스크랩 버튼 -->
-                    <button id="scrapButton" class="btn btn-outline-primary"
-                        th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-type="${type}"
-                        th:data-idx="${news.idx}" onclick="toggleScrap()">
+                    <button class="btn btn-outline-primary"
+                        th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-idx="${news.idx}"
+                        th:data-id="${session.loginMember.id}" onclick="toggleScrap(this)">
                     </button>
                 </div>
 
@@ -107,27 +107,17 @@
     <!-- 영빈 즐찾-->
 
     <script>
-        const type = "[[${type}]]";
         const idx = "[[${news.idx}]]";
-        const id = "[[${session.loginMember.id}]]"; // 서버에서 로그인된 사용자 ID 가져오기
+        const id = "[[${session.loginMember.id}]]";
+        const type = "[[${type}]]"; // ✅ 메인 or 속보 자동 판별
         const scrapButton = document.getElementById("scrapButton");
-
-        async function checkScrapStatus() {
-            try {
-                const response = await fetch(`/ans/${type}/${idx}?id=${id}`);
-                const data = await response.json();
-                scrapButton.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
-            } catch (error) {
-                console.error("스크랩 상태 확인 실패:", error);
-            }
-        }
 
         async function toggleScrap() {
             try {
                 const isScrapped = scrapButton.textContent === "스크랩 취소";
                 const method = isScrapped ? "DELETE" : "POST";
 
-                const response = await fetch(`/ans/${type}/${idx}?id=${id}`, {
+                const response = await fetch(`/ans/scrap/${idx}?id=${id}&type=${type}`, {
                     method: method,
                     headers: { "Content-Type": "application/json" }
                 });
@@ -138,15 +128,7 @@
                 console.error("스크랩 토글 실패:", error);
             }
         }
-
-        checkScrapStatus();
     </script>
-
-    <script>
-        const idd = "[[${news.idx}]]"; // idx 값 확인
-        console.log("News IDX:", idd);
-    </script>
-
 
     <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
