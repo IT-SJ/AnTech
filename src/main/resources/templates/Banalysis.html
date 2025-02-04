@@ -60,9 +60,10 @@
                                 </div>
                                 <!-- 해시태그 영역 -->
                                 <div class="d-flex flex-wrap gap-3 mb-2 ">
-                                    <h5 class="fw-bold" style="color: red; ">#빨강태그</h5>
-                                    <h5 class="fw-bold" style="color: blue; ">#파랑태그</h5>
-                                    <h5 class="fw-bold" style="color: black;">#검정태그</h5>
+                                    <!-- 실시간 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${breakingHashtags}" th:text="${hashtag}" class="fw-bold"
+                                        style="color: blue;" onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
+                                    </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
                                     <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문

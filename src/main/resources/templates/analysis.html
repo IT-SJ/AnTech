@@ -62,15 +62,9 @@
                                 <!-- 해시태그 영역 -->
                                 <div class="d-flex flex-wrap gap-3 mb-2">
                                     <!-- 주요 뉴스 해시태그 -->
-                                    <h5 th:each="hashtag : ${mainHashtags}" th:if="${type == 'main'}"
+                                    <h5 th:each="hashtag : ${mainHashtags}"
                                         th:text="${hashtag}" class="fw-bold" style="color: red;"
                                         onclick="alert('Clicked on 주요 뉴스 태그: ' + this.innerText)">
-                                    </h5>
-
-                                    <!-- 실시간 뉴스 해시태그 -->
-                                    <h5 th:each="hashtag : ${breakingHashtags}" th:if="${type == 'breaking'}"
-                                        th:text="${hashtag}" class="fw-bold" style="color: blue;"
-                                        onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
                                     </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">

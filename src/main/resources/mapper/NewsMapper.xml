@@ -92,16 +92,43 @@
         LIMIT 80
     </select>
 
-      <!-- 영빈 즐찾 -->
-      <!-- ✅ 스크랩 여부 확인 (메인/속보 구분) -->
-<select id="checkScrap" resultType="int">
+    <!-- 성진 작성 부분 - 해시태그 구현을 위한 내용 컬럼 검색기능-->
+    <select id="findMainNewsContent" resultType="String">
+        SELECT TEXT
+        FROM ANS_MAIN_NEWS  
+        WHERE idx=#{idx}
+    </select>
+
+    <select id="findBreakingNewsContent" resultType="String">
+        SELECT TEXT
+        FROM ANS_BREAKING_NEWS  
+        WHERE idx=#{idx}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 영빈 즐찾 -->
+    <!-- ✅ 스크랩 여부 확인 (메인/속보 구분) -->
+    <select id="checkScrap" resultType="int">
     SELECT COUNT(*) FROM ANS_FAV
     WHERE ID = #{id}
     AND (MAIN_IDX = #{idx} OR BREAKING_IDX = #{idx})
-</select>
+    </select>
 
-<!-- ✅ 뉴스 스크랩 추가 (메인/속보 중 하나만 저장) -->
-<insert id="insertScrap">
+    <!-- ✅ 뉴스 스크랩 추가 (메인/속보 중 하나만 저장) -->
+    <insert id="insertScrap">
     INSERT INTO ANS_FAV (ID, MAIN_IDX, BREAKING_IDX, CREATE_DT)
     VALUES (
         #{id}, 
@@ -109,17 +136,17 @@
         CASE WHEN #{breakingIdx} IS NOT NULL THEN #{breakingIdx} ELSE NULL END, 
         NOW()
     )
-</insert>
+    </insert>
 
-<!-- ✅ 뉴스 스크랩 삭제 (idx만 받아서 삭제) -->
-<delete id="deleteScrap">
+    <!-- ✅ 뉴스 스크랩 삭제 (idx만 받아서 삭제) -->
+    <delete id="deleteScrap">
     DELETE FROM ANS_FAV
     WHERE ID = #{id}
     AND (MAIN_IDX = #{idx} OR BREAKING_IDX = #{idx})
-</delete>
+    </delete>
 
-<!-- ✅ 특정 사용자의 **메인 뉴스** 스크랩 목록 조회 -->
-<select id="getMainScrapList" resultType="com.ans.antech.model.News">
+    <!-- ✅ 특정 사용자의 **메인 뉴스** 스크랩 목록 조회 -->
+    <select id="getMainScrapList" resultType="com.ans.antech.model.News">
     SELECT 
         n.idx AS idx, 
         n.title AS title,
@@ -131,10 +158,10 @@
     WHERE f.id = #{id}
     ORDER BY f.create_dt DESC
     LIMIT #{pageSize} OFFSET #{offset}
-</select>
+    </select>
 
-<!-- ✅ 특정 사용자의 **속보 뉴스** 스크랩 목록 조회 -->
-<select id="getBreakingScrapList" resultType="com.ans.antech.model.News">
+    <!-- ✅ 특정 사용자의 **속보 뉴스** 스크랩 목록 조회 -->
+    <select id="getBreakingScrapList" resultType="com.ans.antech.model.News">
     SELECT 
         b.idx AS idx, 
         b.title AS title,
@@ -146,26 +173,26 @@
     WHERE f.id = #{id}
     ORDER BY f.create_dt DESC
     LIMIT #{pageSize} OFFSET #{offset}
-</select>
+    </select>
 
-<!-- ✅ 특정 사용자의 전체 **메인 뉴스 스크랩 개수 조회** -->
-<select id="getTotalMainScrapNews" resultType="int">
+    <!-- ✅ 특정 사용자의 전체 **메인 뉴스 스크랩 개수 조회** -->
+    <select id="getTotalMainScrapNews" resultType="int">
     SELECT COUNT(*) FROM ANS_FAV WHERE id = #{id} AND MAIN_IDX IS NOT NULL
-</select>
+    </select>
 
-<!-- ✅ 특정 사용자의 전체 **속보 뉴스 스크랩 개수 조회** -->
-<select id="getTotalBreakingScrapNews" resultType="int">
+    <!-- ✅ 특정 사용자의 전체 **속보 뉴스 스크랩 개수 조회** -->
+    <select id="getTotalBreakingScrapNews" resultType="int">
     SELECT COUNT(*) FROM ANS_FAV WHERE id = #{id} AND BREAKING_IDX IS NOT NULL
-</select>
+    </select>
 
-<!-- ✅ 특정 사용자의 전체 스크랩 리스트 조회 (페이징 포함) -->
-<select id="getScrapList" resultType="Scrap">
+    <!-- ✅ 특정 사용자의 전체 스크랩 리스트 조회 (페이징 포함) -->
+    <select id="getScrapList" resultType="Scrap">
     SELECT idx, id, main_idx, breaking_idx, create_dt
     FROM ANS_FAV
     WHERE id = #{id}
     ORDER BY create_dt DESC
     LIMIT #{offset}, #{pageSize}
-</select>
+    </select>
 
     <!-- ✅ 주요 뉴스 ID로 조회 -->
     <select id="getMainNewsById" parameterType="int" resultType="com.ans.antech.model.News">
