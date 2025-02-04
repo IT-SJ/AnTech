@@ -129,8 +129,9 @@ public class AnsMainController {
         List<String> mainNewsSummaries = wordCloudService.getAllMainNewsSummaries();
         List<String> breakingNewsSummaries = wordCloudService.getAllBreakingNewsSummaries();
 
-        Map<String, Integer> wordFrequencies = wordCloudService.getWordFrequencies(mainNewsSummaries, breakingNewsSummaries);
-        
+        Map<String, Integer> wordFrequencies = wordCloudService.getWordFrequencies(mainNewsSummaries,
+                breakingNewsSummaries);
+
         model.addAttribute("newsTitles", newsTitles);
         model.addAttribute("breakingNewsTitles", breakingNewsTitles);
         // 워드 클라우드 관련 모델에 담아두기
@@ -283,20 +284,25 @@ public class AnsMainController {
         return "breaking-news";
     }
 
-    // 뉴스 분석 페이지 (주요 뉴스 & 속보 뉴스 공통)
-    @GetMapping("/analysis/{type}/{idx}")
-    public String showAnalysisPage(@PathVariable String type, @PathVariable int idx, Model model) {
-        News news;
-
-        if ("breaking".equals(type)) {
-            news = newsService.getBNewsById(idx); // 속보 뉴스 가져오기
-        } else {
-            news = newsService.getNewsById(idx); // 주요 뉴스 가져오기
-        }
-
+    // 주요 뉴스 분석 페이지
+    @GetMapping("/analysis/{idx}")
+    public String mainAnalysis(@PathVariable int idx, Model model) {
+        News news = newsService.getNewsById(idx); // 주요 뉴스 가져오기
         model.addAttribute("news", news);
-        model.addAttribute("type", type); // 뉴스 종류 전달
-        return "analysis"; // 공통 analysis.html 사용
+        return "analysis"; // 주요 뉴스 분석 페이지
+    }
+
+    // 속보 뉴스 분석 페이지
+    @GetMapping("/Banalysis/{idx}")
+    public String breakingAnalysis(@PathVariable int idx, Model model) {
+        News news = newsService.getBNewsById(idx); // 속보 뉴스 가져오기
+        model.addAttribute("news", news);
+        return "Banalysis"; // 속보 뉴스 분석 페이지
+    }
+
+    @GetMapping("/Banalysis")
+    public String Banalysis() {
+        return "Banalysis";
     }
 
 }

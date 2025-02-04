@@ -41,13 +41,13 @@ public interface NewsMapper {
 
     // ----------------영빈 즐찾 ----------------------
     // 스크랩 여부 확인
-    int checkScrap(@Param("id") String id, @Param("type") String type, @Param("idx") int idx);
+    int checkScrap(@Param("id") String id, @Param("idx") int idx);
 
     // 스크랩 추가
     int insertScrap(Scrap scrap);
 
     // 스크랩 삭제
-    int deleteScrap(@Param("id") String id, @Param("type") String type, @Param("idx") int idx);
+    int deleteScrap(@Param("id") String id, @Param("idx") int idx);
 
     // ✅ 특정 사용자의 스크랩한 뉴스 목록 조회
     List<News> getScrapNewsByUser(@Param("id") String id, @Param("pageSize") int pageSize, @Param("offset") int offset);

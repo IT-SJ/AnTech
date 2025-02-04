@@ -159,7 +159,6 @@ public class AnsRestController {
         this.exchangeRateService = exchangeRateService;
         this.nasdaqService = nasdaqService;
         this.commoditiesService = commoditiesService;
-        
 
     }
 
@@ -174,53 +173,53 @@ public class AnsRestController {
     }
 
     // ---------------------영빈 즐찾-----------------------
-    // 특정 뉴스가 스크랩 되어 있는지 확인
-    @GetMapping("/{type}/{idx}")
-    public ResponseEntity<?> checkScrapStatus(@PathVariable String type,
+    // ✅ 스크랩 여부 확인 (메인/속보 구분)
+    // ✅ 스크랩 여부 확인 (메인/속보 구분)
+    @GetMapping("/scrap/{idx}")
+    public ResponseEntity<Map<String, Boolean>> checkScrap(
             @PathVariable int idx,
             @RequestParam String id) {
-        try {
-            boolean isScrapped = scrapService.isScrapped(id, type, idx);
-            return ResponseEntity.ok(Collections.singletonMap("scrapped", isScrapped));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "스크랩 상태 확인 중 오류 발생: " + e.getMessage()));
-        }
+
+        boolean scrapped = scrapService.isScrapped(id, idx);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("scrapped", scrapped);
+        return ResponseEntity.ok(response);
     }
 
-    // 뉴스 스크랩 추가
-    @PostMapping("/{type}/{idx}")
-    public ResponseEntity<?> toggleScrap(@PathVariable String type,
-            @PathVariable int idx,
-            @RequestParam String id) {
-        try {
-            boolean isScrapped = scrapService.toggleScrap(id, type, idx);
-            Map<String, Boolean> response = new HashMap<>();
-            response.put("scrapped", isScrapped);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "스크랩 처리 중 오류 발생"));
-        }
+    // ✅ 메인 뉴스 스크랩 추가
+    @PostMapping("/scrap/main/{idx}")
+    public ResponseEntity<Map<String, Boolean>> addMainScrap(@PathVariable int idx, @RequestParam String id) {
+        boolean result = scrapService.addMainScrap(id, idx);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("scrapped", result);
+        return ResponseEntity.ok(response);
     }
 
-    // 뉴스 스크랩 취소
-    @DeleteMapping("/{type}/{idx}")
-    public ResponseEntity<Map<String, Object>> deleteScrap(@PathVariable String type,
-            @PathVariable int idx,
-            @RequestParam String id) { // ✅ id 추가
-        try {
-            boolean deleted = scrapService.deleteScrap(id, type, idx);
-            if (deleted) {
-                return ResponseEntity.ok(Map.of("success", true));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(Map.of("error", "스크랩 항목을 찾을 수 없습니다."));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "스크랩 취소 중 오류 발생"));
-        }
+    // ✅ 속보 뉴스 스크랩 추가
+    @PostMapping("/scrap/breaking/{idx}")
+    public ResponseEntity<Map<String, Boolean>> addBreakingScrap(@PathVariable int idx, @RequestParam String id) {
+        boolean result = scrapService.addBreakingScrap(id, idx);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("scrapped", result);
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ 메인 뉴스 스크랩 삭제
+    @DeleteMapping("/scrap/main/{idx}")
+    public ResponseEntity<Map<String, Boolean>> removeMainScrap(@PathVariable int idx, @RequestParam String id) {
+        boolean result = scrapService.deleteScrap(id, idx);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("scrapped", !result);
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ 속보 뉴스 스크랩 삭제
+    @DeleteMapping("/scrap/breaking/{idx}")
+    public ResponseEntity<Map<String, Boolean>> removeBreakingScrap(@PathVariable int idx, @RequestParam String id) {
+        boolean result = scrapService.deleteScrap(id, idx);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("scrapped", !result);
+        return ResponseEntity.ok(response);
     }
 
     // ✅ 마이페이지 - 스크랩한 뉴스 목록 조회
@@ -250,6 +249,7 @@ public class AnsRestController {
             return ResponseEntity.internalServerError().body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
         }
     }
+
     /**
      * 어제 날짜 기준 환율 데이터 제공 API
      * 
@@ -261,10 +261,6 @@ public class AnsRestController {
     }
 
     private final NasdaqService nasdaqService;
-
-  
-        
-
 
     /**
      * 나스닥, 다우존스, S&P 500 데이터를 반환하는 API 엔드포인트
@@ -280,6 +276,7 @@ public class AnsRestController {
 
     /**
      * 원자재 가격 데이터 반환 API (현재가 및 증감 포함)
+     * 
      * @return 원자재별 가격 데이터
      */
     @GetMapping("/commodities")
