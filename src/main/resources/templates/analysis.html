@@ -30,7 +30,8 @@
                     <!-- 스크랩 버튼 -->
                     <button id="scrapButton" class="btn btn-outline-primary"
                         th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-idx="${news.idx}"
-                        th:data-id="${session.loginMember.id}" onclick="toggleScrap(this)">
+                        th:data-id="${session.loginMember != null ? session.loginMember.id : ''}"
+                        onclick="toggleScrap(this)">
                     </button>
 
                 </div>
@@ -113,7 +114,7 @@
 
         async function toggleScrap(button) {
             try {
-                const isScrapped = button.textContent === "스크랩 취소";
+                const isScrapped = scrapButton.textContent === "스크랩 취소";
                 const method = isScrapped ? "DELETE" : "POST";
 
                 const idx = button.getAttribute("data-idx");

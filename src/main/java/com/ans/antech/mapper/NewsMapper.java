@@ -1,6 +1,8 @@
 package com.ans.antech.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,12 +50,17 @@ public interface NewsMapper {
 
         // ✅ 스크랩 삭제
         int deleteScrap(@Param("id") String id, @Param("idx") int idx);
-        
+
         // 메인 뉴스 확인
         int insertScrapMain(@Param("id") String id, @Param("idx") int idx);
 
         // 속보 뉴스 확인
         int insertScrapBreaking(@Param("id") String id, @Param("idx") int idx);
+
+        List<Map<String, Object>> getScrapNewsList(@Param("id") String id, @Param("offset") int offset,
+                        @Param("pageSize") int pageSize);
+
+        int getTotalScrapNews(@Param("id") String id);
 
         // --------------------------------------------------------------------------
         // 성진 - 워드 클라우드 관련 요약 컬럼 가져오기

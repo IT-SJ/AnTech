@@ -300,7 +300,6 @@ public class AnsMainController {
 
         // Flask API 호출하여 해시태그 추출
         List<String> mainHashtags = hashTagService.getMainNewsHashtags(mainNewsContent);
-        System.out.println(news.toString());
 
         // 모델에 데이터 추가
         model.addAttribute("news", news);
@@ -315,7 +314,6 @@ public class AnsMainController {
         String breakingNewsContent = hashTagService.getBreakingNewsContent(idx);
 
         List<String> breakingHashtags = hashTagService.getBreakingNewsHashtags(breakingNewsContent);
-        System.out.println(breakingHashtags.toString());
         model.addAttribute("news", news);
         model.addAttribute("breakingHashtags", breakingHashtags);
         return "Banalysis"; // 속보 뉴스 분석 페이지

@@ -1,5 +1,8 @@
 package com.ans.antech.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,14 @@ public class ScrapService {
 
     public boolean removeScrap(String id, int idx) {
         return mapper.deleteScrap(id, idx) > 0;
+    }
+
+    public List<Map<String, Object>> getScrapNewsByUser(String id, int page, int pageSize) {
+        return mapper.getScrapNewsList(id, (page - 1) * pageSize, pageSize);
+    }
+
+    public int getTotalScrapNews(String id) {
+        return mapper.getTotalScrapNews(id);
     }
     
     

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,13 +206,34 @@ public class AnsRestController {
     public ResponseEntity<?> removeScrap(@PathVariable int idx, @RequestParam String id) {
         try {
             boolean result = scrapService.removeScrap(id, idx);
-            return result ? ResponseEntity.ok(Collections.singletonMap("scrapped", false))
-                    : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "스크랩 삭제 실패"));
+            return ResponseEntity.ok(Collections.singletonMap("success", result)); // ✅ 응답 키를 `success`로 변경
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "스크랩 삭제 중 오류 발생: " + e.getMessage()));
         }
     }
+
+    // 스크랩한 뉴스 목록 조회
+    @GetMapping("/scrap-list")
+    public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
+        try {
+            int pageSize = 6;
+            List<Map<String, Object>> newsList = scrapService.getScrapNewsByUser(id, page, pageSize);
+            int totalScrapNews = scrapService.getTotalScrapNews(id);
+            int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("newsList", newsList);
+            response.put("currentPage", page);
+            response.put("totalPages", totalPages);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
+        }
+    }
+
 
     /**
      * 어제 날짜 기준 환율 데이터 제공 API

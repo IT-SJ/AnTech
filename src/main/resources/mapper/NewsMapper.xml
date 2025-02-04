@@ -114,18 +114,43 @@
 
     <insert id="insertScrapMain">
     INSERT INTO ANS_FAV (id, main_idx, breaking_idx, create_dt)
-    VALUES (#{id}, #{idx}, NULL, NOW())          <!-- ✅ 메인 뉴스 저장 -->
+    VALUES (#{id}, #{idx}, NULL, NOW())                          <!-- ✅ 메인 뉴스 저장 -->
     </insert>
 
     <insert id="insertScrapBreaking">
     INSERT INTO ANS_FAV (id, main_idx, breaking_idx, create_dt)
-    VALUES (#{id}, NULL, #{idx}, NOW())          <!-- ✅ 속보 뉴스 저장 -->
+    VALUES (#{id}, NULL, #{idx}, NOW())                          <!-- ✅ 속보 뉴스 저장 -->
     </insert>
 
     <!-- ✅ 스크랩 삭제 -->
     <delete id="deleteScrap">
     DELETE FROM ANS_FAV WHERE id = #{id} AND (main_idx = #{idx} OR breaking_idx = #{idx})
     </delete>
+
+    <!-- 특정 사용자의 스크랩한 뉴스 목록 조회 -->
+    <select id="getScrapNewsList" resultType="map">
+    SELECT 
+        COALESCE(n.idx, b.idx) AS idx, 
+        COALESCE(n.title, b.title) AS title,
+        COALESCE(n.smr, b.smr, '요약 정보 없음') AS smr,
+        COALESCE(n.press, b.press, '출처 없음') AS press,
+        CASE 
+            WHEN f.main_idx IS NOT NULL THEN 'main'
+            WHEN f.breaking_idx IS NOT NULL THEN 'breaking'
+            ELSE 'unknown'
+        END AS type
+    FROM ANS_FAV f
+    LEFT JOIN ANS_MAIN_NEWS n ON f.main_idx = n.idx
+    LEFT JOIN ANS_BREAKING_NEWS b ON f.breaking_idx = b.idx
+    WHERE f.id = #{id}
+    ORDER BY f.create_dt DESC
+    LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 특정 사용자의 스크랩 뉴스 개수 -->
+    <select id="getTotalScrapNews" resultType="int">
+        SELECT COUNT(*) FROM ANS_FAV WHERE id = #{id}
+    </select>
 
 
 </mapper>

@@ -28,9 +28,10 @@
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">속보 뉴스 분석</h5>
                     <input type="hidden" id="type" value="breaking">
                     <!-- 스크랩 버튼 -->
-                    <button class="btn btn-outline-primary"
+                    <button id="scrapButton" class="btn btn-outline-primary"
                         th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-idx="${news.idx}"
-                        th:data-id="${session.loginMember.id}" onclick="toggleScrap(this)">
+                        th:data-id="${session.loginMember != null ? session.loginMember.id : ''}"
+                        onclick="toggleScrap(this)">
                     </button>
                 </div>
 
@@ -114,10 +115,26 @@
         const type = "[[${type}]]"; // ✅ 메인 or 속보 자동 판별
         const scrapButton = document.getElementById("scrapButton");
 
-        async function toggleScrap() {
+        async function toggleScrap(button) {
             try {
+
+                if (!button) {
+                    console.error("스크랩 버튼을 찾을 수 없습니다!");
+                    return;
+                }
                 const isScrapped = scrapButton.textContent === "스크랩 취소";
                 const method = isScrapped ? "DELETE" : "POST";
+
+                const idx = button.getAttribute("data-idx");
+                const id = button.getAttribute("data-id");
+                const type = document.getElementById("type").value; // ✅ type 값 읽기
+
+                if (!idx || !id) {
+                    console.error("idx 또는 id가 없습니다!", idx, id);
+                    return;
+                }
+
+                console.log("스크랩 요청:", { method, idx, id, type });
 
                 const response = await fetch(`/ans/scrap/${idx}?id=${id}&type=${type}`, {
                     method: method,
@@ -125,7 +142,7 @@
                 });
 
                 const data = await response.json();
-                scrapButton.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
+                button.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
             } catch (error) {
                 console.error("스크랩 토글 실패:", error);
             }
