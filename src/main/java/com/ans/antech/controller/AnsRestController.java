@@ -221,33 +221,33 @@ public class AnsRestController {
         return ResponseEntity.ok(response);
     }
 
-    // ✅ 마이페이지 - 스크랩한 뉴스 목록 조회
-    @GetMapping("/scrap-list")
-    public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
-        if (id == null || id.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "ID가 유효하지 않습니다."));
-        }
+    // // ✅ 마이페이지 - 스크랩한 뉴스 목록 조회
+    // @GetMapping("/scrap-list")
+    // public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
+    //     if (id == null || id.trim().isEmpty()) {
+    //         return ResponseEntity.badRequest().body(Map.of("error", "ID가 유효하지 않습니다."));
+    //     }
 
-        try {
-            int pageSize = 6;
-            System.out.println("🔍 API 호출됨! id=" + id + ", page=" + page);
+    //     try {
+    //         int pageSize = 6;
+    //         System.out.println("🔍 API 호출됨! id=" + id + ", page=" + page);
 
-            List<Map<String, Object>> newsList = scrapService.getScrapNewsList(id, page, pageSize);
-            int totalScrapNews = scrapService.getTotalScrapNews(id);
-            int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
+    //         List<Map<String, Object>> newsList = scrapService.getScrapNewsList(id, page, pageSize);
+    //         int totalScrapNews = scrapService.getTotalScrapNews(id);
+    //         int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
 
-            System.out.println("📝 최종 newsList 반환: " + newsList);
+    //         System.out.println("📝 최종 newsList 반환: " + newsList);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("newsList", newsList);
-            response.put("currentPage", page);
-            response.put("totalPages", totalPages);
+    //         Map<String, Object> response = new HashMap<>();
+    //         response.put("newsList", newsList);
+    //         response.put("currentPage", page);
+    //         response.put("totalPages", totalPages);
 
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
-        }
-    }
+    //         return ResponseEntity.ok(response);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.internalServerError().body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
+    //     }
+    // }
 
     /**
      * 어제 날짜 기준 환율 데이터 제공 API

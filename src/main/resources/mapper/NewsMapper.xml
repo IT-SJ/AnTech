@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"ㄴ
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ans.antech.mapper.NewsMapper">
@@ -92,7 +92,7 @@
         LIMIT 80
     </select>
 
-      <!--영빈 즐찾-->
+      <!-- 영빈 즐찾 -->
       <!-- ✅ 스크랩 여부 확인 (메인/속보 구분) -->
 <select id="checkScrap" resultType="int">
     SELECT COUNT(*) FROM ANS_FAV

@@ -50,59 +50,59 @@ public class ScrapService {
         return mapper.deleteScrap(id, idx) > 0;
     }
 
-    // ✅ 특정 사용자의 스크랩한 **메인 뉴스 목록** 가져오기
-    public List<Map<String, Object>> getMainScrapNewsList(String id, int page, int pageSize) {
-        List<Map<String, Object>> scrapNewsList = new ArrayList<>();
-        int offset = (page - 1) * pageSize;
+    // // ✅ 특정 사용자의 스크랩한 **메인 뉴스 목록** 가져오기
+    // public List<Map<String, Object>> getMainScrapNewsList(String id, int page, int pageSize) {
+    //     List<Map<String, Object>> scrapNewsList = new ArrayList<>();
+    //     int offset = (page - 1) * pageSize;
 
-        System.out.println("🔍 getMainScrapNewsList 호출됨! id: " + id + ", page: " + page + ", offset: " + offset);
-        List<Scrap> scraps = mapper.getMainScrapList(id, offset, pageSize);
+    //     System.out.println("🔍 getMainScrapNewsList 호출됨! id: " + id + ", page: " + page + ", offset: " + offset);
+    //     List<Scrap> scraps = mapper.getMainScrapList(id, offset, pageSize);
 
-        for (Scrap scrap : scraps) {
-            News news = mapper.getMainNewsById(scrap.getMain_idx());
-            if (news != null) {
-                Map<String, Object> newsData = new HashMap<>();
-                newsData.put("idx", news.getIdx());
-                newsData.put("title", news.getTitle());
-                newsData.put("smr", news.getSmr());
-                newsData.put("press", news.getPress());
-                newsData.put("type", "main");
-                scrapNewsList.add(newsData);
-            }
-        }
-        return scrapNewsList;
-    }
+    //     for (Scrap scrap : scraps) {
+    //         News news = mapper.getMainNewsById(scrap.getMain_idx());
+    //         if (news != null) {
+    //             Map<String, Object> newsData = new HashMap<>();
+    //             newsData.put("idx", news.getIdx());
+    //             newsData.put("title", news.getTitle());
+    //             newsData.put("smr", news.getSmr());
+    //             newsData.put("press", news.getPress());
+    //             newsData.put("type", "main");
+    //             scrapNewsList.add(newsData);
+    //         }
+    //     }
+    //     return scrapNewsList;
+    // }
 
-    // ✅ 특정 사용자의 스크랩한 **속보 뉴스 목록** 가져오기
-    public List<Map<String, Object>> getBreakingScrapNewsList(String id, int page, int pageSize) {
-        List<Map<String, Object>> scrapNewsList = new ArrayList<>();
-        int offset = (page - 1) * pageSize;
+    // // ✅ 특정 사용자의 스크랩한 **속보 뉴스 목록** 가져오기
+    // public List<Map<String, Object>> getBreakingScrapNewsList(String id, int page, int pageSize) {
+    //     List<Map<String, Object>> scrapNewsList = new ArrayList<>();
+    //     int offset = (page - 1) * pageSize;
 
-        System.out.println("🔍 getBreakingScrapNewsList 호출됨! id: " + id + ", page: " + page + ", offset: " + offset);
-        List<Scrap> scraps = mapper.getBreakingScrapList(id, offset, pageSize);
+    //     System.out.println("🔍 getBreakingScrapNewsList 호출됨! id: " + id + ", page: " + page + ", offset: " + offset);
+    //     List<Scrap> scraps = mapper.getBreakingScrapList(id, offset, pageSize);
 
-        for (Scrap scrap : scraps) {
-            News news = mapper.getBreakingNewsById(scrap.getBreaking_idx());
-            if (news != null) {
-                Map<String, Object> newsData = new HashMap<>();
-                newsData.put("idx", news.getIdx());
-                newsData.put("title", news.getTitle());
-                newsData.put("smr", news.getSmr());
-                newsData.put("press", news.getPress());
-                newsData.put("type", "breaking");
-                scrapNewsList.add(newsData);
-            }
-        }
-        return scrapNewsList;
-    }
+    //     for (Scrap scrap : scraps) {
+    //         News news = mapper.getBreakingNewsById(scrap.getBreaking_idx());
+    //         if (news != null) {
+    //             Map<String, Object> newsData = new HashMap<>();
+    //             newsData.put("idx", news.getIdx());
+    //             newsData.put("title", news.getTitle());
+    //             newsData.put("smr", news.getSmr());
+    //             newsData.put("press", news.getPress());
+    //             newsData.put("type", "breaking");
+    //             scrapNewsList.add(newsData);
+    //         }
+    //     }
+    //     return scrapNewsList;
+    // }
 
-    // ✅ 특정 사용자의 전체 **메인 뉴스 스크랩 개수 조회**
-    public int getTotalMainScrapNews(String id) {
-        return mapper.getTotalMainScrapNews(id);
-    }
+    // // ✅ 특정 사용자의 전체 **메인 뉴스 스크랩 개수 조회**
+    // public int getTotalMainScrapNews(String id) {
+    //     return mapper.getTotalMainScrapNews(id);
+    // }
 
-    // ✅ 특정 사용자의 전체 **속보 뉴스 스크랩 개수 조회**
-    public int getTotalBreakingScrapNews(String id) {
-        return mapper.getTotalBreakingScrapNews(id);
-    }
+    // // ✅ 특정 사용자의 전체 **속보 뉴스 스크랩 개수 조회**
+    // public int getTotalBreakingScrapNews(String id) {
+    //     return mapper.getTotalBreakingScrapNews(id);
+    // }
 }
