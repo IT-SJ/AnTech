@@ -92,7 +92,7 @@
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
                                         <h6 class="fw-semibold fs-4">감정 분석</h6>
-
+                                        <canvas id="sentimentChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +134,57 @@
         }
 
     </script>
+    <!-- ----------------------------------------------------------- -->
+
+    <!--영빈 감정분석 차트-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // ✅ 감정 분석 데이터를 JSON으로 변환
+            const sentimentData = [[${ sentiment }]];
+
+            // ✅ 감정 분석 결과 확인
+            if (sentimentData && sentimentData.sentiment) {
+                console.log("📌 감정 분석 결과:", sentimentData);
+
+                // ✅ Flask에서 반환한 감정 결과 처리 (긍정, 중립, 부정 값 생성)
+                let positive = sentimentData.sentiment === "POSITIVE" ? sentimentData.score : 0;
+                let neutral = sentimentData.sentiment === "NEUTRAL" ? sentimentData.score : 0;
+                let negative = sentimentData.sentiment === "NEGATIVE" ? sentimentData.score : 0;
+
+                // ✅ Chart.js를 이용한 원형 차트 생성
+                var ctx = document.getElementById('sentimentChart').getContext('2d');
+                var sentimentChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['긍정', '중립', '부정'],
+                        datasets: [{
+                            data: [positive, neutral, negative],
+                            backgroundColor: ['#4CAF50', '#FFC107', '#F44336']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return tooltipItem.label + ': ' + (tooltipItem.raw * 100).toFixed(2) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("❌ 감정 분석 데이터가 존재하지 않습니다.");
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
