@@ -7,6 +7,10 @@
     <title>Modernize Free</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -32,7 +36,7 @@
                 <div class="container mt-5">
                     <div class="row">
                         <!-- 워드 클라우드 -->
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-12">
                             <div class="card" style="height: 400px;">
                                 <div class="card-body">
                                     <h5 class="card-title fw-semibold mb-4">워드 클라우드</h5>
@@ -53,18 +57,20 @@
                                             <div class="d-flex flex-wrap">
                                                 <div class="d-flex flex-column w-50 p-2"
                                                     style="min-width: 300px; overflow: hidden;">
-                                                    <p class="mb-2 text-truncate"
-                                                        th:each="title, iterStat : ${newsTitles}" th:text="${title}"
-                                                        th:if="${iterStat.index % 2 == 0}">
-                                                    </p>
+                                                    <a th:each="news, iterStat : ${newsTitles}"
+                                                        th:href="@{/analysis/{idx}(idx=${news.idx})}"
+                                                        th:text="${news.title}" th:if="${iterStat.index % 2 == 0}"
+                                                        class="mb-2 text-truncate text-decoration-none text-dark fs-4">
+                                                    </a>
                                                 </div>
 
                                                 <div class="d-flex flex-column w-50 p-2"
                                                     style="min-width: 300px; overflow: hidden;">
-                                                    <p class="mb-2 text-truncate"
-                                                        th:each="title, iterStat : ${newsTitles}" th:text="${title}"
-                                                        th:if="${iterStat.index % 2 == 1}">
-                                                    </p>
+                                                    <a th:each="news, iterStat : ${newsTitles}"
+                                                        th:href="@{/analysis/{idx}(idx=${news.idx})}"
+                                                        th:text="${news.title}" th:if="${iterStat.index % 2 == 1}"
+                                                        class="mb-2 text-truncate text-decoration-none text-dark fs-4">
+                                                    </a>
                                                 </div>
                                             </div>
 
@@ -81,18 +87,20 @@
                                             <div class="d-flex flex-wrap">
                                                 <div class="d-flex flex-column w-50 p-2"
                                                     style="min-width: 300px; overflow: hidden;">
-                                                    <p class="mb-2 text-truncate"
-                                                        th:each="title, iterStat : ${breakingNewsTitles}"
-                                                        th:text="${title}" th:if="${iterStat.index % 2 == 0}">
-                                                    </p>
+                                                    <a th:each="news, iterStat : ${breakingNewsTitles}"
+                                                        th:href="@{/Banalysis/{idx}(idx=${news.idx})}"
+                                                        th:text="${news.title}" th:if="${iterStat.index % 2 == 0}"
+                                                        class="mb-2 text-truncate text-decoration-none text-dark fs-4">
+                                                    </a>
                                                 </div>
 
                                                 <div class="d-flex flex-column w-50 p-2"
                                                     style="min-width: 300px; overflow: hidden;">
-                                                    <p class="mb-2 text-truncate"
-                                                        th:each="title, iterStat : ${breakingNewsTitles}"
-                                                        th:text="${title}" th:if="${iterStat.index % 2 == 1}">
-                                                    </p>
+                                                    <a th:each="news, iterStat : ${breakingNewsTitles}"
+                                                        th:href="@{/Banalysis/{idx}(idx=${news.idx})}"
+                                                        th:text="${news.title}" th:if="${iterStat.index % 2 == 0}"
+                                                        class="mb-2 text-truncate text-decoration-none text-dark fs-4">
+                                                    </a>
                                                 </div>
                                             </div>
 
@@ -124,6 +132,7 @@
     <script src="../assets/js/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
     <script src="../assets/js/wordcloud.js"></script> <!-- 워드클라우드 JS 파일 추가 -->
+
 
     <script th:inline="javascript">
         // 서버에서 전달된 wordFreq 데이터를 가져옴

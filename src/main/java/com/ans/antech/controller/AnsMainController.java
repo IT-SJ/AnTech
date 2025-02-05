@@ -128,8 +128,8 @@ public class AnsMainController {
     // 주요뉴스 타이틀, 워드클라우드 가져오기
     @GetMapping("/home")
     public String showNewsPage(Model model) {
-        List<String> newsTitles = newsService.getAllNewsTitles(); // 뉴스 타이틀 가져오기
-        List<String> breakingNewsTitles = newsService.getAllBNewsTitles();
+        List<News> newsTitles = newsService.getAllNewsTitles(); // 뉴스 타이틀 가져오기
+        List<News> breakingNewsTitles = newsService.getAllBNewsTitles();
 
         // 성진 - 워드 클라우드 값 가져오기 위한 List 작성 및 Map 사용
         List<String> mainNewsSummaries = wordCloudService.getAllMainNewsSummaries();

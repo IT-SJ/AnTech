@@ -19,12 +19,12 @@ public class NewsService {
     private String flaskUrl;
 
     // 주요 뉴스 타이틀 조회
-    public List<String> getAllNewsTitles() {
+    public List<News> getAllNewsTitles() {
         return mapper.selectTitle();
     }
 
     // 속보 뉴스 타이틀 가져오기
-    public List<String> getAllBNewsTitles() {
+    public List<News> getAllBNewsTitles() {
         return mapper.selectBNewsTitle();
     }
 

@@ -11,10 +11,10 @@ import com.ans.antech.model.Scrap;
 public interface NewsMapper {
 
     // 주요 뉴스 타이틀 조회
-    public List<String> selectTitle();
+    public List<News> selectTitle();
 
     // 속보 뉴스 타이틀 조회
-    public List<String> selectBNewsTitle();
+    public List<News> selectBNewsTitle();
 
     // 메인 뉴스(+갯수)
     public int countNews();
