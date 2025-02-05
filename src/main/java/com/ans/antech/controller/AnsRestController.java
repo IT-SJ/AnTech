@@ -154,7 +154,8 @@ public class AnsRestController {
     private final ExchangeRateService exchangeRateService;
 
     // 생성자 주입 (final 필드 적용)
-    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,NasdaqService nasdaqService,CommoditiesService commoditiesService) {
+    public AnsRestController(StockService stockService, ExchangeRateService exchangeRateService,
+            NasdaqService nasdaqService, CommoditiesService commoditiesService) {
         this.stockService = stockService;
         this.exchangeRateService = exchangeRateService;
         this.nasdaqService = nasdaqService;
@@ -173,81 +174,66 @@ public class AnsRestController {
     }
 
     // ---------------------영빈 즐찾-----------------------
-    // ✅ 스크랩 여부 확인 (메인/속보 구분)
+
+    // ✅ 특정 기사 스크랩 상태 확인 (GET)
     @GetMapping("/scrap/{idx}")
-    public ResponseEntity<Map<String, Boolean>> checkScrap(
-            @PathVariable int idx,
-            @RequestParam String id) {
-
-        boolean scrapped = scrapService.isScrapped(id, idx);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("scrapped", scrapped);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> checkScrapStatus(@PathVariable int idx, @RequestParam String id) {
+        boolean isScrapped = scrapService.checkScrap(id, idx);
+        return ResponseEntity.ok(Collections.singletonMap("scrapped", isScrapped));
     }
 
-    // ✅ 메인 뉴스 스크랩 추가
-    @PostMapping("/scrap/main/{idx}")
-    public ResponseEntity<Map<String, Boolean>> addMainScrap(@PathVariable int idx, @RequestParam String id) {
-        boolean result = scrapService.addMainScrap(id, idx);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("scrapped", result);
-        return ResponseEntity.ok(response);
+    // ✅ 스크랩 추가/토글 (POST)
+    @PostMapping("/scrap/{idx}")
+    public ResponseEntity<?> toggleScrap(@PathVariable int idx, @RequestParam String id, @RequestParam String type) {
+        try {
+            // ✅ type 값 검증
+            if (type == null || (!"main".equalsIgnoreCase(type) && !"breaking".equalsIgnoreCase(type))) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Invalid type parameter"));
+            }
+
+            boolean isScrapped = scrapService.addScrap(id, idx, type); // ✅ type으로 구분
+            Map<String, Boolean> response = new HashMap<>();
+            response.put("scrapped", isScrapped);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "스크랩 처리 중 오류 발생: " + e.getMessage()));
+        }
     }
 
-    // ✅ 속보 뉴스 스크랩 추가
-    @PostMapping("/scrap/breaking/{idx}")
-    public ResponseEntity<Map<String, Boolean>> addBreakingScrap(@PathVariable int idx, @RequestParam String id) {
-        boolean result = scrapService.addBreakingScrap(id, idx);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("scrapped", result);
-        return ResponseEntity.ok(response);
+    // ✅ 스크랩 삭제 (DELETE)
+    @DeleteMapping("/scrap/{idx}")
+    public ResponseEntity<?> removeScrap(@PathVariable int idx, @RequestParam String id) {
+        try {
+            boolean result = scrapService.removeScrap(id, idx);
+            return ResponseEntity.ok(Collections.singletonMap("success", result)); // ✅ 응답 키를 `success`로 변경
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "스크랩 삭제 중 오류 발생: " + e.getMessage()));
+        }
     }
 
-    // ✅ 메인 뉴스 스크랩 삭제
-    @DeleteMapping("/scrap/main/{idx}")
-    public ResponseEntity<Map<String, Boolean>> removeMainScrap(@PathVariable int idx, @RequestParam String id) {
-        boolean result = scrapService.deleteScrap(id, idx);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("scrapped", !result);
-        return ResponseEntity.ok(response);
+    // 스크랩한 뉴스 목록 조회
+    @GetMapping("/scrap-list")
+    public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
+        try {
+            int pageSize = 6;
+            List<Map<String, Object>> newsList = scrapService.getScrapNewsByUser(id, page, pageSize);
+            int totalScrapNews = scrapService.getTotalScrapNews(id);
+            int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("newsList", newsList);
+            response.put("currentPage", page);
+            response.put("totalPages", totalPages);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
+        }
     }
 
-    // ✅ 속보 뉴스 스크랩 삭제
-    @DeleteMapping("/scrap/breaking/{idx}")
-    public ResponseEntity<Map<String, Boolean>> removeBreakingScrap(@PathVariable int idx, @RequestParam String id) {
-        boolean result = scrapService.deleteScrap(id, idx);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("scrapped", !result);
-        return ResponseEntity.ok(response);
-    }
-
-    // // ✅ 마이페이지 - 스크랩한 뉴스 목록 조회
-    // @GetMapping("/scrap-list")
-    // public ResponseEntity<?> getScrapNews(@RequestParam String id, @RequestParam(defaultValue = "1") int page) {
-    //     if (id == null || id.trim().isEmpty()) {
-    //         return ResponseEntity.badRequest().body(Map.of("error", "ID가 유효하지 않습니다."));
-    //     }
-
-    //     try {
-    //         int pageSize = 6;
-    //         System.out.println("🔍 API 호출됨! id=" + id + ", page=" + page);
-
-    //         List<Map<String, Object>> newsList = scrapService.getScrapNewsList(id, page, pageSize);
-    //         int totalScrapNews = scrapService.getTotalScrapNews(id);
-    //         int totalPages = (int) Math.ceil((double) totalScrapNews / pageSize);
-
-    //         System.out.println("📝 최종 newsList 반환: " + newsList);
-
-    //         Map<String, Object> response = new HashMap<>();
-    //         response.put("newsList", newsList);
-    //         response.put("currentPage", page);
-    //         response.put("totalPages", totalPages);
-
-    //         return ResponseEntity.ok(response);
-    //     } catch (Exception e) {
-    //         return ResponseEntity.internalServerError().body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
-    //     }
-    // }
 
     /**
      * 어제 날짜 기준 환율 데이터 제공 API

@@ -212,7 +212,6 @@ public class AnsMainController {
         return "analysis";
     }
 
-
     @GetMapping("/mypage")
     public String mypage() {
         return "mypage";
@@ -295,7 +294,16 @@ public class AnsMainController {
     @GetMapping("/analysis/{idx}")
     public String mainAnalysis(@PathVariable int idx, Model model) {
         News news = newsService.getNewsById(idx); // 주요 뉴스 가져오기
+
+        // 성진 - 해시태그 키워드 추출을 위한 뉴스 내용(Text) 주요뉴스, 속보뉴스에서 가져오기
+        String mainNewsContent = hashTagService.getMainNewsContent(idx);
+
+        // Flask API 호출하여 해시태그 추출
+        List<String> mainHashtags = hashTagService.getMainNewsHashtags(mainNewsContent);
+
+        // 모델에 데이터 추가
         model.addAttribute("news", news);
+        model.addAttribute("mainHashtags", mainHashtags);
         return "analysis"; // 주요 뉴스 분석 페이지
     }
 
@@ -303,7 +311,11 @@ public class AnsMainController {
     @GetMapping("/Banalysis/{idx}")
     public String breakingAnalysis(@PathVariable int idx, Model model) {
         News news = newsService.getBNewsById(idx); // 속보 뉴스 가져오기
+        String breakingNewsContent = hashTagService.getBreakingNewsContent(idx);
+
+        List<String> breakingHashtags = hashTagService.getBreakingNewsHashtags(breakingNewsContent);
         model.addAttribute("news", news);
+        model.addAttribute("breakingHashtags", breakingHashtags);
         return "Banalysis"; // 속보 뉴스 분석 페이지
     }
 

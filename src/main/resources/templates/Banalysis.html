@@ -26,10 +26,12 @@
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">속보 뉴스 분석</h5>
+                    <input type="hidden" id="type" value="breaking">
                     <!-- 스크랩 버튼 -->
                     <button id="scrapButton" class="btn btn-outline-primary"
-                        th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-type="${type}"
-                        th:data-idx="${news.idx}" onclick="toggleScrap()">
+                        th:text="${scrapped != null and scrapped} ? '스크랩 취소' : '스크랩'" th:data-idx="${news.idx}"
+                        th:data-id="${session.loginMember != null ? session.loginMember.id : ''}"
+                        onclick="toggleScrap(this)">
                     </button>
                 </div>
 
@@ -60,9 +62,10 @@
                                 </div>
                                 <!-- 해시태그 영역 -->
                                 <div class="d-flex flex-wrap gap-3 mb-2 ">
-                                    <h5 class="fw-bold" style="color: red; ">#빨강태그</h5>
-                                    <h5 class="fw-bold" style="color: blue; ">#파랑태그</h5>
-                                    <h5 class="fw-bold" style="color: black;">#검정태그</h5>
+                                    <!-- 실시간 뉴스 해시태그 -->
+                                    <h5 th:each="hashtag : ${breakingHashtags}" th:text="${hashtag}" class="fw-bold"
+                                        style="color: blue;" onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
+                                    </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
                                     <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문
@@ -107,46 +110,44 @@
     <!-- 영빈 즐찾-->
 
     <script>
-        const type = "[[${type}]]";
         const idx = "[[${news.idx}]]";
-        const id = "[[${session.loginMember.id}]]"; // 서버에서 로그인된 사용자 ID 가져오기
+        const id = "[[${session.loginMember.id}]]";
+        const type = "[[${type}]]"; // ✅ 메인 or 속보 자동 판별
         const scrapButton = document.getElementById("scrapButton");
 
-        async function checkScrapStatus() {
+        async function toggleScrap(button) {
             try {
-                const response = await fetch(`/ans/${type}/${idx}?id=${id}`);
-                const data = await response.json();
-                scrapButton.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
-            } catch (error) {
-                console.error("스크랩 상태 확인 실패:", error);
-            }
-        }
 
-        async function toggleScrap() {
-            try {
+                if (!button) {
+                    console.error("스크랩 버튼을 찾을 수 없습니다!");
+                    return;
+                }
                 const isScrapped = scrapButton.textContent === "스크랩 취소";
                 const method = isScrapped ? "DELETE" : "POST";
 
-                const response = await fetch(`/ans/${type}/${idx}?id=${id}`, {
+                const idx = button.getAttribute("data-idx");
+                const id = button.getAttribute("data-id");
+                const type = document.getElementById("type").value; // ✅ type 값 읽기
+
+                if (!idx || !id) {
+                    console.error("idx 또는 id가 없습니다!", idx, id);
+                    return;
+                }
+
+                console.log("스크랩 요청:", { method, idx, id, type });
+
+                const response = await fetch(`/ans/scrap/${idx}?id=${id}&type=${type}`, {
                     method: method,
                     headers: { "Content-Type": "application/json" }
                 });
 
                 const data = await response.json();
-                scrapButton.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
+                button.textContent = data.scrapped ? "스크랩 취소" : "스크랩";
             } catch (error) {
                 console.error("스크랩 토글 실패:", error);
             }
         }
-
-        checkScrapStatus();
     </script>
-
-    <script>
-        const idd = "[[${news.idx}]]"; // idx 값 확인
-        console.log("News IDX:", idd);
-    </script>
-
 
     <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
