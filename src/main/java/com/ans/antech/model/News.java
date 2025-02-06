@@ -17,5 +17,6 @@ public class News {
     private String img_url3;
     private String url;
     private String dt;
-    private String smr;   
+    private String smr;
+    private String symbol;   
 }

@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
 from kiwipiepy import Kiwi
 from collections import defaultdict
+from transformers import pipeline
 
 # Flask 서버 초기화
 app = Flask(__name__)
 
 # Kiwi 형태소 분석기 초기화
 kiwi = Kiwi()
+
+# 감정 분석 모델 로드
+sentiment_pipeline = pipeline("sentiment-analysis")
 
 @app.route('/process-text', methods=['POST'])
 def process_text():
@@ -69,6 +73,36 @@ def extract_breaking_hashtags():
     hashtags = [f"#{word}" for word, freq in sorted_word_freq]
 
     return jsonify(hashtags)
+
+# 영빈 감정분석 -----------------------------------------
+# 감정 분석 모델 로드
+    
+
+
+# ✅ 감정 분석 API 추가
+@app.route('/analyze-sentiment', methods=['POST'])
+def analyze_sentiment():
+    """
+    뉴스 요약(SMR) 내용을 감정 분석하여 긍정/부정/중립을 반환하는 API
+    """
+    data = request.get_json()
+    text = data.get("text", "").strip()  # ✅ 불필요한 공백 제거
+
+    if not text:
+        return jsonify({"error": "❌ 분석할 텍스트가 없습니다."}), 400
+
+    try:
+        result = sentiment_pipeline(text)  # 감정 분석 실행
+        sentiment_label = result[0]['label']
+        sentiment_score = result[0]['score']
+
+        return jsonify({
+            "sentiment": sentiment_label,
+            "score": sentiment_score
+        })
+    except Exception as e:
+        return jsonify({"error": f"감정 분석 실패: {str(e)}"}), 500
+    
 
 if __name__ == '__main__':
     # Flask 서버 실행 (localhost:5000)

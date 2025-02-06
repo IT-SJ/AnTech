@@ -19,6 +19,7 @@ import com.ans.antech.model.News;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
+import com.ans.antech.service.SentimentService;
 import com.ans.antech.service.WordCloudService;
 import com.ans.antech.service.HashTagService;
 
@@ -46,6 +47,10 @@ public class AnsMainController {
     // 해시태그 서비스
     @Autowired
     HashTagService hashTagService;
+
+    // ✅ 감정 분석 서비스 추가
+    @Autowired
+    private SentimentService sentimentService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -301,9 +306,13 @@ public class AnsMainController {
         // Flask API 호출하여 해시태그 추출
         List<String> mainHashtags = hashTagService.getMainNewsHashtags(mainNewsContent);
 
+        // ✅ Flask API 호출하여 감정 분석 실행
+        Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
+
         // 모델에 데이터 추가
         model.addAttribute("news", news);
         model.addAttribute("mainHashtags", mainHashtags);
+        model.addAttribute("sentiment", sentimentResult); // ✅ 감정 분석 결과 추가
         return "analysis"; // 주요 뉴스 분석 페이지
     }
 
