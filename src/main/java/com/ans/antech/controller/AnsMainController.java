@@ -21,6 +21,7 @@ import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
 import com.ans.antech.service.SentimentService;
 import com.ans.antech.service.WordCloudService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ans.antech.service.HashTagService;
 
 import javax.servlet.http.Cookie;
@@ -51,6 +52,9 @@ public class AnsMainController {
     // ✅ 감정 분석 서비스 추가
     @Autowired
     private SentimentService sentimentService;
+
+    @Autowired
+    private ObjectMapper objectMapper; // JSON 변환기
 
     // localhost:8080/
     @GetMapping("/")
@@ -309,10 +313,21 @@ public class AnsMainController {
         // ✅ Flask API 호출하여 감정 분석 실행
         Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
 
+        // 로그 추가: 감정 분석 결과 확인
+        System.out.println("📌 감정 분석 결과: " + sentimentResult);
+
         // 모델에 데이터 추가
+
+        try {
+            // ✅ JSON 문자열로 변환하여 Thymeleaf에서 올바르게 파싱 가능하도록 함
+            String sentimentJson = objectMapper.writeValueAsString(sentimentResult);
+            model.addAttribute("sentiment", sentimentJson);
+        } catch (Exception e) {
+            model.addAttribute("sentiment", "{}"); // 변환 실패 시 빈 JSON 전달
+        }
+
         model.addAttribute("news", news);
         model.addAttribute("mainHashtags", mainHashtags);
-        model.addAttribute("sentiment", sentimentResult); // ✅ 감정 분석 결과 추가
         return "analysis"; // 주요 뉴스 분석 페이지
     }
 
@@ -323,6 +338,23 @@ public class AnsMainController {
         String breakingNewsContent = hashTagService.getBreakingNewsContent(idx);
 
         List<String> breakingHashtags = hashTagService.getBreakingNewsHashtags(breakingNewsContent);
+
+        // ✅ Flask API 호출하여 감정 분석 실행
+        Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
+
+        // 로그 추가: 감정 분석 결과 확인
+        System.out.println("📌 감정 분석 결과: " + sentimentResult);
+
+         // 모델에 데이터 추가
+
+         try {
+            // ✅ JSON 문자열로 변환하여 Thymeleaf에서 올바르게 파싱 가능하도록 함
+            String sentimentJson = objectMapper.writeValueAsString(sentimentResult);
+            model.addAttribute("sentiment", sentimentJson);
+        } catch (Exception e) {
+            model.addAttribute("sentiment", "{}"); // 변환 실패 시 빈 JSON 전달
+        }
+
         model.addAttribute("news", news);
         model.addAttribute("breakingHashtags", breakingHashtags);
         return "Banalysis"; // 속보 뉴스 분석 페이지

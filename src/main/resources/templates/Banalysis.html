@@ -92,7 +92,9 @@
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
                                         <h6 class="fw-semibold fs-4">감정 분석</h6>
-
+                                        <div style="width: 250px; height: 250px; margin: auto;">
+                                            <canvas id="sentimentChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -148,6 +150,107 @@
             }
         }
     </script>
+
+    <!--영빈 감정분석 차트-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            try {
+                // ✅ JSON 데이터를 안전하게 파싱
+                const sentimentData = JSON.parse('[[${sentiment}]]'.replace(/&quot;/g, '"'));
+
+                console.log("📌 감정 분석 데이터:", sentimentData);
+
+                // ✅ 감정 분석 결과 확인
+                if (sentimentData) {
+                    console.log("📌 감정 분석 결과:", sentimentData);
+
+                    // ✅ 긍정/부정 점수 가져오기 (중립 제거)
+                    let positive = sentimentData.positive || 0;
+                    let negative = sentimentData.negative || 0;
+
+                    // ✅ 값이 0일 경우 기본값 설정하여 모든 감정이 표시되도록 보정
+                    let total = positive + negative;
+                    if (total === 0) {
+                        positive = 50.0;
+                        negative = 50.0;
+                    }
+
+                    // ✅ Chart.js를 이용한 원형 차트 생성 (중립 제거)
+                    var ctx = document.getElementById('sentimentChart').getContext('2d');
+                    var sentimentChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['긍정', '부정'],
+                            datasets: [{
+                                data: [positive, negative],
+                                backgroundColor: ['#4CAF50', '#F44336']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,  // ✅ 비율 유지
+                            aspectRatio: 1,             // ✅ 원형 비율 조절
+                            layout: {
+                                padding: {
+                                    left: 10,
+                                    right: 10,
+                                    top: 10,
+                                    bottom: 10
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top', // ✅ 범례 위치 조정
+                                    labels: {
+                                        boxWidth: 15,  // ✅ 범례 크기 조정
+                                        font: {
+                                            size: 14     // ✅ 글자 크기 조정
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    enabled: true, // ✅ 툴팁 활성화
+                                }
+                            }
+                        },
+                        plugins: [{
+                            id: 'centerText',
+                            beforeDraw: function (chart) {
+                                let ctx = chart.ctx;
+                                ctx.textAlign = "center"; // ✅ 가운데 정렬
+                                ctx.textBaseline = "middle"; // ✅ 중앙 정렬
+                                ctx.font = "16px Arial"; // ✅ 폰트 설정
+                                ctx.fillStyle = "#000"; // ✅ 글자 색상
+
+                                let dataset = chart.data.datasets[0].data;
+                                let labels = chart.data.labels;
+                                let total = dataset.reduce((acc, val) => acc + val, 0);
+
+                                dataset.forEach((value, i) => {
+                                    let percentage = ((value / total) * 100).toFixed(1);
+                                    let text = `${labels[i]} ${percentage}%`;
+
+                                    let meta = chart.getDatasetMeta(0);
+                                    let element = meta.data[i];
+
+                                    let x = element.tooltipPosition().x;
+                                    let y = element.tooltipPosition().y;
+
+                                    ctx.fillText(text, x, y);
+                                });
+                            }
+                        }]
+                    });
+                } else {
+                    console.error("❌ 감정 분석 데이터가 존재하지 않습니다.");
+                }
+            } catch (error) {
+                console.error("❌ 감정 분석 데이터 변환 실패:", error);
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>

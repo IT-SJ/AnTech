@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from kiwipiepy import Kiwi
 from collections import defaultdict
 from transformers import pipeline
+import torch
+import torch.nn.functional as F  # ✅ 소프트맥스 사용을 위해 추가
 
 # Flask 서버 초기화
 app = Flask(__name__)
@@ -10,7 +12,7 @@ app = Flask(__name__)
 kiwi = Kiwi()
 
 # 감정 분석 모델 로드
-sentiment_pipeline = pipeline("sentiment-analysis")
+sentiment_pipeline = pipeline('sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
 
 @app.route('/process-text', methods=['POST'])
 def process_text():
@@ -75,10 +77,6 @@ def extract_breaking_hashtags():
     return jsonify(hashtags)
 
 # 영빈 감정분석 -----------------------------------------
-# 감정 분석 모델 로드
-    
-
-
 # ✅ 감정 분석 API 추가
 @app.route('/analyze-sentiment', methods=['POST'])
 def analyze_sentiment():
@@ -92,13 +90,32 @@ def analyze_sentiment():
         return jsonify({"error": "❌ 분석할 텍스트가 없습니다."}), 400
 
     try:
-        result = sentiment_pipeline(text)  # 감정 분석 실행
-        sentiment_label = result[0]['label']
-        sentiment_score = result[0]['score']
+         # ✅ 입력 텍스트 길이 제한 (512 토큰 이하로 자르기)
+        max_length = 512
+        truncated_text = text[:max_length]
 
+        # ✅ 감정 분석 실행 및 로짓 값 가져오기
+        result = sentiment_pipeline(truncated_text, return_all_scores=True)  # ✅ 모든 감정 확률 반환
+        scores = result[0]  # 리스트 안에 있는 결과를 추출
+
+        # ✅ 긍정과 부정 점수만 가져오기
+        positive_score = scores[2]['score']  # ✅ 긍정
+        negative_score = scores[0]['score']  # ✅ 부정
+
+        # ✅ 100 기준으로 정규화 (중립 제외)
+        total = positive_score + negative_score
+        if total > 0:
+            positive = (positive_score / total) * 100
+            negative = (negative_score / total) * 100
+        else:
+            positive = negative = 50.0  # ✅ 모든 값이 0이면 기본값 설정
+
+        # ✅ 감정 확률을 JSON으로 반환
         return jsonify({
-            "sentiment": sentiment_label,
-            "score": sentiment_score
+            "positive": round(positive, 2),
+            "negative": round(negative, 2),
+            "sentiment": "POSITIVE" if positive > negative else "NEGATIVE",  # ✅ 가장 높은 감정 선택
+            "raw_scores": {score['label']: round(score['score'], 4) for score in scores}
         })
     except Exception as e:
         return jsonify({"error": f"감정 분석 실패: {str(e)}"}), 500
