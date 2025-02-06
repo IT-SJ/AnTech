@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 
 <head>
   <meta charset="utf-8">
@@ -7,6 +7,7 @@
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <th:block th:insert="head :: head"></th:block>
 </head>
 
 <body>
@@ -30,7 +31,7 @@
                     <input type="text" name="id" placeholder="아이디" class="form-control" id="exampleInputEmail1">
                     <div th:if="${loginError}" class="text-danger mt-2">
                       <span th:text="${loginError}"></span>
-                    </div>                    
+                    </div>
                   </div>
                   <div class="mb-4">
                     <label for="exampleInputPassword1" class="form-label">비밀번호</label>
@@ -50,7 +51,8 @@
                     </div>
 
                   </div>
-                  <button type="button" id="loginButton" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">로그인</button>
+                  <button type="button" id="loginButton"
+                    class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">로그인</button>
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">ANSight 계정이 없다면?</p>
                     <a class="text-primary fw-bold ms-2" href="/register">회원가입 하기</a>

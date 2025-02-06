@@ -9,7 +9,8 @@ function renderWordCloud(wordFrequencies, elementId) {
         list: wordArray,
         gridSize: 9,
         weightFactor: 1,
-        fontFamily: 'Jua, sans-serif', // ✅ Jua 폰트 적용
+        fontFamily: 'Nanum Gothic', // ✅ Nanum Gothic 폰트 적용
+        fontWeight: '800', // ✅ 800 두께 적용
         color: () => colors[Math.floor(Math.random() * colors.length)],
         drawOutOfBound: false,
         shape: 'circle', // 모양
