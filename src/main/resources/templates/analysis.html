@@ -66,7 +66,7 @@
                                 <div class="d-flex flex-wrap gap-3 mb-2">
                                     <!-- 주요 뉴스 해시태그 -->
                                     <h5 th:each="hashtag : ${mainHashtags}" th:text="${hashtag}" class="fw-bold"
-                                        style="color: red;" onclick="alert('Clicked on 주요 뉴스 태그: ' + this.innerText)">
+                                        style="color: red; cursor: pointer;" onclick="searchByHashtag(this)">
                                     </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
@@ -87,7 +87,7 @@
                                         <ul>
                                             <li th:each="news : ${relatedNews}">
                                                 <a th:href="@{${news.idx < 10000 ? '/analysis/' : '/Banalysis/'} + ${news.idx}}"
-                                                   class="text-decoration-none text-dark">
+                                                    class="text-decoration-none text-dark">
                                                     <span th:text="${news.title}"></span>
                                                 </a>
                                             </li>
@@ -242,6 +242,15 @@
                 console.error("❌ 감정 분석 데이터 변환 실패:", error);
             }
         });
+    </script>
+
+    <!-- 영빈 해시태그 검색페이지 이동 -->
+    <script>
+        function searchByHashtag(element) {
+            let hashtag = element.innerText.trim(); // ✅ 해시태그 텍스트 가져오기
+            let keyword = hashtag.startsWith("#") ? hashtag.substring(1) : hashtag; // ✅ '#' 제거
+            window.location.href = `/search?keyword=` + encodeURIComponent(keyword); // ✅ 검색 페이지로 이동
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
