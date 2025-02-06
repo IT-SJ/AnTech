@@ -1,5 +1,6 @@
 package com.ans.antech.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,6 +124,12 @@ public class AnsRestController {
         String uploadDir = "C:/upload/profiles";
         int fileMaxSize = 10 * 1024 * 1024; // 10MB
 
+        // 업로드 디렉토리가 없으면 생성
+        File uploadFolder = new File(uploadDir);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdirs();
+        }
+
         try {
             multi = new MultipartRequest(
                     request,
@@ -233,7 +240,6 @@ public class AnsRestController {
                     .body(Map.of("error", "스크랩 뉴스 목록 조회 실패: " + e.getMessage()));
         }
     }
-
 
     /**
      * 어제 날짜 기준 환율 데이터 제공 API
