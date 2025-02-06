@@ -1,0 +1,19 @@
+/* style.css - 모든 HTML에 공통 적용 */
+
+/* 기본 폰트: Noto Sans */
+body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* #wordcloud 내부에만 Nanum Gothic 800 적용 */
+#wordcloud {
+    font-family: 'Nanum Gothic', sans-serif !important;
+    font-weight: 800 !important;
+}
+
+/* 한글이 있는 경우 Nanum Gothic 적용 */
+html:lang(ko), body:lang(ko) {
+    /* font-family: 'Nanum Gothic', sans-serif;
+     */
+     font-family: "Noto Sans KR", serif;
+}
