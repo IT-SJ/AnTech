@@ -83,8 +83,15 @@
                             <div class="col-12">
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
-                                        <h6 class="fw-semibold fs-4">관련 주</h6>
-
+                                        <h6 class="fw-semibold fs-4">관련 기사</h6>
+                                        <ul>
+                                            <li th:each="news : ${relatedNews}">
+                                                <a th:href="@{${news.idx < 10000 ? '/analysis/' : '/Banalysis/'} + ${news.idx}}"
+                                                    class="text-decoration-none text-dark">
+                                                    <span th:text="${news.title}"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

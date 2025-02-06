@@ -71,4 +71,10 @@ public class NewsService {
     public News getBNewsById(int idx) {
         return mapper.findBNewsById(idx);
     }
+
+    // 영빈 관련 기사 검색
+    public List<News> findRelatedNewsByHashtag(String hashtag, String excludeTitle, int limit) {
+        return mapper.findRelatedNewsByHashtag(hashtag, excludeTitle, limit);
+    }
+
 }

@@ -3,6 +3,8 @@ package com.ans.antech.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +57,8 @@ public class AnsMainController {
 
     @Autowired
     private ObjectMapper objectMapper; // JSON 변환기
+
+    private static final Logger logger = LoggerFactory.getLogger(AnsMainController.class);
 
     // localhost:8080/
     @GetMapping("/")
@@ -313,8 +317,20 @@ public class AnsMainController {
         // ✅ Flask API 호출하여 감정 분석 실행
         Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
 
-        // 로그 추가: 감정 분석 결과 확인
-        System.out.println("📌 감정 분석 결과: " + sentimentResult);
+        // ✅ 첫 번째 해시태그를 검색어로 사용 (없을 경우 기본값 설정)
+        String searchHashtag = mainHashtags.isEmpty() ? "" : mainHashtags.get(0).replace("#", "");
+
+        // 🔍 디버깅 로그: 해시태그 확인
+        logger.info("🔍 검색에 사용될 첫 번째 해시태그: {}", searchHashtag);
+
+        // ✅ 관련 기사 검색 (첫 번째 해시태그 기준)
+        List<News> relatedNews = newsService.findRelatedNewsByHashtag(searchHashtag, news.getTitle(), 5);
+
+        // 🔍 디버깅 로그: 관련 기사 목록 확인
+        logger.info("✅ 조회된 관련 기사 개수: {}", relatedNews.size());
+        for (News article : relatedNews) {
+            logger.info("📌 관련 기사: [IDX: {}, TITLE: {}]", article.getIdx(), article.getTitle());
+        }
 
         // 모델에 데이터 추가
 
@@ -328,6 +344,7 @@ public class AnsMainController {
 
         model.addAttribute("news", news);
         model.addAttribute("mainHashtags", mainHashtags);
+        model.addAttribute("relatedNews", relatedNews);
         return "analysis"; // 주요 뉴스 분석 페이지
     }
 
@@ -342,12 +359,25 @@ public class AnsMainController {
         // ✅ Flask API 호출하여 감정 분석 실행
         Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
 
-        // 로그 추가: 감정 분석 결과 확인
-        System.out.println("📌 감정 분석 결과: " + sentimentResult);
+         // ✅ 첫 번째 해시태그를 검색어로 사용 (없을 경우 기본값 설정)
+         String searchHashtag = breakingHashtags.isEmpty() ? "" : breakingHashtags.get(0).replace("#", "");
 
-         // 모델에 데이터 추가
+         // 🔍 디버깅 로그: 해시태그 확인
+         logger.info("🔍 검색에 사용될 첫 번째 해시태그: {}", searchHashtag);
+ 
+         // ✅ 관련 기사 검색 (첫 번째 해시태그 기준)
+         List<News> relatedNews = newsService.findRelatedNewsByHashtag(searchHashtag, news.getTitle(), 5);
+ 
+         // 🔍 디버깅 로그: 관련 기사 목록 확인
+         logger.info("✅ 조회된 관련 기사 개수: {}", relatedNews.size());
+         for (News article : relatedNews) {
+             logger.info("📌 관련 기사: [IDX: {}, TITLE: {}]", article.getIdx(), article.getTitle());
+         }
 
-         try {
+
+        // 모델에 데이터 추가
+
+        try {
             // ✅ JSON 문자열로 변환하여 Thymeleaf에서 올바르게 파싱 가능하도록 함
             String sentimentJson = objectMapper.writeValueAsString(sentimentResult);
             model.addAttribute("sentiment", sentimentJson);
@@ -357,6 +387,7 @@ public class AnsMainController {
 
         model.addAttribute("news", news);
         model.addAttribute("breakingHashtags", breakingHashtags);
+        model.addAttribute("relatedNews", relatedNews);
         return "Banalysis"; // 속보 뉴스 분석 페이지
     }
 

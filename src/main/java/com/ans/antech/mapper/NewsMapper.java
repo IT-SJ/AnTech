@@ -28,10 +28,10 @@ public interface NewsMapper {
         public List<News> findBNewsByPage(int pageSize, int offset);
 
         // 검색된 뉴스 개수 조회
-        int countSearchNews(@Param("keyword") String keyword);
+        public int countSearchNews(@Param("keyword") String keyword);
 
         // 페이징 적용하여 뉴스 검색
-        List<News> searchNewsWithPagination(@Param("keyword") String keyword,
+        public List<News> searchNewsWithPagination(@Param("keyword") String keyword,
                         @Param("offset") int offset,
                         @Param("pageSize") int pageSize);
 
@@ -43,24 +43,25 @@ public interface NewsMapper {
         // ----------------영빈 즐찾 ----------------------
 
         // ✅ 특정 기사 스크랩 여부 확인 (스크랩한 기사 개수 반환)
-        int checkScrap(@Param("id") String id, @Param("idx") int idx);
+        public int checkScrap(@Param("id") String id, @Param("idx") int idx);
 
         // ✅ 스크랩 추가
-        int insertScrap(@Param("id") String id, @Param("idx") int idx);
+        public int insertScrap(@Param("id") String id, @Param("idx") int idx);
 
         // ✅ 스크랩 삭제
-        int deleteScrap(@Param("id") String id, @Param("idx") int idx);
+        public int deleteScrap(@Param("id") String id, @Param("idx") int idx);
 
         // 메인 뉴스 확인
-        int insertScrapMain(@Param("id") String id, @Param("idx") int idx);
+        public int insertScrapMain(@Param("id") String id, @Param("idx") int idx);
 
         // 속보 뉴스 확인
-        int insertScrapBreaking(@Param("id") String id, @Param("idx") int idx);
+        
+        public int insertScrapBreaking(@Param("id") String id, @Param("idx") int idx);
 
-        List<Map<String, Object>> getScrapNewsList(@Param("id") String id, @Param("offset") int offset,
+        public List<Map<String, Object>> getScrapNewsList(@Param("id") String id, @Param("offset") int offset,
                         @Param("pageSize") int pageSize);
 
-        int getTotalScrapNews(@Param("id") String id);
+        public int getTotalScrapNews(@Param("id") String id);
 
         // --------------------------------------------------------------------------
         // 성진 - 워드 클라우드 관련 요약 컬럼 가져오기
@@ -72,4 +73,7 @@ public interface NewsMapper {
         public String findMainNewsContent(@Param("idx") int idx);
 
         public String findBreakingNewsContent(@Param("idx") int idx);
+
+        // 영빈 - 관련기사 검색
+        public List<News> findRelatedNewsByHashtag(@Param("hashtag") String hashtag, @Param("excludeTitle") String excludeTitle, @Param("limit") int limit);
 }
