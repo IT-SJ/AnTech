@@ -43,7 +43,7 @@
                     <div class="col-md-6">
                         <div class="card overflow-hidden rounded-2" style="min-height: 630px; height: auto;">
                             <div class="position-relative mb-4">
-                                <a href="javascript:void(0)">
+                                <div href="javascript:void(0)">
                                     <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
                                         th:src="${news.img_url1}"
                                         class="card-img-top rounded-0 border border-5 border-white"
@@ -52,7 +52,7 @@
                                         th:src="@{/assets/images/logo/Frame.svg}"
                                         class="card-img-top rounded border border-5 border-white"
                                         style="object-fit: cover; height: 300px; width: 100%;">
-                                </a>
+                                </div>
                             </div>
                             <div class="card-body pt-3 p-4">
                                 <h5 class="fw-semibold" th:text="${news.title}">뉴스기사 제목</h5>
@@ -100,7 +100,7 @@
                                 <div class="card overflow-hidden rounded-2" style="height: 300px;">
                                     <div class="card-body">
                                         <h6 class="fw-semibold fs-4">감정 분석</h6>
-                                        <div style="width: 250px; height: 250px; margin: auto;">
+                                        <div style="width: 230px; height: 230px; margin: auto;">
                                             <canvas id="sentimentChart"></canvas>
                                         </div>
                                     </div>
@@ -191,7 +191,7 @@
                             labels: ['긍정', '부정'],
                             datasets: [{
                                 data: [positive, negative],
-                                backgroundColor: ['#4CAF50', '#F44336']
+                                backgroundColor: ['#5cb3ff', '#ff5757']
                             }]
                         },
                         options: {
@@ -221,33 +221,7 @@
                                 }
                             }
                         },
-                        plugins: [{
-                            id: 'centerText',
-                            beforeDraw: function (chart) {
-                                let ctx = chart.ctx;
-                                ctx.textAlign = "center"; // ✅ 가운데 정렬
-                                ctx.textBaseline = "middle"; // ✅ 중앙 정렬
-                                ctx.font = "16px Arial"; // ✅ 폰트 설정
-                                ctx.fillStyle = "#000"; // ✅ 글자 색상
-
-                                let dataset = chart.data.datasets[0].data;
-                                let labels = chart.data.labels;
-                                let total = dataset.reduce((acc, val) => acc + val, 0);
-
-                                dataset.forEach((value, i) => {
-                                    let percentage = ((value / total) * 100).toFixed(1);
-                                    let text = `${labels[i]} ${percentage}%`;
-
-                                    let meta = chart.getDatasetMeta(0);
-                                    let element = meta.data[i];
-
-                                    let x = element.tooltipPosition().x;
-                                    let y = element.tooltipPosition().y;
-
-                                    ctx.fillText(text, x, y);
-                                });
-                            }
-                        }]
+                        
                     });
                 } else {
                     console.error("❌ 감정 분석 데이터가 존재하지 않습니다.");
