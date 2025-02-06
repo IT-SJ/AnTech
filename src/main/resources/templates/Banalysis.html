@@ -65,7 +65,7 @@
                                 <div class="d-flex flex-wrap gap-3 mb-2 ">
                                     <!-- 실시간 뉴스 해시태그 -->
                                     <h5 th:each="hashtag : ${breakingHashtags}" th:text="${hashtag}" class="fw-bold"
-                                        style="color: blue;" onclick="alert('Clicked on 실시간 뉴스 태그: ' + this.innerText)">
+                                        style="color: blue; cursor: pointer;" onclick="searchByHashtag(this)">
                                     </h5>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
@@ -230,6 +230,15 @@
                 console.error("❌ 감정 분석 데이터 변환 실패:", error);
             }
         });
+    </script>
+
+    <!-- 영빈 해시태그 검색페이지 이동 -->
+    <script>
+        function searchByHashtag(element) {
+            let hashtag = element.innerText.trim(); // ✅ 해시태그 텍스트 가져오기
+            let keyword = hashtag.startsWith("#") ? hashtag.substring(1) : hashtag; // ✅ '#' 제거
+            window.location.href = `/search?keyword=` + encodeURIComponent(keyword); // ✅ 검색 페이지로 이동
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
