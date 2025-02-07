@@ -8,6 +8,13 @@
     <link rel="shortcut icon" type="image/png" href="@{/assets/images/logos/favicon.png}" />
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
     <th:block th:insert="head :: head"></th:block>
+    <style>
+        a.text-decoration-none:hover {
+            text-decoration: underline;
+            background-color: #ebebeb;
+            border-radius: 5px; /* 둥근 모서리 적용 (선택사항) */
+        }
+    </style>
 
 </head>
 
@@ -81,19 +88,22 @@
                         <div class="row">
                             <!-- 첫 번째 작은 카드 -->
                             <div class="col-12">
-                                <div class="card overflow-hidden rounded-2" style="height: 300px;">
-                                    <div class="card-body">
-                                        <h6 class="fw-semibold fs-4">관련 기사</h6>
-                                        <ul>
-                                            <li th:each="news : ${relatedNews}">
-                                                <a th:href="@{${news.idx < 10000 ? '/analysis/' : '/Banalysis/'} + ${news.idx}}"
-                                                    class="text-decoration-none text-dark">
-                                                    <span th:text="${news.title}"></span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                <div class="col-12">
+                                    <div class="card overflow-hidden rounded-2" style="height: 300px;">
+                                        <div class="card-body">
+                                            <h5 class="fw-semibold fs-4 mb-3">관련 기사</h5>
+                                            <ul class="list-unstyled">
+                                                <li th:each="news : ${relatedNews}" class="mb-2"> <!-- 간격 추가 -->
+                                                    <a th:href="@{${news.idx < 10000 ? '/analysis/' : '/Banalysis/'} + ${news.idx}}"
+                                                        class="text-truncate text-decoration-none text-dark fs-4 d-block">
+                                                        <span th:text="${news.title}"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
                             <!-- 두 번째 작은 카드 -->
                             <div class="col-12">
