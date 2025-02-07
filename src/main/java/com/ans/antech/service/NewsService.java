@@ -77,4 +77,13 @@ public class NewsService {
         return mapper.findRelatedNewsByHashtag(hashtag, excludeTitle, limit);
     }
 
+    // ✅ 뉴스 조회수 증가 메소드 추가
+    public void updateMainViewCount(int idx) {
+        mapper.updateMainViewCount(idx);
+    }
+
+    public void updateBreakingViewCount(int idx) {
+        mapper.updateBreakingViewCount(idx);
+    }
+
 }
