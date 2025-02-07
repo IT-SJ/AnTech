@@ -55,7 +55,7 @@ public interface NewsMapper {
         public int insertScrapMain(@Param("id") String id, @Param("idx") int idx);
 
         // 속보 뉴스 확인
-        
+
         public int insertScrapBreaking(@Param("id") String id, @Param("idx") int idx);
 
         public List<Map<String, Object>> getScrapNewsList(@Param("id") String id, @Param("offset") int offset,
@@ -75,5 +75,12 @@ public interface NewsMapper {
         public String findBreakingNewsContent(@Param("idx") int idx);
 
         // 영빈 - 관련기사 검색
-        public List<News> findRelatedNewsByHashtag(@Param("hashtag") String hashtag, @Param("excludeTitle") String excludeTitle, @Param("limit") int limit);
+        public List<News> findRelatedNewsByHashtag(@Param("hashtag") String hashtag,
+                        @Param("excludeTitle") String excludeTitle, @Param("limit") int limit);
+
+        // 영빈 - 조회수 증가
+        // ✅ 뉴스 조회수 증가 SQL 실행
+        public void updateMainViewCount(@Param("idx") int idx);
+
+        public void updateBreakingViewCount(@Param("idx") int idx);
 }

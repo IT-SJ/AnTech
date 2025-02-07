@@ -18,4 +18,5 @@ public class News {
     private String url;
     private String dt;
     private String smr;
+    private int view;
 }

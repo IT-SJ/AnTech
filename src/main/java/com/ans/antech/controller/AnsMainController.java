@@ -332,6 +332,9 @@ public class AnsMainController {
             logger.info("📌 관련 기사: [IDX: {}, TITLE: {}]", article.getIdx(), article.getTitle());
         }
 
+        // ✅ 뉴스 조회수 증가 (DB에서 view 값 +1)
+        newsService.updateMainViewCount(idx);
+
         // 모델에 데이터 추가
 
         try {
@@ -359,21 +362,23 @@ public class AnsMainController {
         // ✅ Flask API 호출하여 감정 분석 실행
         Map<String, Object> sentimentResult = sentimentService.analyzeSentiment(news.getSmr()); // 뉴스 요약(SMR) 사용
 
-         // ✅ 첫 번째 해시태그를 검색어로 사용 (없을 경우 기본값 설정)
-         String searchHashtag = breakingHashtags.isEmpty() ? "" : breakingHashtags.get(0).replace("#", "");
+        // ✅ 첫 번째 해시태그를 검색어로 사용 (없을 경우 기본값 설정)
+        String searchHashtag = breakingHashtags.isEmpty() ? "" : breakingHashtags.get(0).replace("#", "");
 
-         // 🔍 디버깅 로그: 해시태그 확인
-         logger.info("🔍 검색에 사용될 첫 번째 해시태그: {}", searchHashtag);
- 
-         // ✅ 관련 기사 검색 (첫 번째 해시태그 기준)
-         List<News> relatedNews = newsService.findRelatedNewsByHashtag(searchHashtag, news.getTitle(), 5);
- 
-         // 🔍 디버깅 로그: 관련 기사 목록 확인
-         logger.info("✅ 조회된 관련 기사 개수: {}", relatedNews.size());
-         for (News article : relatedNews) {
-             logger.info("📌 관련 기사: [IDX: {}, TITLE: {}]", article.getIdx(), article.getTitle());
-         }
+        // 🔍 디버깅 로그: 해시태그 확인
+        logger.info("🔍 검색에 사용될 첫 번째 해시태그: {}", searchHashtag);
 
+        // ✅ 관련 기사 검색 (첫 번째 해시태그 기준)
+        List<News> relatedNews = newsService.findRelatedNewsByHashtag(searchHashtag, news.getTitle(), 5);
+
+        // 🔍 디버깅 로그: 관련 기사 목록 확인
+        logger.info("✅ 조회된 관련 기사 개수: {}", relatedNews.size());
+        for (News article : relatedNews) {
+            logger.info("📌 관련 기사: [IDX: {}, TITLE: {}]", article.getIdx(), article.getTitle());
+        }
+
+        // ✅ 뉴스 조회수 증가 (DB에서 view 값 +1)
+        newsService.updateBreakingViewCount(idx);
 
         // 모델에 데이터 추가
 
