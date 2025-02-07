@@ -61,15 +61,22 @@
 
     <!-- 속보 뉴스 -->
     <select id="countBNews" resultType="int">
-        SELECT COUNT(*) FROM ANS_BREAKING_NEWS
+        SELECT COUNT(DISTINCT pid) FROM ANS_BREAKING_NEWS
     </select>
 
-    <select id="findBNewsByPage" resultType="com.ans.antech.model.News">
-        SELECT IDX, TITLE, PRESS, IMG_URL1, URL
-        FROM ANS_BREAKING_NEWS 
-        ORDER BY DT DESC 
+    <!-- 속보 뉴스 목록 (pid 기준 중복 제거 + 페이징) -->
+<select id="findBNewsByPage" resultType="com.ans.antech.model.News">
+    SELECT IDX, TITLE, PRESS, IMG_URL1, URL 
+    FROM (
+        SELECT MIN(IDX) AS IDX, pid, TITLE, PRESS, IMG_URL1, URL, DT
+        FROM ANS_BREAKING_NEWS
+        GROUP BY pid, TITLE, PRESS, IMG_URL1, URL, DT
+        ORDER BY DT DESC
         LIMIT #{pageSize} OFFSET #{offset}
-    </select>
+    ) AS sub
+    ORDER BY DT DESC;
+</select>
+
     <!-- 메인뉴스 분석페이지 -->
     <select id="findNewsById" resultType="com.ans.antech.model.News">
         SELECT IDX, TITLE, SMR, PRESS, IMG_URL1, URL
