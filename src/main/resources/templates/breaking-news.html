@@ -86,7 +86,7 @@
                                 <!-- "이전" 버튼 -->
                                 <li class="page-item" th:if="${currentPage > 1}">
                                     <a class="page-link rounded-circle"
-                                        th:href="@{/main?page={prev}(prev=${currentPage - 1})}">«</a>
+                                        th:href="@{/breaking?page={prev}(prev=${currentPage - 1})}">«</a>
                                 </li>
 
                                 <!-- 페이지네이션: 최대 5개만 표시 -->
@@ -94,7 +94,7 @@
                                             (currentPage - 2 > 1 ? currentPage - 2 : 1),
                                             (currentPage + 2 < totalPages ? currentPage + 2 : totalPages)
                                         )}">
-                                    <a class="page-link rounded-circle" th:href="@{/main?page={num}(num=${i})}"
+                                    <a class="page-link rounded-circle" th:href="@{/breaking?page={num}(num=${i})}"
                                         th:text="${i}" th:classappend="${i == currentPage} ? 'active' : ''">
                                     </a>
                                 </li>
@@ -102,7 +102,7 @@
                                 <!-- "다음" 버튼 -->
                                 <li class="page-item" th:if="${currentPage < totalPages}">
                                     <a class="page-link rounded-circle"
-                                        th:href="@{/main?page={next}(next=${currentPage + 1})}">»</a>
+                                        th:href="@{/breaking?page={next}(next=${currentPage + 1})}">»</a>
                                 </li>
 
                             </ul>
