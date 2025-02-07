@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <th:block th:insert="head :: head"></th:block>
-
+    <style>
+        .text-truncate-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* 최대 3줄까지 표시 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            max-height: 4.5em; /* 줄 간격 고려한 높이 */
+        }
+    </style>
 </head>
 
 <body>
@@ -213,7 +223,7 @@
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="${news.type === 'breaking' ? '/Banalysis/' : '/analysis/'}${news.idx}" 
-                                   class="text-decoration-none text-dark">${news.title}</a>
+                                   class="text-decoration-none text-dark text-truncate-3">${news.title}</a>
                             </h5>
                             <p class="card-text fw-normal text-truncate" style="max-height: 3rem; overflow: hidden;">
                                 ${news.smr}

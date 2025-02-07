@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
+    <title>주요뉴스분석</title>
     <link rel="shortcut icon" type="image/png" href="@{/assets/images/logos/favicon.png}" />
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
     <th:block th:insert="head :: head"></th:block>
@@ -62,7 +62,7 @@
                                         style="object-fit: cover; height: 300px; width: 100%;">
                                 </div>
                             </div>
-                            <div class="card-body pt-3 p-4">
+                            <div class="card-body pt-3 p-4 d-flex flex-column align-items-stretch">
                                 <h5 class="fw-semibold" th:text="${news.title}">뉴스기사 제목</h5>
                                 <div>
                                     <h5 class="fw-normal mb-2 fs-4" style="color:rgb(95, 95, 95)" th:text="${news.smr}">
@@ -70,13 +70,13 @@
                                     </h5>
                                 </div>
                                 <!-- 해시태그 영역 -->
-                                <div class="d-flex flex-wrap gap-3 mb-2">
+                                <div class="d-flex flex-wrap gap-3 mb-1 mt-auto">
                                     <!-- 주요 뉴스 해시태그 -->
-                                    <h5 th:each="hashtag : ${mainHashtags}" th:text="${hashtag}" class="fw-bold"
-                                        style="color: red; cursor: pointer;" onclick="searchByHashtag(this)">
+                                    <h5 th:each="hashtag : ${mainHashtags}" th:text="${hashtag}" class="badge bg-secondary rounded-3 fw-semibold"
+                                        style="color: rgb(255, 255, 255); cursor: pointer;" onclick="searchByHashtag(this)">
                                     </h5>
                                 </div>
-                                <div class="d-flex justify-content-center mt-3">
+                                <div class="d-flex justify-content-center">
                                     <a th:href="${news.url}" class="btn btn-outline-primary w-100" target="_blank">뉴스 원문
                                         보기</a>
                                 </div>
