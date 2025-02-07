@@ -83,4 +83,10 @@ public interface NewsMapper {
         public void updateMainViewCount(@Param("idx") int idx);
 
         public void updateBreakingViewCount(@Param("idx") int idx);
+
+        // ✅ 조회수 기준 정렬된 뉴스 가져오기
+        List<News> getBNewsByViews(@Param("offset") int offset, @Param("pageSize") int pageSize);
+
+        // ✅ 조회수 기준 정렬된 뉴스 가져오기
+        List<News> getNewsByViews(@Param("offset") int offset, @Param("pageSize") int pageSize);
 }

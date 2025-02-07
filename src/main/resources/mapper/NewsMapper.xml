@@ -42,7 +42,7 @@
 
     <!-- 페이징 적용하여 뉴스 검색 -->
     <select id="searchNewsWithPagination" resultType="com.ans.antech.model.News">
-    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx, MAX(img_url1) AS img_url1                  <!-- ✅ img_url1 추가 -->
+    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx, MAX(img_url1) AS img_url1                          <!-- ✅ img_url1 추가 -->
     FROM (
         SELECT title, dt, idx, img_url1 FROM ANS_MAIN_NEWS
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
@@ -51,12 +51,12 @@
 
         SELECT title, dt, idx, img_url1 FROM ANS_BREAKING_NEWS
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
-    ) AS combined_news                  <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
+    ) AS combined_news                          <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
 
-    GROUP BY title                  <!-- ✅ 최종적으로 중복된 제목 제거 -->
-    ORDER BY dt DESC                  <!-- ✅ 최신 뉴스 우선 정렬 -->
+    GROUP BY title                          <!-- ✅ 최종적으로 중복된 제목 제거 -->
+    ORDER BY dt DESC                          <!-- ✅ 최신 뉴스 우선 정렬 -->
 
-    LIMIT #{pageSize} OFFSET #{offset}                  <!-- ✅ 페이징 적용 -->
+    LIMIT #{pageSize} OFFSET #{offset}                          <!-- ✅ 페이징 적용 -->
     </select>
 
     <!-- 속보 뉴스 -->
@@ -65,7 +65,7 @@
     </select>
 
     <!-- 속보 뉴스 목록 (pid 기준 중복 제거 + 페이징) -->
-<select id="findBNewsByPage" resultType="com.ans.antech.model.News">
+    <select id="findBNewsByPage" resultType="com.ans.antech.model.News">
     SELECT IDX, TITLE, PRESS, IMG_URL1, URL 
     FROM (
         SELECT MIN(IDX) AS IDX, pid, TITLE, PRESS, IMG_URL1, URL, DT
@@ -75,7 +75,7 @@
         LIMIT #{pageSize} OFFSET #{offset}
     ) AS sub
     ORDER BY DT DESC;
-</select>
+    </select>
 
     <!-- 메인뉴스 분석페이지 -->
     <select id="findNewsById" resultType="com.ans.antech.model.News">
@@ -130,12 +130,12 @@
 
     <insert id="insertScrapMain">
     INSERT INTO ANS_FAV (id, main_idx, breaking_idx, create_dt)
-    VALUES (#{id}, #{idx}, NULL, NOW())                                                                                                                  <!-- ✅ 메인 뉴스 저장 -->
+    VALUES (#{id}, #{idx}, NULL, NOW())                                                                                                                          <!-- ✅ 메인 뉴스 저장 -->
     </insert>
 
     <insert id="insertScrapBreaking">
     INSERT INTO ANS_FAV (id, main_idx, breaking_idx, create_dt)
-    VALUES (#{id}, NULL, #{idx}, NOW())                                                                                                                  <!-- ✅ 속보 뉴스 저장 -->
+    VALUES (#{id}, NULL, #{idx}, NOW())                                                                                                                          <!-- ✅ 속보 뉴스 저장 -->
     </insert>
 
     <!-- ✅ 스크랩 삭제 -->
@@ -170,7 +170,7 @@
 
     <!-- ✅ 주요 뉴스 & 속보 뉴스 관련 기사 검색 -->
     <select id="findRelatedNewsByHashtag" resultType="com.ans.antech.model.News">
-    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx                          <!-- ✅ idx 추가 -->
+    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx                                  <!-- ✅ idx 추가 -->
     FROM (
         SELECT title, dt, idx FROM ANS_MAIN_NEWS
         WHERE title != #{excludeTitle}
@@ -181,9 +181,9 @@
         SELECT title, dt, idx FROM ANS_BREAKING_NEWS
         WHERE title != #{excludeTitle}
         AND title LIKE CONCAT('%', #{hashtag}, '%')
-    ) AS combined_news                          <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
+    ) AS combined_news                                  <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
 
-    GROUP BY title                          <!-- ✅ 최종적으로 중복된 제목 제거 -->
+    GROUP BY title                                  <!-- ✅ 최종적으로 중복된 제목 제거 -->
     ORDER BY dt DESC
     LIMIT #{limit}
     </select>
@@ -200,5 +200,31 @@
     SET view = view + 1
     WHERE idx = #{idx}
     </update>
+
+    <!-- ✅ 속보 뉴스 조회수 기준 정렬 + 중복 제거 -->
+    <select id="getBNewsByViews" resultType="com.ans.antech.model.News">
+    SELECT IDX, TITLE, PRESS, IMG_URL1, URL, VIEW
+    FROM (
+        SELECT MIN(IDX) AS IDX, pid, TITLE, PRESS, IMG_URL1, URL, VIEW, DT
+        FROM ANS_BREAKING_NEWS
+        GROUP BY pid, TITLE, PRESS, IMG_URL1, URL, VIEW, DT
+        ORDER BY VIEW DESC, DT DESC          <!-- ✅ 조회수가 같다면 최신순 정렬 -->
+        LIMIT #{pageSize} OFFSET #{offset}
+    ) AS sub
+    ORDER BY VIEW DESC, DT DESC;
+    </select>
+
+    <!-- ✅ 주요 뉴스 조회수 기준 정렬 + 중복 제거 -->
+    <select id="getNewsByViews" resultType="com.ans.antech.model.News">
+    SELECT IDX, TITLE, PRESS, IMG_URL1, URL, VIEW
+    FROM (
+        SELECT MIN(IDX) AS IDX, pid, TITLE, PRESS, IMG_URL1, URL, VIEW, DT
+        FROM ANS_MAIN_NEWS
+        GROUP BY pid, TITLE, PRESS, IMG_URL1, URL, VIEW, DT
+        ORDER BY VIEW DESC, DT DESC          <!-- ✅ 조회수가 같다면 최신순 정렬 -->
+        LIMIT #{pageSize} OFFSET #{offset}
+    ) AS sub
+    ORDER BY VIEW DESC, DT DESC;
+    </select>
 
 </mapper>

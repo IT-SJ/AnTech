@@ -86,4 +86,17 @@ public class NewsService {
         mapper.updateBreakingViewCount(idx);
     }
 
+     // ✅ 조회수 기준 정렬
+     public List<News> getBNewsByViews(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mapper.getBNewsByViews(offset, pageSize);
+    }
+
+    // ✅ 조회수 기준 정렬
+    public List<News> getNewsByViews(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mapper.getNewsByViews(offset, pageSize);
+    }
+
+
 }

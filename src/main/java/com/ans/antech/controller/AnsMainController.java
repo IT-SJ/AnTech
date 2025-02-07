@@ -170,35 +170,7 @@ public class AnsMainController {
         return "authentication-register";
     }
 
-    @GetMapping("/tabler.do")
-    public String tabler() {
-        return "icon-tabler";
-    }
-
-    @GetMapping("/alerts.do")
-    public String alerts() {
-        return "ui-alerts";
-    }
-
-    @GetMapping("/buttons.do")
-    public String buttons() {
-        return "ui-buttons";
-    }
-
-    @GetMapping("/card.do")
-    public String card() {
-        return "ui-card";
-    }
-
-    @GetMapping("/forms.do")
-    public String forms() {
-        return "ui-forms";
-    }
-
-    @GetMapping("/typography.do")
-    public String typography() {
-        return "ui-typography";
-    }
+    
 
     @GetMapping("/findid")
     public String findid() {
@@ -232,7 +204,10 @@ public class AnsMainController {
 
     // 뉴스 목록 페이지 (페이지네이션 적용)
     @GetMapping("/main")
-    public String getNewsList(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String getNewsList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "latest") String sort, // ✅ 정렬 옵션 추가
+            Model model) {
         int pageSize = 6; // 한 페이지당 뉴스 개수
         int totalNews = newsService.getTotalNewsCount();
         int totalPages = (int) Math.ceil((double) totalNews / pageSize);
@@ -244,11 +219,17 @@ public class AnsMainController {
             page = totalPages;
 
         // 페이지별 뉴스 가져오기 (OFFSET 적용)
-        List<News> newsList = newsService.getNewsByPage(page, pageSize);
+        List<News> newsList;
+        if ("popular".equals(sort)) {
+            newsList = newsService.getNewsByViews(page, pageSize); // 조회수 기준 정렬
+        } else {
+            newsList = newsService.getNewsByPage(page, pageSize); // 최신순 정렬
+        }
 
         model.addAttribute("newsList", newsList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sort", sort); // ✅ 현재 정렬 상태 유지
 
         return "main-news"; // Thymeleaf 템플릿 반환
     }
@@ -283,23 +264,33 @@ public class AnsMainController {
 
     // 페이지 범위 제한
     @GetMapping("/breaking")
-    public String getBNewsList(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String getBNewsList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "latest") String sort, // ✅ 정렬 옵션 추가
+            Model model) {
+
         int pageSize = 6; // 한 페이지당 뉴스 개수
         int totalNews = newsService.getTotalBNewsCount();
         int totalPages = (int) Math.ceil((double) totalNews / pageSize);
 
-        // 페이지가 범위를 벗어나지 않도록 제한
         if (page < 1)
             page = 1;
         if (page > totalPages)
             page = totalPages;
 
-        // 페이지별 뉴스 가져오기 (OFFSET 적용)
-        List<News> newsList = newsService.getBNewsByPage(page, pageSize);
+        // ✅ 정렬 옵션에 따라 다르게 데이터 조회
+        List<News> newsList;
+        if ("popular".equals(sort)) {
+            newsList = newsService.getBNewsByViews(page, pageSize); // 조회수 기준 정렬
+        } else {
+            newsList = newsService.getBNewsByPage(page, pageSize); // 최신순 정렬
+        }
 
         model.addAttribute("newsList", newsList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sort", sort); // ✅ 현재 정렬 상태 유지
+
         return "breaking-news";
     }
 

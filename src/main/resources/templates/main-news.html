@@ -26,9 +26,10 @@
                 <!-- 정렬 선택 -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">주요 뉴스</h5>
-                    <select class="form-select mb-0" aria-label="뉴스 정렬 옵션" style="width: 200px;">
-                        <option value="1">최신순</option>
-                        <option value="2">인기순</option>
+                    <select class="form-select mb-0" aria-label="뉴스 정렬 옵션" style="width: 200px;" id="sortOption"
+                        onchange="sortNews()">
+                        <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
+                        <option value="popular" th:selected="${sort == 'popular'}">인기순</option>
                     </select>
                 </div>
 
@@ -113,6 +114,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function sortNews() {
+            const selectedSort = document.getElementById("sortOption").value;
+            window.location.href = `/main?page=1&sort=` + selectedSort;
+        }
+    </script>
+
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sidebarmenu.js"></script>

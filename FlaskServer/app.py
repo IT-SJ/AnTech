@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 from kiwipiepy import Kiwi
 from collections import defaultdict
 from transformers import pipeline
-import torch
-import torch.nn.functional as F  # ✅ 소프트맥스 사용을 위해 추가
 
 # Flask 서버 초기화
 app = Flask(__name__)
