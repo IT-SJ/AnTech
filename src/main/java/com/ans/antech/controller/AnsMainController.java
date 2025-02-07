@@ -170,35 +170,7 @@ public class AnsMainController {
         return "authentication-register";
     }
 
-    @GetMapping("/tabler.do")
-    public String tabler() {
-        return "icon-tabler";
-    }
-
-    @GetMapping("/alerts.do")
-    public String alerts() {
-        return "ui-alerts";
-    }
-
-    @GetMapping("/buttons.do")
-    public String buttons() {
-        return "ui-buttons";
-    }
-
-    @GetMapping("/card.do")
-    public String card() {
-        return "ui-card";
-    }
-
-    @GetMapping("/forms.do")
-    public String forms() {
-        return "ui-forms";
-    }
-
-    @GetMapping("/typography.do")
-    public String typography() {
-        return "ui-typography";
-    }
+    
 
     @GetMapping("/findid")
     public String findid() {
