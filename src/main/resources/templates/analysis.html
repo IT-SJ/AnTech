@@ -14,6 +14,13 @@
             background-color: #ebebeb;
             border-radius: 5px; /* 둥근 모서리 적용 (선택사항) */
         }
+
+        .badge-hover:hover {
+            background-color: #007bff; /* 호버 시 배경색 변경 */
+            color: white !important; /* 텍스트 색상 변경 */
+            transform: scale(1.1); /* 약간 커지도록 효과 추가 */
+            transition: all 0.2s ease-in-out; /* 부드럽게 변경 */
+        }
     </style>
 
 </head>
@@ -32,7 +39,7 @@
             <!--  헤더 끝 ------------------------------------------------------------------------------------------------------------------------------------>
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">주요 뉴스 분석</h5>
                     <input type="hidden" id="type" value="main">
                     <!-- 스크랩 버튼 -->
@@ -54,8 +61,8 @@
                                 <div href="javascript:void(0)">
                                     <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
                                         th:src="${news.img_url1}"
-                                        class="card-img-top rounded-0 border border-5 border-white"
-                                        style="object-fit: cover; height: 300px; width: 100%;">
+                                        class="card-img-top p-2"
+                                        style="object-fit: cover; height: 300px; width: 100%; border-radius: 18px !important;">
                                     <img th:if="${news.img_url1 == null or news.img_url1 == ''}"
                                         th:src="@{/assets/images/logo/Frame.svg}"
                                         class="card-img-top rounded border border-5 border-white"
@@ -70,9 +77,9 @@
                                     </h5>
                                 </div>
                                 <!-- 해시태그 영역 -->
-                                <div class="d-flex flex-wrap gap-3 mb-1 mt-auto">
+                                <div class="d-flex flex-wrap gap-3 mb-2 mt-auto">
                                     <!-- 주요 뉴스 해시태그 -->
-                                    <h5 th:each="hashtag : ${mainHashtags}" th:text="${hashtag}" class="badge bg-secondary rounded-3 fw-semibold"
+                                    <h5 th:each="hashtag : ${mainHashtags}" th:text="${hashtag}" class="badge bg-secondary rounded-3 fw-semibold badge-hover"
                                         style="color: rgb(255, 255, 255); cursor: pointer;" onclick="searchByHashtag(this)">
                                     </h5>
                                 </div>

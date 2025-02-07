@@ -24,7 +24,7 @@
             <!--  Header End -->
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">주요 뉴스</h5>
                     <select class="form-select mb-0" aria-label="뉴스 정렬 옵션" style="width: 200px;" id="sortOption"
                         onchange="sortNews()">
@@ -43,17 +43,17 @@
                                     <!-- 뉴스 이미지가 있을 경우 -->
                                     <img th:if="${news.img_url1 != null and news.img_url1 != ''}"
                                         th:src="${news.img_url1}"
-                                        class="card-img-top rounded border border-5 border-white"
-                                        style="height: 180px; object-fit: cover;">
+                                        class="card-img-top p-2"
+                                        style="height: 150px; object-fit: cover; border-radius: 18px !important;">
 
                                     <!-- 뉴스 이미지가 없을 경우 기본 이미지 표시 -->
                                     <img th:if="${news.img_url1 == null or news.img_url1 == ''}"
                                         src="../assets/images/logo/Frame.svg"
                                         class="card-img-top rounded border border-5 border-white"
-                                        style="height: 180px; object-fit: cover;">
+                                        style="height: 150px; object-fit: cover;">
                                 </a>
                             </div>
-                            <div class="card-body pt-3 p-4 d-flex flex-column align-items-stretch"
+                            <div class="card-body p-4 d-flex flex-column align-items-stretch"
                                 style="min-height: 180px;">
                                 <!-- 타이틀 (최대 3줄 허용, 줄바꿈 가능) -->
                                 <h6 class="fw-semibold fs-4 flex-grow-1" th:text="${news.title}">
@@ -62,7 +62,7 @@
 
                                 <!-- 신문사 정보 -->
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="fw-light fs-4 mb-2" th:text="${news.press}">신문사</h6>
+                                    <h6 class="fw-light fs-4 mb-1" th:text="${news.press}">신문사</h6>
                                 </div>
 
                                 <!-- 버튼 (항상 하단 고정) -->
@@ -86,7 +86,7 @@
                                 <!-- "이전" 버튼 -->
                                 <li class="page-item" th:if="${currentPage > 1}">
                                     <a class="page-link rounded-circle"
-                                        th:href="@{/main?page={prev}(prev=${currentPage - 1})}">«</a>
+                                        th:href="@{/main?page={prev}(prev=${currentPage - 1})}"><</a>
                                 </li>
 
                                 <!-- 페이지네이션: 최대 5개만 표시 -->
@@ -102,7 +102,7 @@
                                 <!-- "다음" 버튼 -->
                                 <li class="page-item" th:if="${currentPage < totalPages}">
                                     <a class="page-link rounded-circle"
-                                        th:href="@{/main?page={next}(next=${currentPage + 1})}">»</a>
+                                        th:href="@{/main?page={next}(next=${currentPage + 1})}">></a>
                                 </li>
 
                             </ul>

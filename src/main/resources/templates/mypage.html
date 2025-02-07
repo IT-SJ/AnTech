@@ -36,7 +36,7 @@
             <!--  Header End -->
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
                 <!-- 정렬 선택 -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">마이페이지</h5>
                 </div>
 
@@ -213,14 +213,14 @@
                 newsCard.classList.add("col-sm-6", "col-xl-4");
 
                 newsCard.innerHTML = `
-                    <div class="card">
+                    <div class="card ">
                         <div class="card-header d-flex justify-content-between py-1 px-2">
                             <button class="btn btn-outline-light ms-auto"
                                     data-idx="${news.idx}" onclick="toggleScrap(this)">
                                 <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
                             </button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="min-height: 193px;">
                             <h5 class="card-title">
                                 <a href="${news.type === 'breaking' ? '/Banalysis/' : '/analysis/'}${news.idx}" 
                                    class="text-decoration-none text-dark text-truncate-3">${news.title}</a>
@@ -243,7 +243,7 @@
             for (let i = 1; i <= totalPages; i++) {
                 paginationContainer.innerHTML += `
                     <li class="page-item ${i === currentPage ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="fetchScrapNews(${i})">${i}</a>
+                        <a class="page-link rounded-circle m-1" href="#" onclick="fetchScrapNews(${i})">${i}</a>
                     </li>
                 `;
             }
