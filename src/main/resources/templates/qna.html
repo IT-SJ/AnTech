@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Q&A</title>
+    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <th:block th:insert="head :: head"></th:block>
+
+</head>
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <!-- 사이드바 포함 -->
+        <div th:replace="sidebar :: sidebar"></div>
+
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <!--  헤더 시작 -->
+            <div th:replace="header :: header"></div>
+            <!--  Header End -->
+            <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
+
+                <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+                    <div class="card-body px-4 py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 col-xl-3">
+                                <h4 class="fw-semibold mb-8">Q&A</h4>
+                                <span>궁금한 것이 있다면 질문하세요</span>
+                            </div>
+                            <div
+                                class="col-md-8 col-xl-9 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
+                                <a href="javascript:void(0)" id="btn-add-contact"
+                                    class="btn btn-primary d-flex align-items-center">
+                                    <i class="ti ti-users text-white me-1 fs-5"></i> 질문하기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="addContactModal" tabindex="-1" role="dialog"
+                    aria-labelledby="addContactModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex align-items-center">
+                                <h5 class="modal-title">Question</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="add-contact-box">
+                                    <div class="add-contact-content">
+                                        <form id="addContactModalTitle">
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <div class="mb-3 title">
+                                                        <label class="form-label">제목</label>
+                                                        <input type="text" id="c-occupation" class="form-control"
+                                                            placeholder="제목을 입력하세요">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 content">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">내용</label>
+                                                        <textarea type="text" id="c-location" class="form-control"
+                                                            placeholder="내용을 입력하세요"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="d-flex gap-6 m-0">
+                                    <button id="btn-add" class="btn btn-success">등록하기</button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 모달 끝 -->
+                <!-- 리스트 카드 시작 -->
+                <div class="card" style="min-height: auto;">
+                    <div class="table-responsive border rounded">
+                        <table class="table align-middle text-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">Title</th>
+                                    <th style="width: 40%;">Content</th>
+                                    <th style="width: 15%;">ID</th>
+                                    <th style="width: 15%;">DT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 한행 시작 -->
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 fs-4">질문 제목</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">궁금한 내용</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-bg-success p-1 rounded-circle"></span>
+                                            <p class="mb-0 ms-2">ID</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">Jan 18 2024</p>
+                                    </td>
+                                </tr>
+
+                                <!-- 한행 끝 -->
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 fs-4">질문 제목</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">궁금한 내용</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-bg-success p-1 rounded-circle"></span>
+                                            <p class="mb-0 ms-2">ID</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">Jan 18 2024</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 fs-4">질문 제목</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">궁금한 내용</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-bg-success p-1 rounded-circle"></span>
+                                            <p class="mb-0 ms-2">ID</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">Jan 18 2024</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 fs-4">질문 제목</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">궁금한 내용</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-bg-success p-1 rounded-circle"></span>
+                                            <p class="mb-0 ms-2">ID</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">Jan 18 2024</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 fs-4">질문 제목</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">궁금한 내용</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-bg-success p-1 rounded-circle"></span>
+                                            <p class="mb-0 ms-2">ID</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0">Jan 18 2024</p>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="d-flex align-items-center justify-content-end py-1">
+                            <nav aria-label="...">
+                                <ul class="pagination justify-content-center mb-0 ms-8 ms-sm-9">
+                                    <li class="page-item p-1">
+                                        <a class="page-link border-0 rounded-circle text-dark fs-6 round-32 d-flex align-items-center justify-content-center"
+                                            href="javascript:void(0)">
+                                            <i class="ti ti-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item p-1">
+                                        <a class="page-link border-0 rounded-circle text-dark fs-6 round-32 d-flex align-items-center justify-content-center"
+                                            href="javascript:void(0)">
+                                            <i class="ti ti-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- card끝 -->
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addContactButton = document.getElementById('btn-add-contact');
+            const addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
+
+            addContactButton.addEventListener('click', function () {
+                addContactModal.show();
+            });
+        });
+    </script>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+
+
+
+</body>
+
+</html>

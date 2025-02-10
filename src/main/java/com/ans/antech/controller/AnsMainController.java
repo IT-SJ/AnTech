@@ -392,4 +392,8 @@ public class AnsMainController {
         return "Banalysis";
     }
 
+    @GetMapping("/qna")
+    public String qna() {
+        return "qna";
+    }
 }
