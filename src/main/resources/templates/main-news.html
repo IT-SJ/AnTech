@@ -50,19 +50,19 @@
                                     <img th:if="${news.img_url1 == null or news.img_url1 == ''}"
                                         src="../assets/images/logo/Frame.svg"
                                         class="card-img-top rounded border border-5 border-white"
-                                        style="height: 150px; object-fit: cover;">
+                                        style="height: 150px; object-fit: cover; border-radius: 18px !important;">
                                 </a>
                             </div>
-                            <div class="card-body p-4 d-flex flex-column align-items-stretch"
-                                style="min-height: 180px;">
-                                <!-- 타이틀 (최대 3줄 허용, 줄바꿈 가능) -->
-                                <h6 class="fw-semibold fs-4 flex-grow-1" th:text="${news.title}">
-                                    뉴스기사 제목
-                                </h6>
-
+                            <div class="card-body p-3 d-flex flex-column align-items-stretch"
+                                style="min-height: 160px;">
+                                
                                 <!-- 신문사 정보 -->
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="fw-light fs-4 mb-1" th:text="${news.press}">신문사</h6>
+                                <div class="mb-1">
+                                    <span class="mb-1 badge rounded-pill bg-secondary-subtle text-secondary" th:text="${news.press}">신문사</span>
+                                    <!-- 타이틀 (최대 3줄 허용, 줄바꿈 가능) -->
+                                    <h6 class="fw-semibold fs-4 flex-grow-1" th:text="${news.title}">
+                                        뉴스기사 제목
+                                    </h6>
                                 </div>
 
                                 <!-- 버튼 (항상 하단 고정) -->

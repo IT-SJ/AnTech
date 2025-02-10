@@ -222,13 +222,13 @@
                         </div>
                         <div class="card-body" style="min-height: 193px;">
                             <h5 class="card-title">
+                                <p class="mb-1 badge rounded-pill bg-secondary-subtle text-secondary">${news.press}</p>
                                 <a href="${news.type === 'breaking' ? '/Banalysis/' : '/analysis/'}${news.idx}" 
                                    class="text-decoration-none text-dark text-truncate-3">${news.title}</a>
                             </h5>
                             <p class="card-text fw-normal text-truncate" style="max-height: 3rem; overflow: hidden;">
                                 ${news.smr}
                             </p>
-                            <p class="badge bg-secondary rounded-3 mb-0">${news.press}</p>
                         </div>
                     </div>
                 `;
@@ -243,7 +243,7 @@
             for (let i = 1; i <= totalPages; i++) {
                 paginationContainer.innerHTML += `
                     <li class="page-item ${i === currentPage ? 'active' : ''}">
-                        <a class="page-link rounded-circle m-1" href="#" onclick="fetchScrapNews(${i})">${i}</a>
+                        <a class="page-link rounded-circle m-1" href="#" onclick="event.preventDefault(); fetchScrapNews(${i})">${i}</a>
                     </li>
                 `;
             }
