@@ -22,12 +22,12 @@ AI를 활용하여 금융뉴스를 요약한 후 시각화하여 사용자에게
 - 협업툴 : GITHUB
 
 ## 기술스택
-백엔드: Spring Boot, Flask  
-프론트엔드: HTML/CSS/JavaScript, Bootstrap  
-데이터베이스: MySQL  
-AI 기술: Hugging Face Transformers (감정 분석), Crawl4 (요약)  
-API 연동: Yahoo Finance API  
-시각화: Chart.js  
+- 백엔드: Spring Boot, Flask  
+- 프론트엔드: HTML/CSS/JavaScript, Bootstrap  
+- 데이터베이스: MySQL  
+- AI 기술: Hugging Face Transformers (감정 분석), Crawl4 (요약)  
+- API 연동: Yahoo Finance API  
+- 시각화: Chart.js  
 
 ## 주요기능 
 - 금융 뉴스 크롤링: 네이버 금융 뉴스를 크롤링하여 최신 정보를 제공.
