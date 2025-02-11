@@ -11,7 +11,6 @@ public class Qna {
     private int idx;
     private String title;
     private String text;
-    private String reply;
     private String id;
     private String dt;
 }

@@ -7,21 +7,16 @@
     <title>Q&A</title>
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <th:block th:insert="head :: head"></th:block>
-
 </head>
 
 <body>
-    <!--  Body Wrapper -->
+    <input type="hidden" id="userId" th:value="${session.loginMember?.id}">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- 사이드바 포함 -->
         <div th:replace="sidebar :: sidebar"></div>
 
-        <!--  Main wrapper -->
         <div class="body-wrapper">
-            <!--  헤더 시작 -->
             <div th:replace="header :: header"></div>
-            <!--  Header End -->
             <div class="container-fluid" style="padding-left: 6rem; padding-right: 6rem;">
 
                 <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
@@ -33,14 +28,16 @@
                             </div>
                             <div
                                 class="col-md-8 col-xl-9 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
-                                <a href="javascript:void(0)" id="btn-add-contact"
-                                    class="btn btn-primary d-flex align-items-center">
+                                <button type="button" id="btn-add-contact"
+                                    class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+                                    data-bs-target="#addContactModal">
                                     <i class="ti ti-users text-white me-1 fs-5"></i> 질문하기
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- Modal -->
                 <div class="modal fade" id="addContactModal" tabindex="-1" role="dialog"
                     aria-labelledby="addContactModalTitle" aria-hidden="true">
@@ -52,46 +49,28 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="add-contact-box">
-                                    <div class="add-contact-content">
-                                        <form id="addContactModalTitle">
-
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <div class="mb-3 title">
-                                                        <label class="form-label">제목</label>
-                                                        <input type="text" id="c-occupation" class="form-control"
-                                                            placeholder="제목을 입력하세요">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 content">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">내용</label>
-                                                        <textarea type="text" id="c-location" class="form-control"
-                                                            placeholder="내용을 입력하세요"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                                <form id="addQnaForm" onsubmit="return false;">
+                                    <div class="mb-3">
+                                        <label class="form-label">제목</label>
+                                        <input type="text" id="c-occupation" class="form-control"
+                                            placeholder="제목을 입력하세요">
                                     </div>
-                                </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">내용</label>
+                                        <textarea id="c-location" class="form-control"
+                                            placeholder="내용을 입력하세요"></textarea>
+                                    </div>
+                                </form>
                             </div>
                             <div class="modal-footer">
-                                <div class="d-flex gap-6 m-0">
-                                    <button id="btn-add" class="btn btn-success">등록하기</button>
-
-                                </div>
-
+                                <button id="btn-add" class="btn btn-success">등록하기</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- 모달 끝 -->
-                <!-- 리스트 카드 시작 -->
-                <div class="card" style="min-height: auto;">
+
+                <!-- 질문 목록 -->
+                <div class="card">
                     <div class="table-responsive border rounded">
                         <table class="table align-middle text-nowrap mb-0">
                             <thead>
@@ -102,165 +81,99 @@
                                     <th style="width: 15%;">시간</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- 첫 번째 질문 -->
+                            <tbody id="qnaListBody">
                                 <tr th:if="${#lists.isEmpty(qnaList)}">
                                     <td colspan="4" class="text-center">등록된 질문이 없습니다.</td>
                                 </tr>
-                                <tr th:each="qna, iterStat : ${qnaList}" data-bs-toggle="collapse"
-                                    th:data-bs-target="'#row' + (${qna.idx != null ? qna.idx : iterStat.index})"
+                                <tr th:each="qna, iterStat : ${qnaList}" th:if="${qna != null}"
+                                    th:with="rowId=${qna != null ? (qna.idx != null ? qna.idx : iterStat.index) : iterStat.index}"
+                                    data-bs-toggle="collapse" th:data-bs-target="'#row' + ${rowId}"
                                     aria-expanded="false" style="cursor: pointer;">
-                                    <td th:text="${iterStat.count}">1</td>
-                                    <td th:text="${qna.title}">질문 제목</td>
-                                    <td th:text="${qna.text}">궁금한 내용</td>
-                                    <td th:text="${qna.dt}">날짜</td>
+                                    <td th:text="${iterStat.count}"></td>
+                                    <td th:text="${qna.title}"></td>
+                                    <td th:text="${qna.text}"></td>
+                                    <td th:text="${qna.dt}"></td>
                                 </tr>
-                                <tr th:id="'row' + (${qna.idx != null ? qna.idx : iterStat.index})" class="collapse">
-                                    <td colspan="4">
-                                        <div class="p-3">
-                                            <h6 class="fw-semibold">질문</h6>
-                                            <p th:text="${qna.text}">질문 내용</p>
-
-                                            <!-- 댓글 영역 -->
-                                            <div class="mt-4">
-                                                <h6 class="fw-semibold">답변</h6>
-                                                <ul class="list-group mb-3" id="commentList1">
-                                                    <!-- 댓글 목록이 여기에 추가됩니다 -->
-                                                    <li class="list-group-item"
-                                                        th:text="${qna.reply != null ? qna.reply : '아직 답변이 없습니다.'}">
-                                                    </li>
-                                                </ul>
-                                                <div class="input-group">
-                                                    <input type="text" id="commentInput1" class="form-control"
-                                                        placeholder="Add a comment">
-                                                    <button class="btn btn-primary"
-                                                        onclick="addComment(1)">Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
                             </tbody>
-
-
-
                         </table>
                     </div>
-
                 </div>
-                <!-- card끝 -->
+
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // ✅ '질문하기' 버튼과 모달 요소 가져오기
+            // ✅ '질문하기' 버튼 및 모달 객체 가져오기
             const addContactButton = document.getElementById("btn-add-contact");
+            const addContactModal = new bootstrap.Modal(document.getElementById("addContactModal"));
             const addQnaButton = document.getElementById("btn-add");
             const titleInput = document.getElementById("c-occupation");
             const textInput = document.getElementById("c-location");
-            const addContactModalElement = document.getElementById("addContactModal");
-
-            // ✅ Bootstrap 모달 객체 초기화
-            const addContactModal = new bootstrap.Modal(addContactModalElement);
 
             // ✅ '질문하기' 버튼 클릭 시 모달 표시
-            addContactButton.addEventListener("click", function () {
-                console.log("📌 '질문하기' 버튼 클릭됨");
-
-                // ✅ 모달을 표시
-                addContactModal.show();
+            addContactButton.addEventListener("click", function (event) {
+                event.preventDefault(); // a 태그 기본 동작 방지 (스크롤 이동)
+                addContactModal.show(); // 모달 표시
             });
 
-            // ✅ '등록하기' 버튼 클릭 시 비동기적으로 질문을 추가
+            // ✅ '등록하기' 버튼 클릭 시 질문 등록 비동기 처리
             addQnaButton.addEventListener("click", async function () {
                 const title = titleInput.value.trim();
                 const text = textInput.value.trim();
+                const id = document.getElementById("userId").value;
 
+                // 제목과 내용이 비어있을 경우
                 if (!title || !text) {
                     alert("제목과 내용을 입력해주세요!");
                     return;
                 }
 
                 try {
-                    console.log("📌 질문 등록 요청 시작:", { title, text });
-
-                    const response = await fetch("/ans/add", {
+                    // 비동기 POST 요청으로 질문 데이터 전송
+                    const response = await fetch("/ans/addQna", {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ title, text })
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ title, text, id})
                     });
-
-                    const data = await response.json();
-                    console.log("📌 서버 응답:", data);
 
                     if (response.ok) {
                         alert("질문이 성공적으로 등록되었습니다!");
-
-                        // ✅ 입력 필드 초기화
-                        titleInput.value = "";
+                        titleInput.value = ""; // 입력 필드 초기화
                         textInput.value = "";
-
-                        // ✅ 모달 닫기
-                        addContactModal.hide();
-
-                        // ✅ 비동기적으로 질문 목록 갱신
-                        loadQnaList();
+                        addContactModal.hide(); // 모달 닫기
+                        loadQnaList(); // 질문 목록 갱신 (필요 시)
                     } else {
-                        alert(data.error || "질문 등록에 실패했습니다.");
+                        alert("질문 등록에 실패했습니다.");
                     }
                 } catch (error) {
                     console.error("❌ 질문 등록 실패:", error);
-                    alert("질문 등록 중 오류가 발생했습니다.");
                 }
             });
-
-            // ✅ 질문 목록을 비동기적으로 불러오는 함수
+            // ✅ 질문 목록 갱신 함수 (필요시)
             async function loadQnaList() {
                 try {
-                    const response = await fetch("/ans/qna-list"); // 질문 목록을 가져오는 API 호출
+                    const response = await fetch("/ans/addQna");
                     const qnaList = await response.json();
-
-                    const tableBody = document.querySelector("tbody");
-                    tableBody.innerHTML = ""; // 기존 목록 초기화
+                    const tableBody = document.getElementById("qnaListBody");
+                    tableBody.innerHTML = "";
 
                     qnaList.forEach((qna, index) => {
                         const row = `
-                            <tr data-bs-toggle="collapse" data-bs-target="#row${index}" style="cursor: pointer;">
-                                <td>${index + 1}</td>
-                                <td>${qna.title}</td>
-                                <td>${qna.text}</td>
-                                <td>${qna.dt}</td>
-                            </tr>
-                            <tr id="row${index}" class="collapse">
-                                <td colspan="4">
-                                    <div class="p-3">
-                                        <h6 class="fw-semibold">질문</h6>
-                                        <p>${qna.text}</p>
-                                        <h6 class="fw-semibold">답변</h6>
-                                        <ul class="list-group mb-3">
-                                            <li class="list-group-item">${qna.reply ? qna.reply : "아직 답변이 없습니다."}</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${qna.title}</td>
+                        <td>${qna.text}</td>
+                        <td>${qna.dt}</td>
+                    </tr>
+                `;
                         tableBody.insertAdjacentHTML("beforeend", row);
                     });
                 } catch (error) {
                     console.error("❌ 질문 목록 불러오기 실패:", error);
                 }
             }
-
-            // ✅ 페이지 로드 시 질문 목록을 자동으로 불러오기
-            loadQnaList();
         });
     </script>
 
