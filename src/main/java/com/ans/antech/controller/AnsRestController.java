@@ -13,11 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ans.antech.model.Member;
+import com.ans.antech.model.Qna;
 import com.ans.antech.service.CommoditiesService;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.ExchangeRateService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NasdaqService;
+import com.ans.antech.service.QnaService;
 import com.ans.antech.service.ScrapService;
 import com.ans.antech.service.StockService;
 import com.oreilly.servlet.MultipartRequest;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +48,9 @@ public class AnsRestController {
 
     @Autowired
     private ScrapService scrapService;
+
+    @Autowired
+    private QnaService qnaService;
 
     // 회원 조회 (ID로 조회)
     @GetMapping("/{id}")
@@ -274,4 +280,31 @@ public class AnsRestController {
     public Map<String, Object> getCommoditiesData() {
         return commoditiesService.getCommoditiesData();
     }
+
+    // 영빈 qna-----------------------------------------------
+    @PostMapping("/add")
+    public ResponseEntity<?> addQna(@RequestBody Map<String, String> requestData, HttpSession session) {
+        // 로그인된 사용자 정보 가져오기
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요합니다."));
+        }
+
+        String title = requestData.get("title");
+        String text = requestData.get("text");
+
+        if (title == null || title.trim().isEmpty() || text == null || text.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "제목과 내용을 입력해주세요."));
+        }
+
+        // 질문 저장
+        Qna qna = new Qna();
+        qna.setTitle(title);
+        qna.setText(text);
+        qna.setId(loginMember.getId());  // 로그인한 사용자의 ID 설정
+        qnaService.addQna(qna);
+
+        return ResponseEntity.ok(Map.of("message", "질문이 등록되었습니다."));
+    }
+
 }

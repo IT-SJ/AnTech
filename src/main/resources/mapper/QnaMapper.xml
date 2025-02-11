@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ans.antech.mapper.QnaMapper">
+
+  <select id="findQnaByUserId" resultType="com.ans.antech.model.Qna">
+    SELECT idx, title, text, reply, id, dt
+    FROM ANS_QNA
+    WHERE id = #{userId}
+    ORDER BY dt DESC
+  </select>
+
+  <insert id="insertQna" useGeneratedKeys="true" keyProperty="idx">
+    INSERT INTO ANS_QNA (TITLE, TEXT, ID, DT)
+    VALUES (#{title}, #{text}, #{id}, NOW())
+  </insert>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.ans.antech.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,9 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ans.antech.model.Member;
 import com.ans.antech.model.News;
+import com.ans.antech.model.Qna;
 import com.ans.antech.service.EmailService;
 import com.ans.antech.service.MemberService;
 import com.ans.antech.service.NewsService;
+import com.ans.antech.service.QnaService;
 import com.ans.antech.service.SentimentService;
 import com.ans.antech.service.WordCloudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +62,9 @@ public class AnsMainController {
     private ObjectMapper objectMapper; // JSON 변환기
 
     private static final Logger logger = LoggerFactory.getLogger(AnsMainController.class);
+
+    @Autowired
+    private QnaService qnaService;
 
     // localhost:8080/
     @GetMapping("/")
@@ -169,8 +175,6 @@ public class AnsMainController {
     public String register() {
         return "authentication-register";
     }
-
-    
 
     @GetMapping("/findid")
     public String findid() {
@@ -393,7 +397,30 @@ public class AnsMainController {
     }
 
     @GetMapping("/qna")
-    public String qna() {
+    public String getQnaList(HttpSession session, Model model) {
+        // 로그인한 사용자 객체 가져오기
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        // 로그인 상태 확인
+        if (loginMember == null) {
+            return "authentication-login"; // 로그인되지 않았다면 로그인 페이지로 리디렉션
+        }
+
+        // 사용자 ID 가져오기
+        String userId = loginMember.getId();
+
+        // 해당 사용자의 Q&A 목록 불러오기
+        List<Qna> qnaList = qnaService.getQnaListByUserId(userId);
+
+        if (qnaList == null) {
+            qnaList = new ArrayList<>(); // ✅ `null` 방지
+        }
+
+        // 🔍 디버깅 로그 추가
+        System.out.println("🔍 불러온 Q&A 개수: " + (qnaList != null ? qnaList.size() : "null"));
+
+        model.addAttribute("qnaList", qnaList);
+
         return "qna";
     }
 }
