@@ -143,7 +143,7 @@
     DELETE FROM ANS_FAV WHERE id = #{id} AND (main_idx = #{idx} OR breaking_idx = #{idx})
     </delete>
 
-    <!-- 특정 사용자의 스크랩한 뉴스 목록 조회 -->
+    <!-- 마이페이지 특정 사용자의 스크랩한 뉴스 목록 조회 -->
     <select id="getScrapNewsList" resultType="map">
     SELECT 
         COALESCE(n.idx, b.idx) AS idx, 
