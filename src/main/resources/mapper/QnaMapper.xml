@@ -7,16 +7,16 @@
 
   <!-- 사용자 ID로 질문 찾기 (SELECT) -->
   <select id="findQnaByUserId" resultType="com.ans.antech.model.Qna">
-    SELECT idx, title, text, reply, id, dt
+    SELECT idx, title, text, id, dt
     FROM ANS_QNA
     WHERE id = #{userId}
     ORDER BY dt DESC
   </select>
 
   <!-- 질문 추가 (INSERT) -->
-  <insert id="insertQna" resultType="com.ans.antech.model.Qna"> <!-- resultType 추가 -->
-        INSERT INTO ANS_QNA (TITLE, TEXT, ID, DT)
-        VALUES (#{title}, #{text}, #{id} NOW())
+  <insert id="insertQna" > <!-- resultType 추가 -->
+        INSERT INTO ANS_QNA ( TITLE, TEXT, ID, DT)
+        VALUES (#{title}, #{text}, #{id}, NOW())
   </insert>
 
   <!-- 질문 목록 조회 (SELECT) -->

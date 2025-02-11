@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <input type="hidden" id="userId" th:value="${session.loginMember?.id}">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <div th:replace="sidebar :: sidebar"></div>
@@ -122,6 +123,7 @@
             addQnaButton.addEventListener("click", async function () {
                 const title = titleInput.value.trim();
                 const text = textInput.value.trim();
+                const id = document.getElementById("userId").value;
 
                 // 제목과 내용이 비어있을 경우
                 if (!title || !text) {
@@ -134,7 +136,7 @@
                     const response = await fetch("/ans/addQna", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ title, text })
+                        body: JSON.stringify({ title, text, id})
                     });
 
                     if (response.ok) {
@@ -150,7 +152,6 @@
                     console.error("❌ 질문 등록 실패:", error);
                 }
             });
-
             // ✅ 질문 목록 갱신 함수 (필요시)
             async function loadQnaList() {
                 try {

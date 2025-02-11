@@ -285,6 +285,8 @@ public class AnsRestController {
     // ✅ 질문 등록 API (INSERT)
     @PostMapping("/addQna")
     public ResponseEntity<String> addQuestion(@RequestBody Qna qna) {
+
+        System.out.println("질문 내용 받아왔나용"+qna);
         try {
             qnaService.addQna(qna);
             return ResponseEntity.ok("질문이 등록되었습니다.");
@@ -293,10 +295,11 @@ public class AnsRestController {
         }
     }
 
-    // ✅ 질문 목록 조회 API
-    @GetMapping("/addQna")
-    public ResponseEntity<List<Qna>> getAllQna() {
-        return ResponseEntity.ok(qnaService.getAllQna());
-    }
-
+     // ✅ 질문 목록 조회 API
+     @GetMapping("/addQna")
+     public ResponseEntity<List<Qna>> getAllQna() {
+         return ResponseEntity.ok(qnaService.getAllQna());
+     }
+ 
+    
 }
