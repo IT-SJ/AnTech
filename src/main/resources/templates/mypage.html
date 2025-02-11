@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>마이페이지</title>
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}">
     <th:block th:insert="head :: head"></th:block>
     <style>
         .text-truncate-3 {
@@ -216,7 +215,7 @@
                         <div class="card-header d-flex justify-content-between py-1 px-2">
                             <button class="btn btn-outline-light ms-auto"
                                     data-idx="${news.idx}" onclick="toggleScrap(this)">
-                                <i class="ti ti-star-filled" style="font-size: 1rem; color: gold;"></i>
+                                <i class="ti ti-star text-warning"></i>
                             </button>
                         </div>
                         <div class="card-body" style="min-height: 193px;">
