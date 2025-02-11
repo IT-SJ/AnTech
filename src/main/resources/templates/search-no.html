@@ -13,73 +13,8 @@
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- 사이드바 시작 -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="home" class="text-nowrap logo-img">
-                        <img src="../assets/images/logos/Logo1.svg" width="180" alt="" />
-                    </a>
-                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                        <i class="ti ti-x fs-8"></i>
-                    </div>
-                </div>
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="home" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-layout-dashboard"></i>
-                                </span>
-                                <span class="hide-menu">Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">pages</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="breaking" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-article"></i>
-                                </span>
-                                <span class="hide-menu">실시간 속보</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="main" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-alert-circle"></i>
-                                </span>
-                                <span class="hide-menu">주요 뉴스</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="stockinfo" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-cards"></i>
-                                </span>
-                                <span class="hide-menu">증권 정보</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="mypage" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user"></i>
-                                </span>
-                                <span class="hide-menu">마이페이지</span>
-                            </a>
-                        </li>
-                    </ul>
-
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!--  사이드바 끝-->
+        <!-- 사이드바 포함 -->
+        <div th:replace="sidebar :: sidebar"></div>
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  헤더 시작 -->
@@ -95,12 +30,15 @@
                     </ul>
                     <!-- 검색창 -->
                     <div class="ms-3">
-                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;" action="/search" method="GET">
+                        <form class="d-flex align-items-center me-auto" role="search" style="width: 600px;"
+                            action="/search" method="GET">
                             <div class="input-group" style="width: 90%;">
                                 <button class="btn border-0 shadow-none btn-lg" type="submit">
                                     <i class="ti ti-search text-dark"></i>
                                 </button>
-                                <input type="text" name="keyword" class="form-control border-0 shadow-none form-control-lg" placeholder="Search" aria-label="Search">
+                                <input type="text" name="keyword"
+                                    class="form-control border-0 shadow-none form-control-lg" placeholder="Search"
+                                    aria-label="Search">
                             </div>
                         </form>
                     </div>
@@ -144,7 +82,8 @@
                 </div>
 
                 <div class="container text-center" style="padding: 50px;">
-                    <h3 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">"<span th:text="${keyword}"></span>"에 대한 검색 결과가 없습니다.</h3>
+                    <h3 class="card-title fw-semibold mb-0" style="font-size: 20px; color: #007FEE;">"<span
+                            th:text="${keyword}"></span>"에 대한 검색 결과가 없습니다.</h3>
                     <p>다른 키워드로 다시 검색해보세요.</p>
                 </div>
 

@@ -40,23 +40,23 @@
         ) AS search_results
     </select>
 
-    <!-- 페이징 적용하여 뉴스 검색 -->
+   <!-- 페이징 적용하여 뉴스 검색 -->
     <select id="searchNewsWithPagination" resultType="com.ans.antech.model.News">
-    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx, MAX(img_url1) AS img_url1                          <!-- ✅ img_url1 추가 -->
+    SELECT title, MAX(dt) AS dt, MIN(idx) AS idx, MAX(img_url1) AS img_url1, PRESS          <!-- ✅ PRESS 추가 -->
     FROM (
-        SELECT title, dt, idx, img_url1 FROM ANS_MAIN_NEWS
+        SELECT title, dt, idx, img_url1, PRESS FROM ANS_MAIN_NEWS
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
 
         UNION ALL
 
-        SELECT title, dt, idx, img_url1 FROM ANS_BREAKING_NEWS
+        SELECT title, dt, idx, img_url1, PRESS FROM ANS_BREAKING_NEWS
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
-    ) AS combined_news                          <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
+    ) AS combined_news          <!-- ✅ 메인뉴스 + 속보뉴스 합치기 -->
 
-    GROUP BY title                          <!-- ✅ 최종적으로 중복된 제목 제거 -->
-    ORDER BY dt DESC                          <!-- ✅ 최신 뉴스 우선 정렬 -->
+    GROUP BY title, PRESS          <!-- ✅ 중복 제거 시 출처(PRESS)도 고려 -->
+    ORDER BY dt DESC          <!-- ✅ 최신 뉴스 우선 정렬 -->
 
-    LIMIT #{pageSize} OFFSET #{offset}                          <!-- ✅ 페이징 적용 -->
+    LIMIT #{pageSize} OFFSET #{offset}          <!-- ✅ 페이징 적용 -->
     </select>
 
     <!-- 속보 뉴스 -->
