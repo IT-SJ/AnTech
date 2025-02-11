@@ -34,4 +34,8 @@ public class QnaService {
     public void addQna(Qna qna) {
         qnaMapper.insertQna(qna);
     }
+
+    public List<Qna> getAllQna() {
+        return qnaMapper.getAllQna();
+    }
 }

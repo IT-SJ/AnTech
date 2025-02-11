@@ -282,29 +282,21 @@ public class AnsRestController {
     }
 
     // 영빈 qna-----------------------------------------------
-    @PostMapping("/add")
-    public ResponseEntity<?> addQna(@RequestBody Map<String, String> requestData, HttpSession session) {
-        // 로그인된 사용자 정보 가져오기
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "로그인이 필요합니다."));
+    // ✅ 질문 등록 API (INSERT)
+    @PostMapping("/addQna")
+    public ResponseEntity<String> addQuestion(@RequestBody Qna qna) {
+        try {
+            qnaService.addQna(qna);
+            return ResponseEntity.ok("질문이 등록되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록 실패: " + e.getMessage());
         }
+    }
 
-        String title = requestData.get("title");
-        String text = requestData.get("text");
-
-        if (title == null || title.trim().isEmpty() || text == null || text.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "제목과 내용을 입력해주세요."));
-        }
-
-        // 질문 저장
-        Qna qna = new Qna();
-        qna.setTitle(title);
-        qna.setText(text);
-        qna.setId(loginMember.getId());  // 로그인한 사용자의 ID 설정
-        qnaService.addQna(qna);
-
-        return ResponseEntity.ok(Map.of("message", "질문이 등록되었습니다."));
+    // ✅ 질문 목록 조회 API
+    @GetMapping("/addQna")
+    public ResponseEntity<List<Qna>> getAllQna() {
+        return ResponseEntity.ok(qnaService.getAllQna());
     }
 
 }
